@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import logo from "../../public/images/logo.png";
 import { useSearchParams } from "next/navigation";
 import { applyActionCode, confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth";
 import { firebaseAuth } from "@/lib/firebase/client";
@@ -50,7 +52,7 @@ export function FirebaseActionHandler() {
 
   const safeContinueUrl = continueUrl && (() => { try { const parsed = new URL(continueUrl); return parsed.pathname + parsed.search; } catch { return "/login"; } })();
   return <main className="auth-action-page"><section>
-    <Link href="/" className="brand"><span>Print</span><i>store</i><b>✦</b></Link>
+    <Link href="/" className="brand-logo action-logo" aria-label="Wear The Risk home"><Image src={logo} alt="Wear The Risk" sizes="150px" /></Link>
     {view === "checking" && <div className="action-state"><span>◎</span><h1>Checking your secure link…</h1><p>This should only take a moment.</p></div>}
     {view === "reset" && <><p className="eyebrow"><span /> Account security</p><h1>Choose a new password</h1><p className="action-copy">Resetting the password for <strong>{email}</strong>.</p><form onSubmit={resetPassword}><label>New password<input type="password" autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} required /></label><small>At least 8 characters, including a letter and a number.</small><label>Confirm new password<input type="password" autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} minLength={8} required /></label>{error && <p className="action-error" role="alert">{error}</p>}<button disabled={busy}>{busy ? "Updating…" : "Update password"}</button></form></>}
     {view === "verify" && <div className="action-state"><span>✉</span><h1>Verify your email</h1><p>Confirm that this email address belongs to you.</p>{error && <p className="action-error">{error}</p>}<button disabled={busy} onClick={() => void verifyEmail()}>{busy ? "Verifying…" : "Verify email"}</button></div>}

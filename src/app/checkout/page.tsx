@@ -39,8 +39,8 @@ export default function CheckoutPage() {
   }
 
   if (authLoading) return <main className="min-h-[70vh] px-6 py-20 text-center">Loading checkout…</main>;
-  if (!user) return <main className="mx-auto flex min-h-[70vh] max-w-xl items-center px-6 py-16"><div className="w-full rounded-[2rem] bg-white p-9 text-center"><p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Checkout</p><h1 className="mt-3 text-3xl font-black">Sign in to complete your purchase</h1><p className="mt-4 leading-7 text-black/55">Your cart is saved. Sign in and we&apos;ll bring you right back here.</p><Link href="/login?next=/checkout" className="mt-8 inline-flex rounded-full bg-emerald-700 px-6 py-3 font-bold text-white">Sign in</Link></div></main>;
-  if (!items.length) return <main className="min-h-[70vh] px-6 py-24 text-center"><h1 className="text-3xl font-black">Your cart is empty</h1><Link href="/#shop" className="mt-5 inline-flex rounded-full bg-emerald-700 px-6 py-3 font-bold text-white">Shop now</Link></main>;
+  if (!user) return <main className="mx-auto flex min-h-[70vh] max-w-xl items-center px-6 py-16"><div className="w-full rounded-lg bg-white p-9 text-center"><p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Checkout</p><h1 className="mt-3 text-3xl font-black">Sign in to complete your purchase</h1><p className="mt-4 leading-7 text-black/55">Your cart is saved. Sign in and we&apos;ll bring you right back here.</p><Link href="/login?next=/checkout" className="mt-8 inline-flex rounded-sm bg-emerald-700 px-6 py-3 font-bold text-white">Sign in</Link></div></main>;
+  if (!items.length) return <main className="min-h-[70vh] px-6 py-24 text-center"><h1 className="text-3xl font-black">Your cart is empty</h1><Link href="/#shop" className="mt-5 inline-flex rounded-sm bg-emerald-700 px-6 py-3 font-bold text-white">Shop now</Link></main>;
 
   return <main className="checkout-page">
     <h1>Checkout</h1>
@@ -49,7 +49,7 @@ export default function CheckoutPage() {
       <section className="checkout-address">
         <header><div><small>Secure delivery</small><h2>Shipping details</h2></div></header>
         <p className="checkout-email">Signed in as {user.email}</p>
-        <div className="mt-8 rounded-3xl border border-black/10 bg-[#f8f5ed] p-7">
+        <div className="mt-8 rounded-lg border border-black/10 bg-[#f8f5ed] p-7">
           <h3 className="text-xl font-black">Enter your address once, securely at Stripe</h3>
           <p className="mt-3 leading-7 text-black/60">After you continue, Stripe will collect and validate your delivery address and phone number together with payment. That confirmed address is sent automatically to our Printify production partner after successful payment.</p>
           <ul className="mt-6 space-y-3 text-sm font-bold"><li>✓ Secure Stripe-hosted checkout</li><li>✓ Canada and United States delivery</li><li>✓ Automatic production after confirmed payment</li><li>✓ Live Printify status and tracking in your account</li></ul>

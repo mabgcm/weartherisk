@@ -38,15 +38,15 @@ export function AuthForm({ mode }: { mode: Mode }) {
   const title = mode === "login" ? "Welcome back" : mode === "register" ? "Create your account" : "Reset your password";
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-6 py-16">
-      <div className="w-full max-w-md rounded-[2rem] bg-white p-8 shadow-sm sm:p-10">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-sm sm:p-10">
         <h1 className="text-3xl font-black tracking-tight">{title}</h1>
         <p className="mt-2 text-sm leading-6 text-black/55">{mode === "forgot" ? "We’ll email you a secure reset link." : "Use your email and password to continue."}</p>
         <form onSubmit={submit} className="mt-8 space-y-5">
-          <label className="block text-sm font-bold">Email<input required type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2 w-full rounded-2xl border border-black/15 px-4 py-3 font-normal outline-none focus:border-emerald-700" /></label>
-          {mode !== "forgot" && <label className="block text-sm font-bold">Password<input required minLength={6} type="password" autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} className="mt-2 w-full rounded-2xl border border-black/15 px-4 py-3 font-normal outline-none focus:border-emerald-700" /></label>}
+          <label className="block text-sm font-bold">Email<input required type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2 w-full rounded-lg border border-black/15 px-4 py-3 font-normal outline-none focus:border-emerald-700" /></label>
+          {mode !== "forgot" && <label className="block text-sm font-bold">Password<input required minLength={6} type="password" autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} className="mt-2 w-full rounded-lg border border-black/15 px-4 py-3 font-normal outline-none focus:border-emerald-700" /></label>}
           {error && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-700">{error}</p>}
           {message && <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-800">{message}</p>}
-          <button disabled={busy} className="w-full cursor-pointer rounded-full bg-emerald-700 px-5 py-3 font-bold text-white disabled:opacity-50">{busy ? "Please wait…" : mode === "login" ? "Sign in" : mode === "register" ? "Create account" : "Send reset email"}</button>
+          <button disabled={busy} className="w-full cursor-pointer rounded-sm bg-emerald-700 px-5 py-3 font-bold text-white disabled:opacity-50">{busy ? "Please wait…" : mode === "login" ? "Sign in" : mode === "register" ? "Create account" : "Send reset email"}</button>
         </form>
         <div className="mt-6 flex justify-between gap-4 text-sm font-semibold">{mode === "login" && <><Link href="/forgot-password">Forgot password?</Link><Link href={`/register?next=${encodeURIComponent(searchParams.get("next") || "/")}`}>Create account</Link></>}{mode !== "login" && <Link href="/login">Back to sign in</Link>}</div>
       </div>

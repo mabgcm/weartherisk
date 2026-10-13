@@ -80,21 +80,21 @@ export function ProductReviews({ productId }: { productId: string }) {
         <h2 id="reviews-title" className="mt-3 text-4xl font-black tracking-tight">Product reviews</h2>
         <div className="mt-5 flex items-center gap-3"><Stars rating={data.averageRating} /><strong className="text-xl">{data.count ? data.averageRating.toFixed(1) : "—"}</strong><span className="text-sm text-black/50">({data.count} {data.count === 1 ? "review" : "reviews"})</span></div>
         {!authLoading && (user
-          ? <form onSubmit={submit} className="mt-8 grid gap-4 rounded-3xl bg-white p-6">
+          ? <form onSubmit={submit} className="mt-8 grid gap-4 rounded-lg bg-white p-6">
               <fieldset><legend className="text-sm font-bold">Your rating</legend><div className="mt-2 flex gap-1">{[1,2,3,4,5].map((value) => <button type="button" key={value} onClick={() => setRating(value)} className="cursor-pointer border-0 bg-transparent p-0 text-3xl text-[#ef654f]" aria-label={`${value} stars`}>{value <= rating ? "★" : "☆"}</button>)}</div></fieldset>
               <label className="text-sm font-bold">Review title<input required minLength={3} maxLength={100} value={title} onChange={(event) => setTitle(event.target.value)} className="mt-2 block w-full border border-black/20 p-3 font-normal" /></label>
               <label className="text-sm font-bold">Your review<textarea required minLength={10} maxLength={2000} rows={5} value={body} onChange={(event) => setBody(event.target.value)} className="mt-2 block w-full resize-y border border-black/20 p-3 font-normal" /></label>
-              <button disabled={busy} className="cursor-pointer rounded-full bg-emerald-900 px-5 py-3 font-bold text-white disabled:opacity-50">{busy ? "Publishing…" : "Publish review"}</button>
+              <button disabled={busy} className="cursor-pointer rounded-sm bg-emerald-900 px-5 py-3 font-bold text-white disabled:opacity-50">{busy ? "Publishing…" : "Publish review"}</button>
             </form>
-          : <p className="mt-8 rounded-3xl bg-white p-6 text-sm leading-6"><Link href={`/login?next=${encodeURIComponent(`/products/${productId}`)}`} className="font-bold underline">Login</Link> to review a product you purchased.</p>)}
+          : <p className="mt-8 rounded-lg bg-white p-6 text-sm leading-6"><Link href={`/login?next=${encodeURIComponent(`/products/${productId}`)}`} className="font-bold underline">Login</Link> to review a product you purchased.</p>)}
         {notice && <p className="mt-4 text-sm font-bold" role="status">{notice}</p>}
       </div>
       <div className="grid content-start gap-4">
-        {loading ? <p className="rounded-3xl bg-white p-7 text-black/50">Loading reviews…</p> : data.reviews.length ? data.reviews.map((review) => <article key={review.id} className="rounded-3xl bg-white p-7">
+        {loading ? <p className="rounded-lg bg-white p-7 text-black/50">Loading reviews…</p> : data.reviews.length ? data.reviews.map((review) => <article key={review.id} className="rounded-lg bg-white p-7">
           <div className="flex flex-wrap items-center justify-between gap-3"><Stars rating={review.rating} /><time className="text-xs text-black/45" dateTime={review.updatedAt ?? undefined}>{review.updatedAt ? new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "short", day: "numeric" }).format(new Date(review.updatedAt)) : ""}</time></div>
           <h3 className="mt-4 text-xl font-black">{review.title}</h3><p className="mt-3 leading-7 text-black/65">{review.body}</p>
-          <footer className="mt-5 flex flex-wrap items-center gap-3 text-xs"><strong>{review.authorName}</strong>{review.verifiedPurchase && <span className="rounded-full bg-emerald-100 px-3 py-1 font-bold text-emerald-800">✓ Verified purchase</span>}</footer>
-        </article>) : <div className="rounded-3xl bg-white p-10 text-center"><span className="text-4xl text-[#ef654f]">★★★★★</span><h3 className="mt-4 text-2xl font-black">No reviews yet</h3><p className="mt-2 text-black/55">Purchased this product? Be the first to share your experience.</p></div>}
+          <footer className="mt-5 flex flex-wrap items-center gap-3 text-xs"><strong>{review.authorName}</strong>{review.verifiedPurchase && <span className="rounded-sm bg-emerald-100 px-3 py-1 font-bold text-emerald-800">✓ Verified purchase</span>}</footer>
+        </article>) : <div className="rounded-lg bg-white p-10 text-center"><span className="text-4xl text-[#ef654f]">★★★★★</span><h3 className="mt-4 text-2xl font-black">No reviews yet</h3><p className="mt-2 text-black/55">Purchased this product? Be the first to share your experience.</p></div>}
       </div>
     </div>
   </section>;

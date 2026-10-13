@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import logo from "../../public/images/logo.png";
+import { useEffect, useRef, useState } from "react";
 import { useAuth, useCart } from "@/components/providers";
 
 interface SiteHeaderProps {
@@ -13,28 +14,43 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
   const { user, loading } = useAuth();
   const { count } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!menuOpen) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const menu = menuRef.current;
+    const trigger = triggerRef.current;
+    menu?.querySelector<HTMLButtonElement>("button")?.focus();
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Tab" && menu) {
+        const controls = Array.from(menu.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"));
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
     };
     document.addEventListener("keydown", closeOnEscape);
     return () => {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", closeOnEscape);
+      trigger?.focus();
     };
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
 
   return <>
-    <div className="announcement"><p>Free shipping on orders $75+ <span>•</span> Made to order, worth the wait</p></div>
+    <a href="#main-content" className="skip-link">Skip to content</a>
+    <div className="announcement"><p>Made to order <span> / </span> Free shipping $75+ CAD</p></div>
     <header className="site-header">
       <div className="header-inner">
-        <Link href="/" className="brand-logo" aria-label="Can Print Store home"><Image src="/images/logo.png" alt="Can Print Store" width={800} height={150} priority /></Link>
+        <Link href="/" className="brand-logo" aria-label="Wear The Risk home"><Image src={logo} alt="Wear The Risk" sizes="130px" preload /></Link>
+        <nav className="desktop-nav" aria-label="Shop navigation"><Link href="/#shop">The collection</Link><Link href="/about">Our story</Link><Link href="/shipping">Shipping & returns</Link></nav>
         <nav className="utility-nav" aria-label="Account navigation">
           {!loading && <div className="header-auth-links">
             {user
@@ -45,13 +61,13 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 8.25h10.5l.75 12H6l.75-12Z" /><path d="M9 9V6a3 3 0 0 1 6 0v3" /></svg>
             <span>{count}</span>
           </Link>
-          <button className="menu-trigger" type="button" aria-label="Open menu" aria-expanded={menuOpen} aria-controls="site-menu" onClick={() => setMenuOpen(true)}><span /><span /><span /></button>
+          <button ref={triggerRef} className="menu-trigger" type="button" aria-label="Open menu" aria-expanded={menuOpen} aria-controls="site-menu" onClick={() => setMenuOpen(true)}><span /><span /><span /></button>
         </nav>
       </div>
     </header>
     {menuOpen && <div className="menu-overlay" onMouseDown={closeMenu} role="presentation">
-      <aside id="site-menu" className="menu-drawer" role="dialog" aria-modal="true" aria-label="Site menu" onMouseDown={(event) => event.stopPropagation()}>
-        <header><Link href="/" className="brand-logo" onClick={closeMenu}><Image src="/images/logo.png" alt="Can Print Store" width={800} height={150} /></Link><button type="button" onClick={closeMenu} aria-label="Close menu">×</button></header>
+      <aside ref={menuRef} id="site-menu" className="menu-drawer" role="dialog" aria-modal="true" aria-label="Site menu" onMouseDown={(event) => event.stopPropagation()}>
+        <header><Link href="/" className="brand-logo" onClick={closeMenu}><Image src={logo} alt="Wear The Risk" sizes="150px" /></Link><button type="button" onClick={closeMenu} aria-label="Close menu">×</button></header>
         <nav aria-label="Main navigation">
           <Link href="/#shop" onClick={closeMenu}>Shop all <span>↗</span></Link>
           {categories.map((category) => <Link href={`/categories/${category.slug}`} key={category.slug} onClick={closeMenu}>{category.title}<span>→</span></Link>)}

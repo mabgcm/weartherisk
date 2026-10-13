@@ -13,7 +13,7 @@ export function AddToCart({ productId, title, image, variants }: { productId: st
   const { addItem } = useCart();
   const router = useRouter();
 
-  if (!selected) return <p className="rounded-2xl bg-red-50 p-4 text-red-700">This product is currently unavailable.</p>;
+  if (!selected) return <p className="rounded-lg bg-red-50 p-4 text-red-700">This product is currently unavailable.</p>;
 
   function add(buyNow = false) {
     addItem({ productId, variantId: selected!.id, title, variantTitle: selected!.title, image, price: selected!.price, quantity: 1 });

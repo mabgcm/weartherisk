@@ -30,7 +30,7 @@ export default async function BlueprintPage({ params, searchParams }: BlueprintP
       <div className="mx-auto max-w-6xl">
         <Link href="/admin/catalog" className="text-sm font-bold text-emerald-700">← Product catalog</Link>
         <div className="mt-8 grid gap-12 lg:grid-cols-2">
-          <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-white">
+          <div className="relative aspect-square overflow-hidden rounded-lg bg-white">
             {blueprint.images[0] && <Image src={blueprint.images[0]} alt={blueprint.title} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-contain p-8" priority />}
           </div>
           <div>
@@ -42,7 +42,7 @@ export default async function BlueprintPage({ params, searchParams }: BlueprintP
               <h2 className="text-lg font-black">Print provider</h2>
               <div className="mt-3 flex flex-wrap gap-2">
                 {providers.map((provider) => (
-                  <Link key={provider.id} href={`/admin/catalog/${blueprintId}?provider=${provider.id}`} className={`rounded-full border px-4 py-2 text-sm ${provider.id === selectedProvider?.id ? "border-emerald-700 bg-emerald-700 text-white" : "border-black/15 bg-white"}`}>
+                  <Link key={provider.id} href={`/admin/catalog/${blueprintId}?provider=${provider.id}`} className={`rounded-sm border px-4 py-2 text-sm ${provider.id === selectedProvider?.id ? "border-emerald-700 bg-emerald-700 text-white" : "border-black/15 bg-white"}`}>
                     {provider.title}
                   </Link>
                 ))}
@@ -50,7 +50,7 @@ export default async function BlueprintPage({ params, searchParams }: BlueprintP
             </section>
 
             {selectedProvider && (
-              <section className="mt-8 rounded-3xl bg-white p-6">
+              <section className="mt-8 rounded-lg bg-white p-6">
                 <div className="flex items-center justify-between gap-4">
                   <h2 className="font-black">Available variants</h2>
                   <span className="text-sm text-black/50">{variants.length} combinations</span>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { DM_Sans, Playfair_Display } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
@@ -10,7 +10,6 @@ import { STORE_CATEGORIES } from "@/lib/catalog/categories";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, absoluteUrl, safeJsonLd } from "@/lib/seo";
 
 const sans = DM_Sans({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const serif = Playfair_Display({ subsets: ["latin"], variable: "--font-serif", display: "swap", style: ["normal", "italic"] });
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: "Can Print Store | Original Made-to-Order Gifts", template: `%s | ${SITE_NAME}` },
@@ -18,13 +17,16 @@ export const metadata: Metadata = {
   keywords: ["original gifts Canada", "made-to-order gifts", "graphic apparel", "art prints", "print on demand Canada", "unique gifts"],
   authors: [{ name: SITE_NAME, url: SITE_URL }], creator: SITE_NAME, publisher: SITE_NAME,
   icons: {
-    icon: [{ url: "/images/fav.png?v=2", type: "image/png", sizes: "500x500" }],
-    shortcut: "/images/fav.png?v=2",
-    apple: [{ url: "/images/fav.png?v=2", type: "image/png", sizes: "500x500" }],
+    icon: [
+      { url: "/favicon.ico?v=3", type: "image/x-icon", sizes: "16x16 32x32 48x48" },
+      { url: "/images/fav.png?v=3", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.ico?v=3",
+    apple: [{ url: "/images/fav.png?v=3", type: "image/png", sizes: "512x512" }],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
-  openGraph: { type: "website", locale: "en_CA", url: SITE_URL, siteName: SITE_NAME, title: "Can Print Store | Original Made-to-Order Gifts", description: DEFAULT_DESCRIPTION, images: [{ url: "/og-printstore.png", width: 1200, height: 630, alt: "Can Print Store original made-to-order designs" }] },
-  twitter: { card: "summary_large_image", title: "Can Print Store | Original Made-to-Order Gifts", description: DEFAULT_DESCRIPTION, images: ["/og-printstore.png"] },
+  openGraph: { type: "website", locale: "en_CA", url: SITE_URL, siteName: SITE_NAME, title: "Can Print Store | Original Made-to-Order Gifts", description: DEFAULT_DESCRIPTION, images: [{ url: "/og-printstore.png?v=2", width: 1200, height: 630, alt: "Wear The Risk logo and made-to-order apparel" }] },
+  twitter: { card: "summary_large_image", title: "Can Print Store | Original Made-to-Order Gifts", description: DEFAULT_DESCRIPTION, images: ["/og-printstore.png?v=2"] },
   category: "shopping",
 };
 
@@ -39,5 +41,5 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     { "@type": "OnlineStore", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: absoluteUrl("/images/logo.png"), image: absoluteUrl("/images/logo.png"), description: DEFAULT_DESCRIPTION, email: "hello@canprintstore.com", areaServed: ["CA", "US"], currenciesAccepted: "CAD", hasMerchantReturnPolicy: { "@type": "MerchantReturnPolicy", applicableCountry: ["CA", "US"], returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted", merchantReturnLink: absoluteUrl("/shipping") } },
     { "@type": "WebSite", "@id": `${SITE_URL}/#website`, url: SITE_URL, name: SITE_NAME, inLanguage: "en-CA", publisher: { "@id": `${SITE_URL}/#organization` } },
   ] };
-  return <html lang="en-CA" className={`${sans.variable} ${serif.variable}`}><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(globalJsonLd) }} /><Providers><SiteHeader categories={categoryLinks} />{children}<SiteFooter categories={categoryLinks} /></Providers></body><GoogleAnalytics gaId="G-VKSQX810RR" /></html>;
+  return <html lang="en-CA" className={sans.variable}><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(globalJsonLd) }} /><Providers><SiteHeader categories={categoryLinks} /><div id="main-content" tabIndex={-1}>{children}</div><SiteFooter categories={categoryLinks} /></Providers></body><GoogleAnalytics gaId="G-VKSQX810RR" /></html>;
 }
