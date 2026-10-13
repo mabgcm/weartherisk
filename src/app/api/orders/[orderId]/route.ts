@@ -5,16 +5,16 @@ import { getPrintifyOrder } from "@/lib/printify/client";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request, context: RouteContext<"/api/orders/[orderId]">) {
-  const user = await verifyFirebaseToken(request);
-  if (!user?.uid) return NextResponse.json({ error: "Sign in is required." }, { status: 401 });
-
-  const { orderId } = await context.params;
-  const saved = await adminFirestore().collection("orders").doc(orderId).get();
-  if (!saved.exists || saved.data()?.userId !== user.uid) return NextResponse.json({ error: "Order not found." }, { status: 404 });
-  const printifyOrderId = saved.data()?.printifyOrderId;
-  if (typeof printifyOrderId !== "string") return NextResponse.json({ error: "The order has not reached production yet." }, { status: 409 });
-
   try {
+    const user = await verifyFirebaseToken(request);
+    if (!user?.uid) return NextResponse.json({ error: "Sign in is required." }, { status: 401 });
+
+    const { orderId } = await context.params;
+    const saved = await adminFirestore().collection("orders").doc(orderId).get();
+    if (!saved.exists || saved.data()?.userId !== user.uid) return NextResponse.json({ error: "Order not found." }, { status: 404 });
+    const printifyOrderId = saved.data()?.printifyOrderId;
+    if (typeof printifyOrderId !== "string") return NextResponse.json({ error: "The order has not reached production yet." }, { status: 409 });
+
     const order = await getPrintifyOrder(printifyOrderId);
     return NextResponse.json({
       id: orderId,

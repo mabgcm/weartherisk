@@ -1,7 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { adminFirestore, verifyFirebaseToken } from "@/lib/firebase/admin";
+import { adminFirestore, FirebaseAdminConfigurationError, verifyFirebaseToken } from "@/lib/firebase/admin";
 import { getPrintifyProduct } from "@/lib/printify/client";
 import { stripe } from "@/lib/stripe/server";
 
@@ -20,7 +20,7 @@ function validItems(value: unknown): value is CheckoutItemInput[] {
 export async function POST(request: Request) {
   try {
     const user = await verifyFirebaseToken(request);
-    if (!user?.uid || !user.email) return NextResponse.json({ error: "Sign in is required." }, { status: 401 });
+    if (!user?.uid || !user.email) return NextResponse.json({ error: "Your session could not be verified. Sign out and sign in again." }, { status: 401 });
 
     const body = await request.json() as { items?: unknown };
     if (!validItems(body.items)) return NextResponse.json({ error: "The checkout details are incomplete or invalid." }, { status: 400 });
@@ -103,6 +103,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: session.url });
   } catch (reason) {
+    if (reason instanceof FirebaseAdminConfigurationError) {
+      console.error("[api/checkout] Firebase Admin configuration missing or invalid", reason.message);
+      return NextResponse.json({ error: "Checkout is not available yet. Please try again later.", code: "CHECKOUT_NOT_CONFIGURED" }, { status: 503 });
+    }
     if (reason instanceof Error && reason.message === "CART_ITEM_UNAVAILABLE") {
       return NextResponse.json({ error: "One of the products in your bag is no longer available. Please refresh your bag." }, { status: 409 });
     }

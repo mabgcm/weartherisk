@@ -16,7 +16,7 @@ export default function CheckoutPage() {
     setBusy(true);
     setError("");
     try {
-      const token = await user.getIdToken();
+      const token = await user.getIdToken(true);
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, "Idempotency-Key": crypto.randomUUID() },
