@@ -118,7 +118,7 @@ export default async function Home() {
         <div className="values"><div><b>01</b><h3>Original by design</h3><p>Created with a point of view, not pulled from a template.</p></div><div><b>02</b><h3>Made on demand</h3><p>Your order starts production, helping us make only what matters.</p></div><div><b>03</b><h3>Chosen with care</h3><p>Quality partners and materials we&apos;re proud to put our name on.</p></div></div>
       </section>
 
-      <section className="newsletter" aria-labelledby="newsletter-title"><div><p className="eyebrow"><span /> Notes from the studio</p><h2 id="newsletter-title">Good things,<br /><em>occasionally.</em></h2></div><div><p>New drops, behind-the-scenes stories and special offers. No clutter—just the good stuff.</p><form action="mailto:hello@printstore.local" method="post" encType="text/plain"><label className="sr-only" htmlFor="email">Email address</label><input id="email" name="email" type="email" placeholder="Your email address" required /><button type="submit" aria-label="Join the Printstore newsletter">Join us <span>→</span></button></form><small>By subscribing, you agree to our Privacy Policy.</small></div></section>
+      <section className="newsletter" aria-labelledby="newsletter-title"><div><p className="eyebrow"><span /> Notes from the studio</p><h2 id="newsletter-title">Good things,<br /><em>occasionally.</em></h2></div><div><p>Choose whether you&apos;d like collection news and occasional offers in your account profile.</p><Link href="/account" className="button button-dark">Manage email preferences <span>→</span></Link><small>Read our <Link href="/privacy">Privacy Policy</Link> to learn how we use your information.</small></div></section>
     </main>
   );
 }

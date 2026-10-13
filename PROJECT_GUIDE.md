@@ -2,7 +2,7 @@
 
 Can Print Store is a Canadian print-on-demand storefront for original apparel, mugs, art prints, accessories, and home décor. Shoppers browse Printify products, sign in through Firebase, pay through Stripe-hosted Checkout, and follow production and shipments in their account. Operators browse Printify blueprints here; artwork/product publishing and most operational administration happen outside this application.
 
-Verified: **2026-10-12** (America/Toronto). Inspected commit: **`193e1b2a66dcc82357eeb9b90f69e3900f9a7b7c`**. The working tree was clean before this documentation change.
+Verified: **2026-10-12** (America/Toronto). Inspected commit: **`193e1b2a66dcc82357eeb9b90f69e3900f9a7b7c`**. The working tree was clean before the original documentation change. Scoped follow-up verification on 2026-10-12 at `2655d90e8d250a4518f04a78f1c0b5f319833aae` covered Firebase client configuration and the home email-preferences section; existing user changes to `package.json` were preserved.
 
 Evidence labels: **Code-verified** means supported by inspected source/configuration, not a successful live integration test. **Historically reported** means a Git commit description, with implementation differences checked where specified. **Unverified** means no local evidence establishes the claim. Unless otherwise labeled, descriptions below are code-verified. No environment values, customer records, credentials, or personal data were inspected for this guide.
 
@@ -55,7 +55,7 @@ Page files follow `src/app/<route>/page.tsx`:
 
 | URL | Behavior / collaborating files |
 | --- | --- |
-| `/` | Dynamic home; first product is hero, first eight are featured; category circles, editorial sections, newsletter form |
+| `/` | Dynamic home; first product is hero, first eight are featured; category circles, editorial sections, account email-preferences link |
 | `/categories/[slug]` | `CategoryPage`; category products, eight per page; `sort=price-low`, `price-high`, `name`, default upstream order; `page` query |
 | `/products/[productId]` | `ProductPage`, `generateMetadata`; published product, four-image gallery, available variants, `AddToCart`, `ProductReviews` |
 | `/cart` | Browser cart, quantity selector 1–10, removal and subtotal |
@@ -196,7 +196,7 @@ Printify script registers `order:updated`, `order:sent-to-production`, `order:sh
 
 ## Previous changes and troubleshooting
 
-Available conversation contains only the guide request, approval, and Next.js instructions; no prior incident conversation is available. Commit subjects report fixes, but do not establish observed production symptoms or root causes. The following implementation changes were verified from diffs; causes remain **unverified** unless reproduced.
+The original guide had no prior incident conversation available. A later user report included a deployed Firebase configuration error and a mixed-content warning; see the scoped troubleshooting note below. Commit subjects report fixes, but do not establish observed production symptoms or root causes. The following implementation changes were verified from diffs; causes remain **unverified** unless reproduced.
 
 | Historical evidence | Verified implementation / current behavior | If the issue recurs |
 | --- | --- | --- |
@@ -204,6 +204,8 @@ Available conversation contains only the guide request, approval, and Next.js in
 | `6782f21`, historically reported “stripe fix” | Admin initialization replaced project-only setup with explicit `cert()` credentials and missing-settings checks | Verify server credential names, matching project, private-key newline format; `verifyFirebaseToken` can mask initialization errors as unauthorized |
 | `a32476d`, historically reported “sign in problem” | Header distinguished signed-out login/register links and signed-in Account; this was a navigation change, not proof Auth itself failed | Check Firebase Auth state and header loading separately; current header/drawer show Login, registration is linked on login page |
 | `193e1b2`, historically reported “stripe and order details fix” | Removed local shipping-address payload in favor of Stripe collection; added adaptive pricing, currency-aware order display and timed refresh | Verify confirmed Stripe collected shipping/address/phone and stored currency/totals; do not restore the older form unintentionally |
+
+Scoped follow-up (2026-10-12): the user reported that `https://weartherisk.vercel.app/` throws missing Firebase settings for all six required browser fields. Local required variables were checked for nonempty presence without outputting values. `src/lib/firebase/client.ts` uses static `NEXT_PUBLIC_FIREBASE_*` references, which Next.js embeds during build; `.env.local` is Git-ignored and does not configure a Git-based Vercel build. **Unverified:** remote project settings and why the deployed build lacked those values. Set the seven public Firebase variables in the matching Vercel environment, rebuild/redeploy, then check Firebase authorized domains for the deployment hostname. The client error now explains both local and build-environment configuration. The reported mixed-content endpoint matched the home form action; that form was replaced with an internal account-preferences link. Live resolution requires deployment and was not verified. Extension-like content/injected script warnings are separate; their source should be checked in browser DevTools or an extensions-disabled session.
 
 Current code troubleshooting (not claims of past incidents):
 
@@ -225,7 +227,7 @@ Code-verified gaps; impact beyond the source is unverified:
 - Success page confirms arbitrary supplied Stripe session ID without ownership check; generic output avoids customer detail, but it can trigger fulfillment and clear the visiting browser's cart. Cart load/clear initialization timing is not integration-tested.
 - Orders/reviews query an unordered subset of at most 100 documents then sort in memory; this does not guarantee latest 100. Printify refresh failure returns pending-shaped data without saved shipment/address details.
 - Category/style/subcategory controls mostly jump to `#products`; they do not filter. “Popular” means upstream order, not measured popularity. Category page number is not clamped to last page. Home “Shop all” exposes only first eight featured products.
-- Newsletter is a `mailto:` form targeting a placeholder local-domain mailbox, not a subscription service. Support/privacy addresses differ across account and policy copy. No address-book UI, automated privacy deletion/export, automated retention policy, or messaging consent enforcement exists.
+- Home links to account email preferences; the old placeholder `mailto:` newsletter form was removed after a mixed-content warning. Consent can be saved in the profile, but no mailing-list delivery service is implemented. Support/privacy addresses differ across account and policy copy. No address-book UI, automated privacy deletion/export, automated retention policy, or messaging consent enforcement exists.
 - localStorage cart parse/storage failure has no user-facing recovery and parsed entries have no client schema validation. Cart is shared between accounts on a browser. Login `next` destination is used without an explicit internal-path allowlist.
 - Remote catalog/analytics/auth/tax/webhook/deployment settings and live tests were not verified. No performance measurements, security audit, or policy/legal review was performed. A tracked `firebase-debug.log` exists; do not copy diagnostic contents into documentation or infer deployment success from it.
 

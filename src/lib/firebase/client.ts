@@ -19,7 +19,7 @@ function getFirebaseApp(): FirebaseApp {
   const missing = required.filter((key) => !firebaseConfig[key]);
 
   if (missing.length > 0) {
-    throw new Error(`Missing Firebase settings: ${missing.join(", ")}. Check your .env.local file.`);
+    throw new Error(`Missing Firebase settings: ${missing.join(", ")}. Set the NEXT_PUBLIC_FIREBASE_* variables in .env.local for local development or in the deployment's build environment, then rebuild and redeploy.`);
   }
 
   return getApps().length ? getApp() : initializeApp(firebaseConfig);
