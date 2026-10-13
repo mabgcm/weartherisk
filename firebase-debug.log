@@ -1,0 +1,80 @@
+[debug] [2026-08-12T18:47:13.688Z] ----------------------------------------------------------------------
+[debug] [2026-08-12T18:47:13.690Z] Command:       /Users/mehmetalibugucam/.nvm/versions/node/v22.23.1/bin/node /Users/mehmetalibugucam/.npm/_npx/7750544ccf494d8b/node_modules/firebase-tools/lib/bin/firebase.js deploy --only firestore:rules --project printstore-fc5af
+[debug] [2026-08-12T18:47:13.690Z] CLI Version:   15.26.0
+[debug] [2026-08-12T18:47:13.691Z] Platform:      darwin
+[debug] [2026-08-12T18:47:13.691Z] Node Version:  v22.23.1
+[debug] [2026-08-12T18:47:13.691Z] Detected Agent: codex_cli
+[debug] [2026-08-12T18:47:13.691Z] Time:          Wed Aug 12 2026 14:47:13 GMT-0400 (Eastern Daylight Time)
+[debug] [2026-08-12T18:47:13.691Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-08-12T18:47:13.704Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-08-12T18:47:14.441Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-08-12T18:47:14.441Z] > authorizing via signed-in user (ma.bugucam@gmail.com)
+[debug] [2026-08-12T18:47:14.441Z] [iam] checking project printstore-fc5af for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]
+[debug] [2026-08-12T18:47:14.441Z] Checked if tokens are valid: false, expires at: 1785332721355
+[debug] [2026-08-12T18:47:14.441Z] Checked if tokens are valid: false, expires at: 1785332721355
+[debug] [2026-08-12T18:47:14.442Z] > refreshing access token with scopes: []
+[debug] [2026-08-12T18:47:14.445Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-08-12T18:47:14.445Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-08-12T18:47:14.563Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-08-12T18:47:14.563Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2026-08-12T18:47:14.600Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-08-12T18:47:14.600Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-08-12T18:47:14.611Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/printstore-fc5af:testIamPermissions [none]
+[debug] [2026-08-12T18:47:14.611Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/printstore-fc5af:testIamPermissions  x-goog-user-project=printstore-fc5af
+[debug] [2026-08-12T18:47:14.612Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/printstore-fc5af:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[debug] [2026-08-12T18:47:14.890Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/printstore-fc5af:testIamPermissions 403
+[debug] [2026-08-12T18:47:14.890Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/printstore-fc5af:testIamPermissions {"error":{"code":403,"message":"Caller does not have required permission to use project printstore-fc5af. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af and then retry. Propagation of the new permission may take a few minutes.","status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"USER_PROJECT_DENIED","domain":"googleapis.com","metadata":{"service":"cloudresourcemanager.googleapis.com","containerInfo":"printstore-fc5af","consoleUrl":"https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af","consumer":"projects/printstore-fc5af"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Caller does not have required permission to use project printstore-fc5af. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af and then retry. Propagation of the new permission may take a few minutes."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developer console IAM admin","url":"https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af"}]}]}}
+[debug] [2026-08-12T18:47:14.892Z] [iam] error while checking permissions, command may fail: Request to https://cloudresourcemanager.googleapis.com/v1/projects/printstore-fc5af:testIamPermissions had HTTP Error: 403, Caller does not have required permission to use project printstore-fc5af. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af and then retry. Propagation of the new permission may take a few minutes.
+[info] 
+[info] === Deploying to 'printstore-fc5af'...
+[info] 
+[info] i  deploying firestore 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-08-12T18:47:14.896Z] Checked if tokens are valid: true, expires at: 1786564033600
+[debug] [2026-08-12T18:47:14.896Z] Checked if tokens are valid: true, expires at: 1786564033600
+[debug] [2026-08-12T18:47:14.896Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/printstore-fc5af/services/firestore.googleapis.com [none]
+[debug] [2026-08-12T18:47:14.896Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/printstore-fc5af/services/firestore.googleapis.com  x-goog-user-project=printstore-fc5af
+[debug] [2026-08-12T18:47:15.191Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/printstore-fc5af/services/firestore.googleapis.com 403
+[debug] [2026-08-12T18:47:15.192Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/printstore-fc5af/services/firestore.googleapis.com [omitted]
+[error] 
+[error] Error: Request to https://serviceusage.googleapis.com/v1/projects/printstore-fc5af/services/firestore.googleapis.com had HTTP Error: 403, Caller does not have required permission to use project printstore-fc5af. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af and then retry. Propagation of the new permission may take a few minutes.
+[debug] [2026-08-12T18:47:15.304Z] Error Context: {
+  "body": {
+    "error": {
+      "code": 403,
+      "message": "Caller does not have required permission to use project printstore-fc5af. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af and then retry. Propagation of the new permission may take a few minutes.",
+      "status": "PERMISSION_DENIED",
+      "details": [
+        {
+          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+          "reason": "USER_PROJECT_DENIED",
+          "domain": "googleapis.com",
+          "metadata": {
+            "containerInfo": "printstore-fc5af",
+            "consumer": "projects/printstore-fc5af",
+            "service": "serviceusage.googleapis.com",
+            "consoleUrl": "https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af"
+          }
+        },
+        {
+          "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+          "locale": "en-US",
+          "message": "Caller does not have required permission to use project printstore-fc5af. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af and then retry. Propagation of the new permission may take a few minutes."
+        },
+        {
+          "@type": "type.googleapis.com/google.rpc.Help",
+          "links": [
+            {
+              "description": "Google developer console IAM admin",
+              "url": "https://console.developers.google.com/iam-admin/iam?project=printstore-fc5af"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "response": {
+    "statusCode": 403
+  }
+}

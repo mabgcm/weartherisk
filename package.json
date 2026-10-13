@@ -1,0 +1,34 @@
+{
+  "name": "printstore",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "dev": "\"$NODE\" node_modules/next/dist/bin/next dev",
+    "build": "\"$NODE\" node_modules/next/dist/bin/next build",
+    "start": "\"$NODE\" node_modules/next/dist/bin/next start",
+    "lint": "\"$NODE\" node_modules/eslint/bin/eslint.js .",
+    "setup:printify-webhooks": "\"$NODE\" --env-file=.env.local scripts/configure-printify-webhooks.mjs"
+  },
+  "dependencies": {
+    "@next/third-parties": "^16.3.1",
+    "firebase": "^12.17.1",
+    "firebase-admin": "^13.6.0",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "stripe": "^22.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/node": "^22.18.6",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "eslint": "^9.36.0",
+    "eslint-config-next": "16.3.0",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.2"
+  }
+}
