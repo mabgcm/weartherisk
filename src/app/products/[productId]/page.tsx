@@ -1,82 +1,64 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { cache } from "react";
+import { ProductGallery } from "@/components/product-gallery";
 import { notFound } from "next/navigation";
 import { AddToCart } from "@/components/add-to-cart";
 import { ProductReviews } from "@/components/product-reviews";
-import { getPrintifyProduct } from "@/lib/printify/client";
+import { getPrintifyProduct, PrintifyApiError } from "@/lib/printify/client";
 import { productBelongsToCategory } from "@/lib/catalog/categories";
 import { getStorefrontCatalog } from "@/lib/catalog/storefront";
 import { getPublishedReviews } from "@/lib/reviews/server";
-import { SITE_NAME, absoluteUrl, metaDescription, safeJsonLd } from "@/lib/seo";
+import { plainText, safeJsonLd } from "@/lib/seo";
+import { productImages, productMetadata, productStructuredData, productVariants } from "@/lib/catalog/product-seo";
 
-interface Props { params: Promise<{ productId: string }> }
+interface Props { params: Promise<{ productId: string }>; searchParams: Promise<{ variant?: string }> }
+
+const getProduct = cache(async (productId: string) => {
+  try { return await getPrintifyProduct(productId); }
+  catch (reason) {
+    if (reason instanceof PrintifyApiError && reason.status === 404) return null;
+    throw reason;
+  }
+});
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { productId } = await params;
-  const product = await getPrintifyProduct(productId).catch(() => null);
+  const product = await getProduct(productId);
   if (!product?.visible) return { title: "Product not found", robots: { index: false, follow: false } };
-  const description = metaDescription(product.description);
-  const images = product.images.slice(0, 4).map((image) => ({ url: image.src, alt: product.title }));
-  return {
-    title: product.title,
-    description,
-    keywords: [...new Set([product.title, ...product.tags, "made to order Canada", SITE_NAME])],
-    alternates: { canonical: `/products/${product.id}` },
-    openGraph: { type: "website", url: `/products/${product.id}`, title: `${product.title} | ${SITE_NAME}`, description, siteName: SITE_NAME, images },
-    twitter: { card: "summary_large_image", title: product.title, description, images: images.map((image) => image.url) },
-  };
+  return productMetadata(product);
 }
 
-export default async function ProductPage({ params }: Props) {
+export default async function ProductPage({ params, searchParams }: Props) {
   const { productId } = await params;
-  const product = await getPrintifyProduct(productId).catch(() => null);
+  const product = await getProduct(productId);
   if (!product || !product.visible) notFound();
-  const images = product.images;
-  const mainImage = images.find((item) => item.is_default) ?? images[0];
-  const variants = product.variants.filter((item) => item.is_enabled && item.is_available);
-  const description = product.description.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const variants = productVariants(product);
+  const { variant: requestedVariant } = await searchParams;
+  const selected = variants.find((variant) => variant.id === Number(requestedVariant));
+  const initialVariant = selected ?? variants.find((variant) => variant.is_available) ?? variants[0];
+  const images = productImages(product, initialVariant?.id);
+  const mainImage = images[0];
+  const availableVariants = variants.filter((variant) => variant.is_available);
+  const startingPrice = availableVariants.length ? Math.min(...availableVariants.map((variant) => variant.price)) : variants.length ? Math.min(...variants.map((variant) => variant.price)) : null;
+  const description = plainText(product.description);
   const { categories } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
   const category = categories.find((item) => productBelongsToCategory(product, item));
   const reviews = await getPublishedReviews(product.id);
-  const averageRating = reviews.length ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length : 0;
-  const productUrl = absoluteUrl(`/products/${product.id}`);
-  const productJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "@id": `${productUrl}#product`,
-    name: product.title,
-    description,
-    url: productUrl,
-    image: images.map((image) => image.src),
-    sku: product.id,
-    brand: { "@type": "Brand", name: SITE_NAME },
-    category: category?.title,
-    ...(variants.length ? { offers: variants.map((variant) => ({ "@type": "Offer", url: productUrl, sku: variant.sku || `${product.id}-${variant.id}`, priceCurrency: "CAD", price: (variant.price / 100).toFixed(2), availability: variant.is_available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock", itemCondition: "https://schema.org/NewCondition", seller: { "@id": `${absoluteUrl("/")}#organization` } })) } : {}),
-    ...(reviews.length ? {
-      aggregateRating: { "@type": "AggregateRating", ratingValue: averageRating.toFixed(2), reviewCount: reviews.length, bestRating: 5, worstRating: 1 },
-      review: reviews.slice(0, 10).map((review) => ({ "@type": "Review", name: review.title, reviewBody: review.body, datePublished: review.updatedAt?.slice(0, 10), author: { "@type": "Person", name: review.authorName }, reviewRating: { "@type": "Rating", ratingValue: review.rating, bestRating: 5, worstRating: 1 } })),
-    } : {}),
-  };
-  const breadcrumbJsonLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
-    ...(category ? [{ "@type": "ListItem", position: 2, name: category.title, item: absoluteUrl(`/categories/${category.slug}`) }] : []),
-    { "@type": "ListItem", position: category ? 3 : 2, name: product.title, item: productUrl },
-  ] };
+  const structuredData = productStructuredData(product, category, reviews);
 
   return (
     <main className="product-page mx-auto max-w-7xl px-6 py-10 sm:px-10 lg:px-16">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd([productJsonLd, breadcrumbJsonLd]) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }} />
       <nav aria-label="Breadcrumb" className="flex flex-wrap gap-2 text-sm"><Link href="/" className="font-bold text-emerald-700">Home</Link><span>›</span>{category && <><Link href={`/categories/${category.slug}`} className="font-bold text-emerald-700">{category.title}</Link><span>›</span></>}<span aria-current="page" className="text-black/50">{product.title}</span></nav>
       <div className="mt-8 grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="product-gallery">
-          {images.slice(0, 4).map((image, index) => <div key={`${image.src}-${index}`} className={`relative overflow-hidden rounded-lg bg-white ${index === 0 ? "product-gallery-main aspect-[4/3]" : "aspect-square"}`}><Image src={image.src} alt={`${product.title} view ${index + 1}`} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-contain" priority={index === 0} /></div>)}
-        </div>
+        <ProductGallery key={`${product.id}-${initialVariant?.id}`} title={product.title} images={images} />
         <div className="lg:sticky lg:top-28 lg:self-start">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Made to order</p>
           <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">{product.title}</h1>
-          <p className="mt-5 text-lg font-bold">From ${variants.length ? (Math.min(...variants.map((item) => item.price)) / 100).toFixed(2) : "—"}</p>
-          <AddToCart productId={product.id} title={product.title} image={mainImage?.src ?? ""} variants={variants} />
+          <p className="mt-5 text-lg font-bold">{selected ? "" : "From "}{(selected?.price ?? startingPrice) === null ? "See available options" : `$${((selected?.price ?? startingPrice ?? 0) / 100).toFixed(2)} CAD`}</p>
+          <AddToCart key={`${product.id}-${initialVariant?.id}`} productId={product.id} title={product.title} image={mainImage?.src ?? ""} variants={variants.map((variant) => ({ ...variant, available: variant.is_available }))} initialVariantId={initialVariant?.id} />
+          <p className="mt-4 text-sm leading-6 text-black/60">Made to order. Ships to Canada and the United States. Free standard shipping on merchandise subtotals of $75 CAD or more; otherwise $7.99 CAD. <Link href="/shipping" className="underline">Shipping &amp; returns</Link>.</p>
           <details className="product-description"><summary>Product details & care</summary><p>{description}</p></details>
           <div className="mt-8 grid grid-cols-3 gap-3 border-t border-black/10 pt-6 text-center text-xs font-bold"><span>Made to order</span><span>Secure checkout</span><span>Quality print</span></div>
         </div>

@@ -1,7 +1,7 @@
 const token = process.env.PRINTIFY_API_TOKEN;
 const shopId = process.env.PRINTIFY_SHOP_ID;
 const secret = process.env.PRINTIFY_WEBHOOK_SECRET;
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.canprintstore.com").replace(/\/$/, "");
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://weartherisk.com").replace(/\/$/, "");
 
 if (!token || !shopId || !secret) {
   throw new Error("PRINTIFY_API_TOKEN, PRINTIFY_SHOP_ID and PRINTIFY_WEBHOOK_SECRET are required.");

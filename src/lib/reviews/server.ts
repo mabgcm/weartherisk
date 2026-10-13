@@ -14,7 +14,7 @@ export async function getPublishedReviews(productId: string): Promise<PublishedR
   try {
     const snapshot = await adminFirestore().collection("productReviews").where("productId", "==", productId).limit(100).get();
     return snapshot.docs.map((document) => document.data())
-      .filter((review) => review.status === "published" && Number.isInteger(review.rating))
+      .filter((review) => review.status === "published" && Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5 && typeof review.title === "string" && typeof review.body === "string" && typeof review.authorName === "string")
       .sort((a, b) => (b.updatedAt?.toMillis?.() ?? 0) - (a.updatedAt?.toMillis?.() ?? 0))
       .map((review) => ({ rating: review.rating, title: review.title, body: review.body, authorName: review.authorName, updatedAt: review.updatedAt?.toDate?.().toISOString() ?? null }));
   } catch {

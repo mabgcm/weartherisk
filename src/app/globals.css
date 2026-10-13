@@ -228,3 +228,6 @@ h1,h2,h3 { text-wrap:balance; }
 .product-description summary{min-height:28px;font-size:14px;font-weight:700;cursor:pointer}
 .product-description p{font-size:14px;color:var(--muted);line-height:1.8;margin:16px 0 0}
 .product-page h1{font-size:clamp(26px,4vw,44px);line-height:1.15}
+
+.product-gallery-thumbnails{grid-column:1/-1}
+.buy-actions button:disabled{cursor:not-allowed;opacity:.45}

@@ -10,6 +10,7 @@ export interface PrintifyImage {
 }
 
 export interface PrintifyVariant {
+  options?: number[];
   id: number;
   sku: string;
   title: string;
@@ -44,6 +45,8 @@ export interface PrintifyPrintArea {
 }
 
 export interface PrintifyProduct {
+  options?: Array<{ name: string; type: string; values: Array<{ id: number; title: string }> }>;
+  updated_at?: string;
   id: string;
   title: string;
   description: string;
@@ -206,14 +209,14 @@ async function printifyRequest<T>(path: string, init?: RequestInit): Promise<T> 
 export async function getPrintifyProducts(): Promise<PrintifyProduct[]> {
   const { shopId } = getPrintifyConfig();
   const firstPage = await printifyRequest<PrintifyProductPage>(
-    `/shops/${shopId}/products.json?limit=50`,
+    `/shops/${shopId}/products.json?limit=10`,
     { next: { revalidate: 300 } },
   );
 
   const remainingPages = await Promise.all(
     Array.from({ length: Math.max(0, firstPage.last_page - 1) }, (_, index) =>
       printifyRequest<PrintifyProductPage>(
-        `/shops/${shopId}/products.json?limit=50&page=${index + 2}`,
+        `/shops/${shopId}/products.json?limit=10&page=${index + 2}`,
         { next: { revalidate: 300 } },
       ),
     ),
