@@ -3,14 +3,14 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Terms governing use of Can Print Store, customer accounts, made-to-order purchases, payments, shipping, returns and product content.",
+  description: "Terms governing use of Wear The Risk, customer accounts, purchases, payments, shipping, returns and product content.",
   alternates: { canonical: "/terms" },
 };
 
 const sections = [
   ["Agreement", "These Terms govern your use of canprintstore.com and purchases from Can Print Store. By creating an account, submitting an order or using the storefront, you agree to these Terms and the policies linked from them. If you do not agree, do not use the service or place an order."],
   ["Eligibility and accounts", "You must be legally able to enter a purchase contract in your jurisdiction. Provide accurate, current information and keep your login credentials confidential. You are responsible for activity performed through your account and must notify us promptly of suspected unauthorized access."],
-  ["Products and previews", "Products are made to order through independent production partners. We make reasonable efforts to present descriptions, variants and mock-up images accurately, but screen settings, materials and print processes can cause reasonable differences in colour, texture, scale or placement. Availability and specifications can change without notice."],
+  ["Products and previews", "Products are produced through independent production partners. We make reasonable efforts to present descriptions, variants and mock-up images accurately, but screen settings, materials and print processes can cause reasonable differences in colour, texture, scale or placement. Availability and specifications can change without notice."],
   ["Prices, taxes and payment", "Storefront base prices are displayed in Canadian dollars unless stated otherwise. Where supported, Stripe Adaptive Pricing can present and charge the checkout total in the customer's local currency; its displayed conversion is the applicable transaction price. Shipping and applicable taxes are shown before payment. Payments are subject to authorization and fraud screening. An order is not accepted until payment is confirmed and we send or display an order confirmation."],
   ["Order review and cancellation", "We may reject or cancel an order for suspected fraud, pricing or catalogue errors, unavailable products, invalid delivery information, legal restrictions or inability to fulfil it. If we cancel a paid order, we will refund the affected amount. Customer-requested changes or cancellations are not guaranteed after production begins."],
   ["Production, shipping and returns", "Production and delivery dates are estimates, not guarantees. Title and risk of loss pass as provided by applicable law and carrier terms. Our current delivery areas, rates, damaged-item process, replacement terms and return limitations form part of these Terms and are described in the Shipping & returns policy."],

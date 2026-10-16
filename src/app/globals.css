@@ -299,3 +299,28 @@ h1,h2,h3 { text-wrap:balance; }
 }
 @media(min-width:1100px) { .mood-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media(hover:hover) { .mood-card:hover { border-color:var(--coral); } .mood-card:hover h3 { text-decoration:underline;text-underline-offset:4px; } }
+
+/* About page: brand story. */
+.about-page { background:var(--paper); }
+.about-wrap { max-width:860px;margin:auto;padding:64px 20px 80px; }
+.about-wrap h1 { margin:0 0 32px;font-size:clamp(44px,10vw,84px);line-height:.98;letter-spacing:-.05em;font-weight:900; }
+.about-wrap h1 span { color:var(--coral); }
+.about-lede p { font-size:clamp(19px,3.4vw,26px);line-height:1.55;font-weight:500; }
+.about-lede p + p { margin-top:20px; }
+.about-lede strong { background:var(--ink);color:var(--paper);padding:2px 10px; }
+.about-body { margin-top:36px;display:grid;gap:20px; }
+.about-body p { margin:0;font-size:16px;line-height:1.85;color:var(--muted); }
+.about-principles { margin:56px 0;display:grid;gap:0;border-top:1px solid var(--line); }
+.about-principles article { padding:28px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:64px 1fr;gap:8px 20px; }
+.about-principles article > span { font-size:13px;font-weight:800;color:var(--coral);letter-spacing:.1em;padding-top:4px; }
+.about-principles h2 { margin:0;font-size:24px;letter-spacing:-.02em; }
+.about-principles p { grid-column:2;margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.75; }
+.about-how { margin-top:16px; }
+.about-how h2 { margin:0 0 20px;font-size:clamp(30px,6vw,48px);letter-spacing:-.04em;line-height:1.05; }
+.about-how p { font-size:15px;line-height:1.85;color:var(--muted);margin:0 0 18px;max-width:640px; }
+.about-fineprint { border-left:3px solid var(--coral);padding-left:16px; }
+.about-cta { margin-top:64px;padding:48px 32px;background:var(--ink);color:var(--paper);text-align:center; }
+.about-cta h2 { margin:0 0 28px;font-size:clamp(28px,5vw,44px);letter-spacing:-.03em; }
+.about-cta > div { display:flex;gap:12px;justify-content:center;flex-wrap:wrap; }
+.about-cta .button-light { background:var(--paper); }
+@media(min-width:650px) { .about-wrap { padding:80px 32px 96px; } }

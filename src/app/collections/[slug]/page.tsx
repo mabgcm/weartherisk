@@ -88,7 +88,7 @@ export default async function CollectionPage({ params, searchParams }: Props) {
         <section id="products" className="collection-products" aria-labelledby="products-title">
           <div className="collection-title-row">
             <h2 id="products-title">{products.length} {products.length === 1 ? "design" : "designs"}</h2>
-            <span>{collection.seasonal ? "Limited season" : "Made to order"}</span>
+            <span>{collection.seasonal ? "Limited season" : "Original designs"}</span>
           </div>
           <form className="filter-bar">
             <label htmlFor="collection-sort">Sort by</label>
@@ -129,10 +129,10 @@ export default async function CollectionPage({ params, searchParams }: Props) {
         </section>
 
         <section className="collection-promise" aria-labelledby="promise-title">
-          <h2 id="promise-title">Made to order. Made for you.</h2>
+          <h2 id="promise-title">Original designs. Made to be noticed.</h2>
           <div>
             <article><span>↺</span><h3>Order with confidence</h3><p>If something isn&apos;t right, we&apos;ll work with you to make it right.</p></article>
-            <article><span>✦</span><h3>Made only for you</h3><p>Your order starts production, helping prevent unnecessary stock.</p></article>
+            <article><span>✦</span><h3>Designed in-house</h3><p>Every design starts in the Wear The Risk studio.</p></article>
             <article><span>✓</span><h3>Secure shopping</h3><p>Your account and checkout information are protected.</p></article>
           </div>
         </section>

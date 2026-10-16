@@ -54,13 +54,13 @@ export default async function ProductPage({ params, searchParams }: Props) {
       <div className="mt-8 grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
         <ProductGallery key={`${product.id}-${initialVariant?.id}`} title={product.title} images={images} />
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Made to order</p>
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Original design</p>
           <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">{product.title}</h1>
           <p className="mt-5 text-lg font-bold">{selected ? `$${(selected.price / 100).toFixed(2)} CAD` : startingPrice === null ? "Currently unavailable" : `From $${(startingPrice / 100).toFixed(2)} CAD`}</p>
           <AddToCart key={`${product.id}-${initialVariant?.id}`} productId={product.id} title={product.title} image={mainImage?.src ?? ""} variants={variants.map((variant) => ({ ...variant, available: variant.is_available }))} initialVariantId={initialVariant?.id} />
-          <p className="mt-4 text-sm leading-6 text-black/60">Made to order. Ships to Canada and the United States. Free standard shipping on merchandise subtotals of $75 CAD or more; otherwise $7.99 CAD. <Link href="/shipping" className="underline">Shipping &amp; returns</Link>.</p>
+          <p className="mt-4 text-sm leading-6 text-black/60">Ships to Canada and the United States. Free standard shipping on merchandise subtotals of $75 CAD or more; otherwise $7.99 CAD. <Link href="/shipping" className="underline">Shipping &amp; returns</Link>.</p>
           <details className="product-description"><summary>Product details & care</summary><p>{description}</p></details>
-          <div className="mt-8 grid grid-cols-3 gap-3 border-t border-black/10 pt-6 text-center text-xs font-bold"><span>Made to order</span><span>Secure checkout</span><span>Quality print</span></div>
+          <div className="mt-8 grid grid-cols-3 gap-3 border-t border-black/10 pt-6 text-center text-xs font-bold"><span>Original design</span><span>Secure checkout</span><span>Quality print</span></div>
         </div>
       </div>
       <ProductReviews productId={product.id} />

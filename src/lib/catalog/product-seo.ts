@@ -26,7 +26,7 @@ export function productTitle(product: PrintifyProduct) {
 
 export function productMetadata(product: PrintifyProduct): Metadata {
   const title = `${productTitle(product)} | ${SITE_NAME}`;
-  const description = metaDescription(`${productTitle(product)}. ${plainText(product.description) || "Original design, made to order. Explore available options and current CAD prices."}`);
+  const description = metaDescription(`${productTitle(product)}. ${plainText(product.description) || "An original Wear The Risk design. Explore available options and current CAD prices."}`);
   const url = absoluteUrl(`/products/${product.id}`);
   const images = productImages(product).slice(0, 4).map((image) => ({ url: image.src, alt: plainText(product.title) }));
   return {

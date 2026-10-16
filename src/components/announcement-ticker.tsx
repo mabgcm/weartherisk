@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const MESSAGES = [
-  "Made to order — never mass-produced",
+  "Original designs, bold statements",
   "Free shipping on orders $75+ CAD",
   "New drops land every season",
   "Say it like you mean it",

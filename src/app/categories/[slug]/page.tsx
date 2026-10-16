@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = categories.find((item) => item.slug === slug);
   if (!category) return {};
   const description = metaDescription(`${category.intro} ${category.seoBody}`);
-  return { title: category.seoTitle, description, keywords: [category.title, category.seoTitle, `${category.title} Canada`, "made to order gifts", SITE_NAME], alternates: { canonical: `/categories/${slug}` }, openGraph: { type: "website", url: `/categories/${slug}`, siteName: SITE_NAME, title: `${category.seoTitle} | ${SITE_NAME}`, description }, twitter: { card: "summary_large_image", title: category.seoTitle, description } };
+  return { title: category.seoTitle, description, keywords: [category.title, category.seoTitle, `${category.title} Canada`, "original gifts", SITE_NAME], alternates: { canonical: `/categories/${slug}` }, openGraph: { type: "website", url: `/categories/${slug}`, siteName: SITE_NAME, title: `${category.seoTitle} | ${SITE_NAME}`, description }, twitter: { card: "summary_large_image", title: category.seoTitle, description } };
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {
@@ -50,8 +50,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         {pageCount > 1 && <nav className="pagination" aria-label="Product pages">{Array.from({ length: pageCount }, (_, index) => index + 1).map((number) => <Link aria-current={number === page ? "page" : undefined} href={`/categories/${slug}?page=${number}${query.sort ? `&sort=${query.sort}` : ""}#products`} key={number}>{number}</Link>)}</nav>}
       </section>
 
-      <section className="collection-promise" aria-labelledby="promise-title"><h2 id="promise-title">Made to order. Made for you.</h2><div><article><span>↺</span><h3>Order with confidence</h3><p>If something isn&apos;t right, we&apos;ll work with you to make it right.</p></article><article><span>✦</span><h3>Made only for you</h3><p>Your order starts production, helping prevent unnecessary stock.</p></article><article><span>✓</span><h3>Secure shopping</h3><p>Your account and checkout information are protected.</p></article></div></section>
-      <section className="collection-seo"><h2>{category.seoTitle}</h2><p>{category.seoBody}</p><h3>How are our products made?</h3><ol><li><strong>Choose a design</strong> and select an available product option.</li><li><strong>Place your order</strong> through our secure checkout.</li><li><strong>Production begins on demand</strong> with our fulfilment partner.</li><li><strong>Your order ships</strong> once it passes production checks.</li></ol></section>
+      <section className="collection-promise" aria-labelledby="promise-title"><h2 id="promise-title">Original designs. Made to be noticed.</h2><div><article><span>↺</span><h3>Order with confidence</h3><p>If something isn&apos;t right, we&apos;ll work with you to make it right.</p></article><article><span>✦</span><h3>Designed in-house</h3><p>Every design starts in the Wear The Risk studio.</p></article><article><span>✓</span><h3>Secure shopping</h3><p>Your account and checkout information are protected.</p></article></div></section>
+      <section className="collection-seo"><h2>{category.seoTitle}</h2><p>{category.seoBody}</p><h3>How does it work?</h3><ol><li><strong>Choose a design</strong> and select an available product option.</li><li><strong>Place your order</strong> through our secure checkout.</li><li><strong>We prepare your order</strong> with our production partners.</li><li><strong>It ships to your door</strong> — track it from your account.</li></ol></section>
     </div>
   </main>;
 }

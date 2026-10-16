@@ -53,9 +53,14 @@ export async function POST(request: Request, context: RouteContext<"/api/product
 
     const database = adminFirestore();
     const orders = await database.collection("orders").where("userId", "==", user.uid).limit(100).get();
+    // "paid" alone is not enough: successful fulfillment moves the order to
+    // "in_fulfillment" seconds after payment, which used to lock real buyers
+    // out of reviewing. All three states prove the customer actually paid.
+    const PURCHASED_STATUSES = new Set(["paid", "in_fulfillment", "fulfillment_failed"]);
     const verifiedPurchase = orders.docs.some((document) => {
       const order = document.data();
-      return order.status === "paid" && Array.isArray(order.items) && order.items.some((item: { productId?: unknown }) => item.productId === productId);
+      return typeof order.status === "string" && PURCHASED_STATUSES.has(order.status)
+        && Array.isArray(order.items) && order.items.some((item: { productId?: unknown }) => item.productId === productId);
     });
     if (!verifiedPurchase) return NextResponse.json({ error: "Only customers who purchased this product can review it." }, { status: 403 });
 

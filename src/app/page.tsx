@@ -11,7 +11,7 @@ import { StatementHero } from "@/components/statement-hero";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Say It Like You Mean It.",
-  description: "Original statement apparel, mugs, art prints and gifts. The things you think but never say out loud — made to order. Wear The Risk.",
+  description: "Original statement apparel, mugs, art prints and gifts. The things you think but never say out loud. Wear The Risk.",
   alternates: { canonical: "/" },
 };
 
@@ -80,7 +80,7 @@ export default async function Home() {
       <StatementHero slides={heroSlides} />
 
       <div className="store-benefits" aria-label="Shopping information">
-        <span>Made to order</span><span>Canada & United States</span><span>Free shipping $75+ CAD</span>
+        <span>Original designs</span><span>Canada & United States</span><span>Free shipping $75+ CAD</span>
       </div>
 
       {moodCollections.length > 0 && (
@@ -208,7 +208,7 @@ export default async function Home() {
         <p className="eyebrow">Less noise. More you.</p>
         <h2 id="story-title">Made for you.<br /><span>Only when you choose it.</span></h2>
         <div>
-          <p>No piles of finished inventory. Your order starts production with our specialist print partners. Original design, made on demand.</p>
+          <p>Every piece starts as an original Wear The Risk design — the sentence you think but never say, given the typography it deserves.</p>
           <Link href="/about" className="button button-light">How we make it <span aria-hidden="true">↗</span></Link>
         </div>
       </section>

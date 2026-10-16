@@ -1,6 +1,6 @@
 export const SITE_NAME = "Wear The Risk";
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://weartherisk.com").replace(/\/$/, "");
-export const DEFAULT_DESCRIPTION = "Shop original made-to-order gifts, apparel, mugs, art prints, accessories and home décor from Wear The Risk.";
+export const DEFAULT_DESCRIPTION = "Shop original statement gifts, apparel, mugs, art prints, accessories and home décor from Wear The Risk.";
 
 export function absoluteUrl(path = "/") {
   return new URL(path, `${SITE_URL}/`).toString();

@@ -45,13 +45,13 @@ export function StatementHero({ slides }: { slides: HeroSlide[] }) {
         </h1>
         <p className="risk-hero-description">
           The things you think but never say out loud — printed on apparel, mugs and
-          more. Made to order, made to be noticed.
+          more. Designed to be noticed.
         </p>
         <div className="risk-hero-actions">
           <Link href="#moods" className="button button-dark">Shop by mood <span aria-hidden="true">↗</span></Link>
           <Link href="#new" className="text-link">New arrivals</Link>
         </div>
-        <p className="hero-footnote">Made to order in Canada &amp; the US. Never mass-produced.</p>
+        <p className="hero-footnote">Designed in Canada. Shipped across Canada &amp; the US.</p>
       </div>
       <div className="statement-hero-visual">
         {slide ? (

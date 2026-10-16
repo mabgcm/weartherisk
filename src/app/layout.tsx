@@ -12,9 +12,9 @@ import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, absoluteUrl, safeJsonLd } fro
 const sans = DM_Sans({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${SITE_NAME} | Original Made-to-Order Designs`, template: `%s | ${SITE_NAME}` },
+  title: { default: `${SITE_NAME} | Original Statement Designs`, template: `%s | ${SITE_NAME}` },
   description: DEFAULT_DESCRIPTION,
-  keywords: ["original gifts Canada", "made-to-order gifts", "graphic apparel", "art prints", "print on demand Canada", "unique gifts"],
+  keywords: ["original gifts Canada", "statement apparel", "graphic apparel", "art prints", "funny gifts Canada", "unique gifts"],
   authors: [{ name: SITE_NAME, url: SITE_URL }], creator: SITE_NAME, publisher: SITE_NAME,
   icons: {
     icon: [
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     apple: [{ url: "/images/fav.png?v=3", type: "image/png", sizes: "512x512" }],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
-  openGraph: { type: "website", locale: "en_CA", url: SITE_URL, siteName: SITE_NAME, title: `${SITE_NAME} | Original Made-to-Order Designs`, description: DEFAULT_DESCRIPTION, images: [{ url: "/og-printstore.png?v=2", width: 1200, height: 630, alt: "Wear The Risk logo and made-to-order apparel" }] },
-  twitter: { card: "summary_large_image", title: `${SITE_NAME} | Original Made-to-Order Designs`, description: DEFAULT_DESCRIPTION, images: ["/og-printstore.png?v=2"] },
+  openGraph: { type: "website", locale: "en_CA", url: SITE_URL, siteName: SITE_NAME, title: `${SITE_NAME} | Original Statement Designs`, description: DEFAULT_DESCRIPTION, images: [{ url: "/og-printstore.png?v=2", width: 1200, height: 630, alt: "Wear The Risk logo and statement apparel" }] },
+  twitter: { card: "summary_large_image", title: `${SITE_NAME} | Original Statement Designs`, description: DEFAULT_DESCRIPTION, images: ["/og-printstore.png?v=2"] },
   category: "shopping",
 };
 

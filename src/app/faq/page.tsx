@@ -4,12 +4,12 @@ import { absoluteUrl, safeJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions",
-  description: "Answers about Can Print Store orders, production, shipping, tracking, returns, payments, product care and customer accounts.",
+  description: "Answers about Wear The Risk orders, shipping, tracking, returns, payments, product care and customer accounts.",
   alternates: { canonical: "/faq" },
 };
 
 const faqs = [
-  ["How are your products made?", "Every item is made to order after payment is confirmed. We work with Printify and its independent production partners; the provider used can vary by product, availability and delivery destination."],
+  ["How are your products made?", "Every design is created by the Wear The Risk studio. Orders are produced and shipped through our production partners; the facility used can vary by product, availability and delivery destination."],
   ["How long does production take?", "Production usually takes 2–5 business days, but this is an estimate rather than a guarantee. Complex products, quality checks, peak periods or provider capacity can require additional time."],
   ["Where do you ship?", "Checkout currently accepts delivery addresses in Canada and the United States. Available delivery services and the final shipping charge are shown before payment."],
   ["How much is shipping?", "Standard shipping is free when the merchandise subtotal is CAD $75 or more. For smaller orders, standard shipping is CAD $7.99. Applicable taxes are calculated separately at checkout."],
@@ -42,7 +42,7 @@ export default function FaqPage() {
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
     <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Help centre</p>
     <h1 className="mt-4 text-5xl font-black tracking-tight">Frequently asked questions</h1>
-    <p className="mt-5 max-w-2xl leading-7 text-black/60">Clear answers about ordering made-to-order products from Can Print Store. For full policy details, read our <Link className="font-bold text-emerald-800 underline" href="/shipping">Shipping &amp; returns policy</Link>.</p>
+    <p className="mt-5 max-w-2xl leading-7 text-black/60">Clear answers about ordering from Wear The Risk. For full policy details, read our <Link className="font-bold text-emerald-800 underline" href="/shipping">Shipping &amp; returns policy</Link>.</p>
     <div className="mt-10 divide-y divide-black/10 border-y border-black/10">
       {faqs.map(([question, answer]) => <details key={question} className="group py-6"><summary className="cursor-pointer list-none font-bold">{question}<span className="float-right" aria-hidden="true">+</span></summary><p className="mt-4 leading-7 text-black/60">{answer}</p></details>)}
     </div>
