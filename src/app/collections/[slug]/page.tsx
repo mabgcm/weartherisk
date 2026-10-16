@@ -12,18 +12,25 @@ interface Props { params: Promise<{ slug: string }>; searchParams: Promise<{ sor
 function imageFor(product?: PrintifyProduct) { return product?.images.find((image) => image.is_default) ?? product?.images[0]; }
 function priceFor(product: PrintifyProduct) { const prices = product.variants.filter((variant) => variant.is_enabled && variant.is_available).map((variant) => variant.price); return prices.length ? Math.min(...prices) : null; }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const query = await searchParams;
   const collection = collectionBySlug(slug);
   if (!collection) return {};
+  const { products: allProducts } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
+  const page = Math.max(1, Number(query.page) || 1);
+  const baseTitle = `${collection.title} — shop by mood`;
+  const title = page > 1 ? `${baseTitle} – Page ${page}` : baseTitle;
   const description = metaDescription(`${collection.tagline} ${collection.blurb}`);
+  const cover = imageFor(productsForCollection(allProducts, collection)[0]);
+  const images = cover ? [{ url: cover.src, alt: collection.title }] : [];
   return {
-    title: `${collection.title} — shop by mood`,
+    title,
     description,
     keywords: [collection.title, "statement gifts", "funny gifts Canada", SITE_NAME],
     alternates: { canonical: `/collections/${slug}` },
-    openGraph: { type: "website", url: `/collections/${slug}`, siteName: SITE_NAME, title: `${collection.title} | ${SITE_NAME}`, description },
-    twitter: { card: "summary_large_image", title: collection.title, description },
+    openGraph: { type: "website", url: `/collections/${slug}`, siteName: SITE_NAME, title: `${title} | ${SITE_NAME}`, description, images },
+    twitter: { card: "summary_large_image", title: `${title} | ${SITE_NAME}`, description, images: images.map((image) => image.url) },
   };
 }
 

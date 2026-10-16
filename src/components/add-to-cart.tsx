@@ -35,6 +35,8 @@ export function AddToCart({ productId, title, image, variants, initialVariantId,
   const router = useRouter();
 
   if (!selected) return <p className="rounded-lg bg-red-50 p-4 text-red-700">This product is currently unavailable.</p>;
+  // Narrowed once: closures below capture `current`, which TypeScript knows is defined.
+  const current = selected;
 
   const groups = (optionGroups ?? []).filter((group) => group.values.length > 0);
   const usePicker = groups.length > 0 && variants.length > 1;
@@ -52,7 +54,7 @@ export function AddToCart({ productId, title, image, variants, initialVariantId,
   // Switch one attribute (e.g. color), keeping the others when possible.
   // Available variants always win over out-of-stock ones.
   function pick(patch: Record<string, string>) {
-    const wanted = { ...selected.attributes, ...patch };
+    const wanted = { ...current.attributes, ...patch };
     const target =
       variants.find((variant) => variant.available !== false && matchesAttributes(variant, wanted)) ??
       variants.find((variant) => variant.available !== false && matchesAttributes(variant, patch)) ??
@@ -62,13 +64,13 @@ export function AddToCart({ productId, title, image, variants, initialVariantId,
   }
 
   function valueAvailable(group: PickerOptionGroup, value: string) {
-    const other = Object.fromEntries(groups.filter((g) => g.type !== group.type).map((g) => [g.type, selected.attributes[g.type]]));
+    const other = Object.fromEntries(groups.filter((g) => g.type !== group.type).map((g) => [g.type, current.attributes[g.type]]));
     return variants.some((variant) => variant.available !== false && variant.attributes[group.type] === value && matchesAttributes(variant, other));
   }
 
   function add(buyNow = false) {
-    if (pending || selected?.available === false) return;
-    addItem({ productId, variantId: selected!.id, title, variantTitle: selected!.title, image, price: selected!.price, quantity: 1 });
+    if (pending || current?.available === false) return;
+    addItem({ productId, variantId: current!.id, title, variantTitle: current!.title, image, price: current!.price, quantity: 1 });
     setAdded(true);
     if (buyNow) router.push("/checkout");
   }
@@ -78,27 +80,27 @@ export function AddToCart({ productId, title, image, variants, initialVariantId,
       <div className="variant-picker">
         {groups.map((group) => (
           <div key={group.type} className="variant-group">
-            <p className="field-label">{group.label}: <span className="variant-current">{selected.attributes[group.type]}</span></p>
+            <p className="field-label">{group.label}: <span className="variant-current">{current.attributes[group.type]}</span></p>
             {group.type === "color" ? (
               <div className="swatch-row" role="radiogroup" aria-label={group.label}>
                 {group.values.map((value) => {
                   const hex = colorHex(value);
-                  const isSelected = selected.attributes.color === value;
+                  const isSelected = current.attributes.color === value;
                   const disabled = !valueAvailable(group, value);
                   return <button key={value} type="button" role="radio" aria-checked={isSelected} aria-label={value} title={value}
                     disabled={disabled} onClick={() => pick({ [group.type]: value })}
-                    className={`swatch${isSelected ? " swatch-selected" : ""}`}
+                    className={`swatch${isSelected ? " swatch-current" : ""}`}
                     style={hex ? { backgroundColor: hex } : { background: "linear-gradient(135deg,#e3e3e3 50%,#bcbcbc 50%)" }} />;
                 })}
               </div>
             ) : (
               <div className="size-row" role="radiogroup" aria-label={group.label}>
                 {group.values.map((value) => {
-                  const isSelected = selected.attributes[group.type] === value;
+                  const isSelected = current.attributes[group.type] === value;
                   const disabled = !valueAvailable(group, value);
                   return <button key={value} type="button" role="radio" aria-checked={isSelected} disabled={disabled}
                     onClick={() => pick({ [group.type]: value })}
-                    className={`size-btn${isSelected ? " size-btn-selected" : ""}`}>{value}</button>;
+                    className={`size-btn${isSelected ? " size-btn-current" : ""}`}>{value}</button>;
                 })}
               </div>
             )}
@@ -113,7 +115,7 @@ export function AddToCart({ productId, title, image, variants, initialVariantId,
         </select>
       </>
     ) : null}
-    {selected.available === false && <p role="status" className="mt-3 text-sm text-black/60">This option is currently out of stock. Choose another option if available.</p>}
-    <div className="buy-actions"><button disabled={pending || selected.available === false} onClick={() => add(false)} className="button-secondary">{added ? "Added to bag ✓" : "Add to bag"}</button><button disabled={pending || selected.available === false} onClick={() => add(true)} className="button-primary">Buy now</button></div>
+    {current.available === false && <p role="status" className="mt-3 text-sm text-black/60">This option is currently out of stock. Choose another option if available.</p>}
+    <div className="buy-actions"><button disabled={pending || current.available === false} onClick={() => add(false)} className="button-secondary">{added ? "Added to bag ✓" : "Add to bag"}</button><button disabled={pending || current.available === false} onClick={() => add(true)} className="button-primary">Buy now</button></div>
   </div>;
 }

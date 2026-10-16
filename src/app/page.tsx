@@ -10,7 +10,7 @@ import { StatementHero } from "@/components/statement-hero";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Say It Like You Mean It.",
+  title: { absolute: "Wear The Risk | Say It Like You Mean It – Original Statement Gifts" },
   description: "Original statement apparel, mugs, art prints and gifts. The things you think but never say out loud. Wear The Risk.",
   alternates: { canonical: "/" },
 };

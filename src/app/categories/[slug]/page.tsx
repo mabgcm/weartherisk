@@ -11,13 +11,18 @@ interface Props { params: Promise<{ slug: string }>; searchParams: Promise<{ sor
 
 function imageFor(product?: PrintifyProduct) { return product?.images.find((image) => image.is_default) ?? product?.images[0]; }
 function priceFor(product: PrintifyProduct) { const prices = product.variants.filter((variant) => variant.is_enabled && variant.is_available).map((variant) => variant.price); return prices.length ? Math.min(...prices) : null; }
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const { categories } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
+  const query = await searchParams;
+  const { products: allProducts, categories } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
   const category = categories.find((item) => item.slug === slug);
   if (!category) return {};
+  const page = Math.max(1, Number(query.page) || 1);
+  const title = page > 1 ? `${category.seoTitle} – Page ${page}` : category.seoTitle;
   const description = metaDescription(`${category.intro} ${category.seoBody}`);
-  return { title: category.seoTitle, description, keywords: [category.title, category.seoTitle, `${category.title} Canada`, "original gifts", SITE_NAME], alternates: { canonical: `/categories/${slug}` }, openGraph: { type: "website", url: `/categories/${slug}`, siteName: SITE_NAME, title: `${category.seoTitle} | ${SITE_NAME}`, description }, twitter: { card: "summary_large_image", title: category.seoTitle, description } };
+  const cover = imageFor(productsForStoreCategory(allProducts, category)[0]);
+  const images = cover ? [{ url: cover.src, alt: category.seoTitle }] : [];
+  return { title, description, keywords: [category.title, category.seoTitle, `${category.title} Canada`, "original gifts", SITE_NAME], alternates: { canonical: `/categories/${slug}` }, openGraph: { type: "website", url: `/categories/${slug}`, siteName: SITE_NAME, title: `${title} | ${SITE_NAME}`, description, images }, twitter: { card: "summary_large_image", title, description, images: images.map((image) => image.url) } };
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {

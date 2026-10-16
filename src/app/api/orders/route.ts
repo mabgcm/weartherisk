@@ -54,7 +54,7 @@ function publicPrintifyOrder(documentId: string, saved: Record<string, unknown>,
       const retail = retailItem(items, item.product_id, item.variant_id);
       return {
         productId: item.product_id,
-        title: item.metadata?.title ?? (typeof retail?.title === "string" ? retail.title : "Can Print Store product"),
+        title: item.metadata?.title ?? (typeof retail?.title === "string" ? retail.title : "Wear The Risk product"),
         variant: item.metadata?.variant_label ?? (typeof retail?.variantTitle === "string" ? retail.variantTitle : ""),
         sku: item.metadata?.sku ?? "",
         quantity: item.quantity,
@@ -93,7 +93,7 @@ function publicPendingOrder(documentId: string, order: Record<string, unknown>) 
     address: null,
     items: items.map((item) => ({
       productId: typeof item.productId === "string" ? item.productId : "",
-      title: typeof item.title === "string" ? item.title : "Can Print Store product",
+      title: typeof item.title === "string" ? item.title : "Wear The Risk product",
       variant: typeof item.variantTitle === "string" ? item.variantTitle : "",
       sku: "",
       quantity: typeof item.quantity === "number" ? item.quantity : 1,
