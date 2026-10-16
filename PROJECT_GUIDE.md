@@ -60,7 +60,7 @@ Page files follow `src/app/<route>/page.tsx`:
 | `/collections/[slug]` | Theme collection page (`productsForCollection`); 12 per page; same sort/page controls and `collection-page` styling as categories; 404 for unknown/empty collections; CollectionPage + breadcrumb JSON-LD |
 | `/search` | Server product search over title + tags (`q` param, all terms must match); `sort=new` shows latest 24; noindex, follow |
 | `/categories/[slug]` | `CategoryPage`; category products, eight per page; `sort=price-low`, `price-high`, `name`, default upstream order; `page` query |
-| `/products/[productId]` | `ProductPage`, `generateMetadata`; published product, four-image gallery, available variants, `AddToCart`, `ProductReviews` |
+| `/products/[productId]` | `ProductPage`, `generateMetadata`; published product, four-image gallery, available variants, `AddToCart`, `ProductReviews`. Variant picker (2026-10-16): color swatches + size buttons built from Printify option dimensions via exported `variantAttributes()`; switching color keeps size when available else first available size; unavailable combos render disabled; single-dimension or single-variant products fall back to the previous dropdown/hidden selector. |
 | `/cart` | Browser cart, quantity selector 1–10, removal and subtotal |
 | `/checkout` | Client auth/cart gates and POST to checkout API; address/phone collected at Stripe |
 | `/checkout/success` | Server checks `session_id`, confirms payment, attempts fulfillment; `ClearPaidCart` runs only for confirmed paid sessions |

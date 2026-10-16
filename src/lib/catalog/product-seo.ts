@@ -38,7 +38,7 @@ export function productMetadata(product: PrintifyProduct): Metadata {
   };
 }
 
-function variantAttributes(product: PrintifyProduct, variant: PrintifyVariant) {
+export function variantAttributes(product: PrintifyProduct, variant: PrintifyVariant) {
   const attributes: Record<string, string> = {};
   for (const option of product.options ?? []) {
     if (!["color", "size", "material", "pattern"].includes(option.type)) continue;
