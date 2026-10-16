@@ -29,8 +29,6 @@ export const STORE_CATEGORIES: readonly StoreCategory[] = [
       { label: "Tank tops", blueprintIds: [39] },
       { label: "Hoodies", blueprintIds: [77] },
       { label: "Sweatshirts", blueprintIds: [1296] },
-      { label: "Embroidered", blueprintIds: [] },
-      { label: "Best sellers", blueprintIds: [] },
     ], styles: ["Minimal", "Streetwear", "Retro", "Botanical", "Dark art", "Typography"],
   },
   {
@@ -42,26 +40,25 @@ export const STORE_CATEGORIES: readonly StoreCategory[] = [
       { label: "Travel mugs", blueprintIds: [70,604,693,966,1154,1160,1498,1511,1513,1514,1715] },
       { label: "Tumblers", blueprintIds: [353,620,746,1235,1248,1335,1340,1394,1507,1508,1509,1515,1519,1610,1662,1670,1927,2044,2740] },
       { label: "Beer mugs", blueprintIds: [483,891,1088,1131,2762] },
-      { label: "Graphic mugs", blueprintIds: [] }, { label: "Best sellers", blueprintIds: [] },
     ], styles: ["Modern minimal", "Simple", "Unique", "Colourful", "Family photo", "Pets"],
   },
   {
     slug: "art-prints", title: "Art Prints", singular: "art print", color: "#cfc2e7",
     blueprintIds: [97,282,284,443,492,493,540,541,554,555,763,764,804,829,852,900,937,944,1033,1061,1068,1079,1130,1140,1159,1191,1220,1226,1236,1238,1267,1275,1297,1309,1331,1502,1697], fallbackMatcher: /poster|canvas|wall art|art print/i,
     intro: "Expressive artwork for walls that deserve more personality—from graphic statements to thoughtful gifts.", seoTitle: "Original art prints for expressive spaces", seoBody: "Discover art prints designed to bring warmth, colour and personality to your space. Each design is produced on demand so you can choose meaningful wall art without unnecessary overproduction.",
-    subcategories: [{ label: "Posters", blueprintIds: [97,282,284,443,554,763,804,829,852,1033,1068,1079,1191,1220,1267,1309,1331,1697] },{ label: "Framed prints", blueprintIds: [492,493,540,541,764,1130,1140,1236,1275,1502] },{ label: "Canvas", blueprintIds: [555,900,937,944,1061,1159,1226,1238,1297] },{ label: "Typography", blueprintIds: [] },{ label: "Botanical", blueprintIds: [] },{ label: "Best sellers", blueprintIds: [] }], styles: ["Modern", "Colourful", "Soft neutral", "Graphic", "Playful", "Vintage"],
+    subcategories: [{ label: "Posters", blueprintIds: [97,282,284,443,554,763,804,829,852,1033,1068,1079,1191,1220,1267,1309,1331,1697] },{ label: "Framed prints", blueprintIds: [492,493,540,541,764,1130,1140,1236,1275,1502] },{ label: "Canvas", blueprintIds: [555,900,937,944,1061,1159,1226,1238,1297] },], styles: ["Modern", "Colourful", "Soft neutral", "Graphic", "Playful", "Vintage"],
   },
   {
     slug: "accessories", title: "Accessories", singular: "accessory", color: "#f0b9a9",
     blueprintIds: [268,269,507,553,609,707,731,826,836,1022,1090,1092,1148,1273,1288,1300,1313,1389,1658,1717,1920,1990,2021,5349], fallbackMatcher: /phone case|tote|bag|accessor/i,
     intro: "Useful, expressive extras for the everyday—designed to protect, carry and show a little personality.", seoTitle: "Original accessories made to order", seoBody: "Shop expressive phone cases, bags and everyday accessories featuring original Printstore artwork, produced on demand especially for your order.",
-    subcategories: [{ label: "Phone cases", blueprintIds: [268,269,1022,1273,1658] },{ label: "Tote bags", blueprintIds: [507,553,609,707,731,826,836,1090,1092,1288,1300,1313,1389,1717,1920,1990,2021,5349] },{ label: "Travel bags", blueprintIds: [1148,1288] },{ label: "Tech accessories", blueprintIds: [268,269,1022,1273,1658] },{ label: "Best sellers", blueprintIds: [] },{ label: "All accessories", blueprintIds: [] }], styles: ["Graphic", "Botanical", "Minimal", "Colourful", "Retro", "Monogram"],
+    subcategories: [{ label: "Phone cases", blueprintIds: [268,269,1022,1273,1658] },{ label: "Tote bags", blueprintIds: [507,553,609,707,731,826,836,1090,1092,1288,1300,1313,1389,1717,1920,1990,2021,5349] },{ label: "Travel bags", blueprintIds: [1148,1288] },{ label: "Tech accessories", blueprintIds: [268,269,1022,1273,1658] },], styles: ["Graphic", "Botanical", "Minimal", "Colourful", "Retro", "Monogram"],
   },
   {
     slug: "home-living", title: "Home & Living", singular: "home piece", color: "#a9c8c0",
     blueprintIds: [220,223,229,232,238,295,522,538,575,585,717,736,744,809,810,844,870,918,927,993,996,1001,1007,1044,1051,1091,1105,1120,1124,1133,1328,1337,1380,1385,1491,1493,1500,1572,1590,1626,1642,1650,1911,2650,2668,2697,2714,2758,2795,3192,5346], fallbackMatcher: /pillow|blanket|home|decor|cushion/i,
     intro: "Original details that make a room feel considered, collected and completely your own.", seoTitle: "Made-to-order home décor and gifts", seoBody: "Find made-to-order home décor, soft furnishings and thoughtful pieces designed to add personality without disposable trends.",
-    subcategories: [{ label: "Pillows", blueprintIds: [220,223,229,232,295,538,809,810,844,870,996,1001,1007,1380,1572,1590,1650,2668,2697,2758] },{ label: "Blankets", blueprintIds: [238,522,575,585,717,736,744,918,927,993,1044,1051,1091,1105,1120,1124,1133,1328,1337,1385,1491,1493,1500,1626,1642,1911,2650,2714,2795,3192,5346] },{ label: "Home décor", blueprintIds: [] },{ label: "Housewarming", blueprintIds: [] },{ label: "Best sellers", blueprintIds: [] },{ label: "All home", blueprintIds: [] }], styles: ["Warm minimal", "Modern", "Botanical", "Playful", "Monochrome", "Textured"],
+    subcategories: [{ label: "Pillows", blueprintIds: [220,223,229,232,295,538,809,810,844,870,996,1001,1007,1380,1572,1590,1650,2668,2697,2758] },{ label: "Blankets", blueprintIds: [238,522,575,585,717,736,744,918,927,993,1044,1051,1091,1105,1120,1124,1133,1328,1337,1385,1491,1493,1500,1626,1642,1911,2650,2714,2795,3192,5346] },], styles: ["Warm minimal", "Modern", "Botanical", "Playful", "Monochrome", "Textured"],
   },
 ] as const;
 

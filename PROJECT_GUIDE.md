@@ -42,6 +42,7 @@ Vercel is named in policy copy, `/api/region` reads its geo header, and `.vercel
 | `src/app/globals.css` | Theme variables, storefront styling, responsive rules, menu/account/tracking layouts |
 | `src/components/providers.tsx` | `Providers`, `useAuth`, `useCart`; Firebase auth subscription and browser cart |
 | `src/lib/catalog/{categories,storefront,product-seo}.ts` | Canonical category mapping, request-memoized `getStorefrontCatalog()`, product metadata and structured-data builders |
+| `src/lib/catalog/collections.ts` | Theme ("shop by mood") collections: keyword matchers over title + Printify tags, `activeCollections()`, `newArrivals()`, seasonal flag |
 | `src/lib/printify/client.ts` | Typed product/blueprint/provider/order models and API methods |
 | `src/lib/firebase/{client,admin,customer,action-settings,models}.ts` | Browser/server SDKs, token verification, profile persistence, email action links, starter models |
 | `src/lib/stripe/server.ts` | Lazy singleton `stripe()` |
@@ -55,7 +56,9 @@ Page files follow `src/app/<route>/page.tsx`:
 
 | URL | Behavior / collaborating files |
 | --- | --- |
-| `/` | Dynamic home; first product is hero, first eight are featured; category navigation, product grid, production explanation, account email-preferences link |
+| `/` | Dynamic statement-first home: rotating announcement ticker, `StatementHero` with rotating brand lines + featured products, shop-by-mood theme collections, seasonal spotlight (only when populated), new-arrivals rail, weekly phrase spotlight, product-type grid, story, newsletter |
+| `/collections/[slug]` | Theme collection page (`productsForCollection`); 12 per page; same sort/page controls and `collection-page` styling as categories; 404 for unknown/empty collections; CollectionPage + breadcrumb JSON-LD |
+| `/search` | Server product search over title + tags (`q` param, all terms must match); `sort=new` shows latest 24; noindex, follow |
 | `/categories/[slug]` | `CategoryPage`; category products, eight per page; `sort=price-low`, `price-high`, `name`, default upstream order; `page` query |
 | `/products/[productId]` | `ProductPage`, `generateMetadata`; published product, four-image gallery, available variants, `AddToCart`, `ProductReviews` |
 | `/cart` | Browser cart, quantity selector 1–10, removal and subtotal |
@@ -82,7 +85,7 @@ API implementations are `src/app/api/<URL suffix>/route.ts`:
 | `POST /api/products/[productId]/reviews` | Firebase UID/email and purchase eligibility; one immediately published review per user/product |
 | `GET /api/region` | Public; returns `x-vercel-ip-country` or null; private/no-store |
 
-Additional endpoints: `src/app/sitemap.ts` → `/sitemap.xml`, `src/app/robots.ts` → `/robots.txt`, `src/app/llms.txt/route.ts` → `/llms.txt`.
+Additional endpoints: `src/app/sitemap.ts` → `/sitemap.xml` (includes active theme collections), `src/app/robots.ts` → `/robots.txt`, `src/app/llms.txt/route.ts` → `/llms.txt` (lists theme collections; brand name corrected to Wear The Risk).
 
 ## Design system
 
@@ -102,8 +105,11 @@ Product SEO follow-up (2026-10-12): user confirmed **weartherisk.com** as the ca
 
 Read-only catalog audit found **57 published products, 2,137 enabled valid-price variants, 50 ProductGroups and 7 Products**, with no missing source titles/descriptions/images or duplicate generated titles/descriptions. Build exposed 6.8 MB catalog responses exceeding Next.js's 2 MB cache limit; product pagination was reduced to ten and the largest audited response is ~1.56 MB. `npm run check:seo` runs regression checks; `npm run audit:seo` reads every Printify product using local configuration and writes `/tmp/weartherisk-product-seo-audit.json` without credentials/customer data. `node scripts/check-product-pages.mjs <local-origin>` checks rendered titles, canonicals, H1, social image, variant offers, resolved policy references and sitemap membership against that audit. After deployment, use Google's Rich Results Test and Search Console URL Inspection; these have not been run against the new live domain. No production deploy or Printify product mutation is part of this change. Rendered production HTML passed for all 57 products with zero issues and complete sitemap membership. Four representative variant deep links across Product/ProductGroup pages preselected the matching option and price while retaining the parent canonical. Lint, TypeScript, regression checks and the final Webpack production build passed; the temporary test server was stopped.
 
+Statement-homepage follow-up (2026-10-15, inspected baseline `5f7d2982d820d293fc73c6c6325193589ab28a99`): brand sells statements, not product types, so the home page was rebuilt statement-first. New: rotating announcement ticker (replaces static bar), `StatementHero` client component (rotating brand lines + 3 featured products, dots, pause on hover), shop-by-mood theme collection cards, seasonal spotlight section (renders only when a seasonal collection has products), horizontal new-arrivals rail (8 latest by `updated_at`), weekly "phrase of the week" spotlight (deterministic ISO-week rotation), and product-type grid retained below. Header gains a desktop search field, a "Shop by mood" desktop nav link, a drawer search form, and a mood link in the mobile menu. New routes `/collections/[slug]` and `/search` (server-side title+tag search, noindex). `src/lib/catalog/collections.ts` defines 8 theme collections (6 everyday + 2 seasonal) with keyword matchers over title + Printify tags; groups form automatically as products are added/tagged — tagging guide documented in the file header. Empty placeholder subcategories removed from `categories.ts` (they were unrendered dead data). Sitemap and `/llms.txt` include active collections. ESLint clean; `tsc --noEmit` error set identical to baseline (pre-existing missing generated Next types only); `next build` compiles but prerendering `/sitemap.xml` requires live Printify credentials (environmental, unchanged from baseline). Collection matching unit-checked with mock products. No production deployment performed.
+
 ## Catalog and business rules
 
+- `THEME_COLLECTIONS` (in `src/lib/catalog/collections.ts`) is the mood-based merchandising layer: each collection matches keyword substrings against product title + Printify tags (case-insensitive). Only non-empty collections render anywhere (home, sitemap, llms.txt); seasonal collections additionally require the `seasonal` flag path and render in the spotlight section. To add a product to a mood, tag it in Printify with one of the collection's keywords — no code change needed. New keywords/collections are added by editing the table once.
 - `getPrintifyProducts()` fetches every shop product page (10/page, remaining pages in parallel) and returns only `visible` products. Enabled, valid-price variants determine displayed options; unavailable options are labeled out of stock and cannot be purchased. Available variants determine the starting price when any are available. Product missing/hidden becomes 404; transient Printify failures remain server errors rather than misleading 404/noindex responses; home/layout catalog errors fall back to empty data.
 - `STORE_CATEGORIES` is the canonical blueprint mapping: `t-shirts` displays **Apparel**, plus `mugs`, `art-prints`, `accessories`, `home-living`. Blueprint ID or title/tag regex can match; matching categories can overlap. Unmatched blueprints receive generated categories using blueprint title, first tag, or ID and collision-aware slugs. Layout navigation hides empty categories when products exist.
 - Prices are interpreted as integer CAD minor units; display divides by 100. Regional footer labels do not change storefront prices. Stripe Adaptive Pricing is requested for supported local checkout currencies.
@@ -250,7 +256,7 @@ Code-verified gaps; impact beyond the source is unverified:
 | Task | Read/edit first | Appropriate verification after a behavior change |
 | --- | --- | --- |
 | Theme/navigation/branding | `src/app/globals.css`, `src/app/layout.tsx`, `src/components/site-{header,footer}.tsx`, `public/images/` | Desktop/mobile layouts, menu dismissal/scroll restoration, keyboard navigation, logo/image fit |
-| Catalog/category behavior | `src/lib/catalog/{categories,storefront}.ts`, `src/lib/printify/client.ts`, `src/app/page.tsx`, category/product pages | Visible/hidden products, unknown blueprints, availability, sorting/pagination, empty/error states, SEO consistency |
+| Catalog/category behavior | `src/lib/catalog/{categories,storefront,collections}.ts`, `src/lib/printify/client.ts`, `src/app/page.tsx`, category/product/collection/search pages | Visible/hidden products, unknown blueprints, availability, sorting/pagination, empty/error states, SEO consistency |
 | Auth/profile/email actions | `src/components/{providers,auth-form,account-dashboard,firebase-action-handler}.tsx`, `src/lib/firebase/`, `firestore.rules` | Signed-out/loading/auth states, owner access, invalid/expired codes, profile save, rules against proposed fields |
 | Cart/checkout/pricing | `src/components/{providers,add-to-cart,clear-paid-cart}.tsx`, cart/checkout pages, checkout route | Persistence, quantities, server rejection of invalid/unavailable items, threshold shipping, Stripe test payment/cancel/confirmation |
 | Fulfillment/payment webhooks | `src/lib/orders/fulfillment.ts`, Stripe/Printify webhook routes, `src/lib/printify/client.ts` | Mock/test-mode payment checks, duplicate/failure/retry cases, signature rejection, no test-mode production; avoid real production costs |

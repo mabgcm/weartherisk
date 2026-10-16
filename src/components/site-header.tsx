@@ -5,6 +5,7 @@ import Image from "next/image";
 import logo from "../../public/images/logo.png";
 import { useEffect, useRef, useState } from "react";
 import { useAuth, useCart } from "@/components/providers";
+import { AnnouncementTicker } from "@/components/announcement-ticker";
 
 interface SiteHeaderProps {
   categories: Array<{ slug: string; title: string }>;
@@ -46,12 +47,17 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
 
   return <>
     <a href="#main-content" className="skip-link">Skip to content</a>
-    <div className="announcement"><p>Made to order <span> / </span> Free shipping $75+ CAD</p></div>
+    <AnnouncementTicker />
     <header className="site-header">
       <div className="header-inner">
         <Link href="/" className="brand-logo" aria-label="Wear The Risk home"><Image src={logo} alt="Wear The Risk" sizes="130px" preload /></Link>
-        <nav className="desktop-nav" aria-label="Shop navigation"><Link href="/#shop">The collection</Link><Link href="/about">Our story</Link><Link href="/shipping">Shipping & returns</Link></nav>
+        <nav className="desktop-nav" aria-label="Shop navigation"><Link href="/#moods">Shop by mood</Link><Link href="/#shop">The collection</Link><Link href="/about">Our story</Link><Link href="/shipping">Shipping & returns</Link></nav>
         <nav className="utility-nav" aria-label="Account navigation">
+          <form className="header-search" role="search" action="/search" method="get">
+            <label className="sr-only" htmlFor="header-search">Search products</label>
+            <input id="header-search" name="q" type="search" placeholder="Search designs…" autoComplete="off" />
+            <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg></button>
+          </form>
           {!loading && <div className="header-auth-links">
             {user
               ? <Link href="/account" aria-label="Open your account">Account</Link>
@@ -68,8 +74,14 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
     {menuOpen && <div className="menu-overlay" onMouseDown={closeMenu} role="presentation">
       <aside ref={menuRef} id="site-menu" className="menu-drawer" role="dialog" aria-modal="true" aria-label="Site menu" onMouseDown={(event) => event.stopPropagation()}>
         <header><Link href="/" className="brand-logo" onClick={closeMenu}><Image src={logo} alt="Wear The Risk" sizes="150px" /></Link><button type="button" onClick={closeMenu} aria-label="Close menu">×</button></header>
+        <form className="drawer-search" role="search" action="/search" method="get">
+          <label className="sr-only" htmlFor="drawer-search">Search products</label>
+          <input id="drawer-search" name="q" type="search" placeholder="Search designs…" autoComplete="off" />
+          <button type="submit">Search</button>
+        </form>
         <nav aria-label="Main navigation">
           <Link href="/#shop" onClick={closeMenu}>Shop all <span>↗</span></Link>
+          <Link href="/#moods" onClick={closeMenu}>Shop by mood <span>↗</span></Link>
           {categories.map((category) => <Link href={`/categories/${category.slug}`} key={category.slug} onClick={closeMenu}>{category.title}<span>→</span></Link>)}
           <Link href="/about" onClick={closeMenu}>Our story <span>→</span></Link>
         </nav>
