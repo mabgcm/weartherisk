@@ -20,10 +20,21 @@ export interface ThemeCollection {
   keywords: string[];
   /** Seasonal collections only render when they have products. */
   seasonal?: boolean;
+  /** Featured collections get a dedicated homepage spotlight. */
+  featured?: boolean;
   color: string;
 }
 
 export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
+  {
+    slug: "entrepreneur",
+    title: "Entrepreneur",
+    tagline: "Funded by dreams. Powered by caffeine.",
+    blurb: "For founders, freelancers and startup survivors. Investor jokes, hustle culture and the pre-seed grind — printed.",
+    keywords: ["startup", "entrepreneur", "investor", "investors", "founder", "funding", "hustle", "ceo", "seed"],
+    featured: true,
+    color: "#e76f51",
+  },
   {
     slug: "office-unfiltered",
     title: "Office Unfiltered",
@@ -77,7 +88,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     title: "Spooky Season",
     tagline: "October energy, all year if you insist.",
     blurb: "Limited seasonal picks for Halloween and everyone who peaked in October. When they're gone, they're gone.",
-    keywords: ["halloween", "spooky", "ghost", "witch", "pumpkin", "horror", "october"],
+    keywords: ["halloween", "spooky", "ghost", "witch", "pumpkin", "horror", "october", "vampire", "mummy"],
     seasonal: true,
     color: "#9b5de5",
   },
@@ -96,10 +107,16 @@ function haystack(product: PrintifyProduct): string {
   return `${product.title} ${(product.tags ?? []).join(" ")}`.toLowerCase();
 }
 
+/** Word-boundary match so "pet" doesn't match "competitive" and "ghost" doesn't match "ghosted". */
+function keywordMatches(text: string, keyword: string): boolean {
+  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\b${escaped}\\b`, "i").test(text);
+}
+
 export function productsForCollection(products: PrintifyProduct[], collection: ThemeCollection): PrintifyProduct[] {
   return products.filter((product) => {
     const text = haystack(product);
-    return collection.keywords.some((keyword) => text.includes(keyword.toLowerCase()));
+    return collection.keywords.some((keyword) => keywordMatches(text, keyword));
   });
 }
 

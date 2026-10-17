@@ -21,7 +21,7 @@ const sections = [
   ["Disclaimers and liability", "To the extent permitted by law, the storefront is provided on an “as available” basis and we do not promise uninterrupted or error-free access. Wear The Risk is not liable for indirect, incidental or consequential loss that was not reasonably foreseeable. Nothing in these Terms excludes liability or a warranty, remedy or consumer right that cannot legally be excluded or limited."],
   ["Indemnity", "To the extent permitted by law, you agree to be responsible for losses or claims caused by your unlawful misuse of the storefront, violation of these Terms or infringement of another person’s rights."],
   ["Changes, severability and governing law", "We may update these Terms prospectively by posting a revised version and date. The Terms in effect when an order is accepted continue to govern that purchase. If one provision is unenforceable, the remaining provisions continue to apply. These Terms are governed by the laws that apply to Wear The Risk and your purchase, without limiting mandatory consumer protections available in your province, state or country."],
-  ["Support", "Questions about an order or these Terms can be sent to hello@weartherisk.com. Include the relevant order number, but never send complete payment-card information by email."],
+  ["Support", "Questions about an order or these Terms can be sent to info@weartherisk.com. Include the relevant order number, but never send complete payment-card information by email."],
 ];
 
 export default function TermsPage() {

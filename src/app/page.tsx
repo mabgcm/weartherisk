@@ -38,6 +38,11 @@ function ProductCard({ product }: { product: PrintifyProduct }) {
   );
 }
 
+/** Baby/toddler products stay out of the hero spotlight. */
+function isBabyProduct(product: PrintifyProduct) {
+  return /bodysuit|baby|infant|toddler|newborn/i.test(`${product.title} ${(product.tags ?? []).join(" ")}`);
+}
+
 /** Deterministic weekly pick so the "phrase of the week" rotates every Monday. */
 function phraseOfTheWeek(products: PrintifyProduct[]): PrintifyProduct | undefined {
   if (!products.length) return undefined;
@@ -50,13 +55,14 @@ function phraseOfTheWeek(products: PrintifyProduct[]): PrintifyProduct | undefin
 export default async function Home() {
   const { products, categories } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
   const collections = activeCollections(products);
-  const moodCollections = collections.filter((entry) => !entry.collection.seasonal);
+  const featured = collections.find((entry) => entry.collection.featured);
+  const moodCollections = collections.filter((entry) => !entry.collection.seasonal && !entry.collection.featured);
   const seasonalCollections = collections.filter((entry) => entry.collection.seasonal);
   const fresh = newArrivals(products, 8);
   const phrase = phraseOfTheWeek(products);
   const phraseImage = phrase && productImage(phrase);
   const populatedCategories = categories.filter((category) => productsForStoreCategory(products, category).length);
-  const heroSlides = products.slice(0, 3).map((product) => ({
+  const heroSlides = products.filter((product) => !isBabyProduct(product)).slice(0, 3).map((product) => ({
     id: product.id,
     title: product.title,
     image: productImage(product)?.src,
@@ -82,6 +88,25 @@ export default async function Home() {
       <div className="store-benefits" aria-label="Shopping information">
         <span>Original designs</span><span>Canada & United States</span><span>Free shipping $75+ CAD</span>
       </div>
+
+      {featured && (() => {
+        const cover = productImage(featured.products[0]);
+        return (
+          <section className="seasonal-spotlight featured-spotlight" aria-labelledby="featured-collection">
+            <div className="seasonal-copy">
+              <p className="eyebrow">Founder favorites</p>
+              <h2 id="featured-collection">{featured.collection.title}</h2>
+              <p>{featured.collection.blurb}</p>
+              <Link href={`/collections/${featured.collection.slug}`} className="button button-dark">
+                Shop the collection <span aria-hidden="true">↗</span>
+              </Link>
+            </div>
+            <Link href={`/collections/${featured.collection.slug}`} className="seasonal-art" aria-label={`Shop ${featured.collection.title}`}>
+              {cover && <Image src={cover.src} alt={featured.products[0].title} fill sizes="(min-width: 900px) 50vw, 100vw" className="object-contain" />}
+            </Link>
+          </section>
+        );
+      })()}
 
       {moodCollections.length > 0 && (
         <section id="moods" className="mood-section" aria-labelledby="moods-title">

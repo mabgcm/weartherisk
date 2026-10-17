@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const categoryLinks = populatedCategories.map(({ slug, title }) => ({ slug, title }));
 
   const globalJsonLd = { "@context": "https://schema.org", "@graph": [
-    { "@type": "OnlineStore", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: absoluteUrl("/images/logo.png"), image: absoluteUrl("/images/logo.png"), description: DEFAULT_DESCRIPTION, email: "hello@canprintstore.com", areaServed: ["CA", "US"], currenciesAccepted: "CAD", hasMerchantReturnPolicy: { "@type": "MerchantReturnPolicy", applicableCountry: ["CA", "US"], returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted", merchantReturnLink: absoluteUrl("/shipping") } },
+    { "@type": "OnlineStore", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: absoluteUrl("/images/logo.png"), image: absoluteUrl("/images/logo.png"), description: DEFAULT_DESCRIPTION, email: "info@weartherisk.com", areaServed: ["CA", "US"], currenciesAccepted: "CAD", hasMerchantReturnPolicy: { "@type": "MerchantReturnPolicy", applicableCountry: ["CA", "US"], returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted", merchantReturnLink: absoluteUrl("/shipping") } },
     { "@type": "WebSite", "@id": `${SITE_URL}/#website`, url: SITE_URL, name: SITE_NAME, inLanguage: "en-CA", publisher: { "@id": `${SITE_URL}/#organization` },
       potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" } },
   ] };

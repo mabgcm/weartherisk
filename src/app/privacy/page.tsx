@@ -18,7 +18,7 @@ const sections = [
   ["Your choices and rights", "Depending on applicable law, you may ask to access or correct personal information we hold, withdraw consent where processing depends on consent, or request deletion. Some records may need to be retained to complete an order, protect the service or meet legal obligations. You can control cookies through your browser and use Google’s available analytics opt-out controls."],
   ["Security", "We use reasonable administrative and technical safeguards and rely on established providers for authentication and payment processing. No online system or transmission method can be guaranteed completely secure. Protect your password and notify us if you believe your account has been misused."],
   ["Children", "The storefront is intended for people able to enter a purchase contract in their jurisdiction and is not directed to children. We do not knowingly seek personal information from children without the authorization required by applicable law."],
-  ["Updates and privacy requests", "We may update this policy as the store, providers or legal requirements change. The revised date will appear on this page. For access, correction, deletion or privacy questions, email hello@weartherisk.com and use the subject line “Privacy request”. We may need to verify your identity before acting on a request."],
+  ["Updates and privacy requests", "We may update this policy as the store, providers or legal requirements change. The revised date will appear on this page. For access, correction, deletion or privacy questions, email info@weartherisk.com and use the subject line “Privacy request”. We may need to verify your identity before acting on a request."],
 ];
 
 export default function PrivacyPage() {
