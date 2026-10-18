@@ -36,6 +36,14 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     color: "#e76f51",
   },
   {
+    slug: "gamer",
+    title: "Gamer",
+    tagline: "GG go next.",
+    blurb: "For ranked grinders and tilt survivors. Sarcastic gamer statements — keep calm and blame the jungler, printed.",
+    keywords: ["gamer", "gaming", "gg", "noob", "respawn", "moba", "esports", "tilt", "jungler", "ranked", "clutch"],
+    color: "#7b2ff7",
+  },
+  {
     slug: "office-unfiltered",
     title: "Office Unfiltered",
     tagline: "For the thoughts you have in meetings.",

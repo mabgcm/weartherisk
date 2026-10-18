@@ -7,6 +7,7 @@ import { activeCollections, newArrivals } from "@/lib/catalog/collections";
 import { getStorefrontCatalog } from "@/lib/catalog/storefront";
 import { SITE_NAME, absoluteUrl, safeJsonLd } from "@/lib/seo";
 import { StatementHero } from "@/components/statement-hero";
+import { FeaturedSpotlight } from "@/components/featured-spotlight";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -89,24 +90,18 @@ export default async function Home() {
         <span>Original designs</span><span>Canada & United States</span><span>Free shipping $75+ CAD</span>
       </div>
 
-      {featured && (() => {
-        const cover = productImage(featured.products[0]);
-        return (
-          <section className="seasonal-spotlight featured-spotlight" aria-labelledby="featured-collection">
-            <div className="seasonal-copy">
-              <p className="eyebrow">Founder favorites</p>
-              <h2 id="featured-collection">{featured.collection.title}</h2>
-              <p>{featured.collection.blurb}</p>
-              <Link href={`/collections/${featured.collection.slug}`} className="button button-dark">
-                Shop the collection <span aria-hidden="true">↗</span>
-              </Link>
-            </div>
-            <Link href={`/collections/${featured.collection.slug}`} className="seasonal-art" aria-label={`Shop ${featured.collection.title}`}>
-              {cover && <Image src={cover.src} alt={featured.products[0].title} fill sizes="(min-width: 900px) 50vw, 100vw" className="object-contain" />}
-            </Link>
-          </section>
-        );
-      })()}
+      {featured && (
+        <FeaturedSpotlight
+          slug={featured.collection.slug}
+          title={featured.collection.title}
+          blurb={featured.collection.blurb}
+          slides={featured.products.map((product) => ({
+            id: product.id,
+            title: product.title,
+            image: productImage(product)?.src,
+          }))}
+        />
+      )}
 
       {moodCollections.length > 0 && (
         <section id="moods" className="mood-section" aria-labelledby="moods-title">
