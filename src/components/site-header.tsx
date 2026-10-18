@@ -51,7 +51,7 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
     <header className="site-header">
       <div className="header-inner">
         <Link href="/" className="brand-logo" aria-label="Wear The Risk home"><Image src={logo} alt="Wear The Risk" sizes="130px" preload /></Link>
-        <nav className="desktop-nav" aria-label="Shop navigation"><Link href="/#moods">Shop by mood</Link><Link href="/#shop">The collection</Link><Link href="/about">Our story</Link><Link href="/shipping">Shipping & returns</Link></nav>
+        <nav className="desktop-nav" aria-label="Shop navigation"><Link href="/#collections">Collections</Link><Link href="/#shop">The collection</Link><Link href="/about">Our story</Link><Link href="/shipping">Shipping & returns</Link></nav>
         <nav className="utility-nav" aria-label="Account navigation">
           <form className="header-search" role="search" action="/search" method="get">
             <label className="sr-only" htmlFor="header-search">Search products</label>
@@ -81,7 +81,7 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
         </form>
         <nav aria-label="Main navigation">
           <Link href="/#shop" onClick={closeMenu}>Shop all <span>↗</span></Link>
-          <Link href="/#moods" onClick={closeMenu}>Shop by mood <span>↗</span></Link>
+          <Link href="/#collections" onClick={closeMenu}>Collections <span>↗</span></Link>
           {categories.map((category) => <Link href={`/categories/${category.slug}`} key={category.slug} onClick={closeMenu}>{category.title}<span>→</span></Link>)}
           <Link href="/about" onClick={closeMenu}>Our story <span>→</span></Link>
         </nav>

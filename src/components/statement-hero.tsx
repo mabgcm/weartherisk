@@ -48,7 +48,7 @@ export function StatementHero({ slides }: { slides: HeroSlide[] }) {
           more. Designed to be noticed.
         </p>
         <div className="risk-hero-actions">
-          <Link href="#moods" className="button button-dark">Shop by mood <span aria-hidden="true">↗</span></Link>
+          <Link href="#collections" className="button button-dark">Collections <span aria-hidden="true">↗</span></Link>
           <Link href="#new" className="text-link">New arrivals</Link>
         </div>
         <p className="hero-footnote">Designed in Canada. Shipped across Canada &amp; the US.</p>

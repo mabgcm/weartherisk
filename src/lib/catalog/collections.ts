@@ -1,16 +1,15 @@
 import type { PrintifyProduct } from "@/lib/printify/client";
 
 /**
- * Theme collections ("shop by mood") for Wear The Risk.
+ * Theme collections for Wear The Risk.
  *
- * The brand sells statements, not product types: shoppers look for the right
- * words for an occasion or a person. Each collection is defined by keyword
- * matchers tested against the product title and its Printify tags, so groups
- * form automatically as products are added or tagged — no code change needed.
+ * Each collection is defined by keyword matchers tested against the product
+ * title and its Printify tags, so groups form automatically as products are
+ * added or tagged — no code change needed.
  *
  * To place a product in a collection, add one of its keywords as a tag in
- * Printify (e.g. tag "halloween" puts the product in Spooky Season). Title
- * keywords work too, but tags are the reliable route.
+ * Printify (e.g. tag "jungler" puts the product in Gamer). Title keywords
+ * work too, but tags are the reliable route.
  */
 export interface ThemeCollection {
   slug: string;
@@ -18,10 +17,10 @@ export interface ThemeCollection {
   tagline: string;
   blurb: string;
   keywords: string[];
-  /** Seasonal collections only render when they have products. */
+  /** Products matching these keywords stay OUT of the collection (word-boundary, case-insensitive). */
+  excludeKeywords?: string[];
+  /** Seasonal collections show a "Limited season" label on their page. */
   seasonal?: boolean;
-  /** Featured collections get a dedicated homepage spotlight. */
-  featured?: boolean;
   color: string;
 }
 
@@ -32,7 +31,6 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "Funded by dreams. Powered by caffeine.",
     blurb: "For founders, freelancers and startup survivors. Investor jokes, hustle culture and the pre-seed grind — printed.",
     keywords: ["startup", "entrepreneur", "investor", "investors", "founder", "funding", "hustle", "ceo", "seed"],
-    featured: true,
     color: "#e76f51",
   },
   {
@@ -44,70 +42,57 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     color: "#7b2ff7",
   },
   {
-    slug: "office-unfiltered",
-    title: "Office Unfiltered",
-    tagline: "For the thoughts you have in meetings.",
-    blurb: "Statement pieces for the 9-to-5 you survive daily. The things everyone thinks in the meeting, printed where everyone can read them.",
-    keywords: ["office", "work", "boss", "meeting", "coworker", "monday", "friday", "deadline", "inbox", "hr department"],
-    color: "#f58a73",
+    slug: "pumpkin-face",
+    title: "Pumpkin Face",
+    tagline: "The jack-o'-lantern edit.",
+    blurb: "Pumpkin-face designs for Halloween — classic, goofy and glowing. Pick your face for the season.",
+    keywords: ["pumpkin", "jack-o-lantern", "jack o lantern"],
+    seasonal: true,
+    color: "#f4a259",
   },
   {
-    slug: "gym-confessions",
-    title: "Gym Confessions",
-    tagline: "Sweat now, honesty included.",
-    blurb: "For the 6am crew and the never-going-back crew alike. Say what the treadmill already knows about you.",
-    keywords: ["gym", "workout", "fitness", "cardio", "protein", "leg day", "running", "lift"],
-    color: "#b8ccad",
+    slug: "ghost",
+    title: "Ghost",
+    tagline: "Boo, but make it fashion.",
+    blurb: "Ghost designs for the spooky season — friendly frights and haunted humor, printed.",
+    keywords: ["ghost", "phantom", "specter", "spectre", "haunted"],
+    seasonal: true,
+    color: "#b8c0cc",
   },
   {
-    slug: "family-roasts",
-    title: "Family Roasts",
-    tagline: "Love them. Roast them anyway.",
-    blurb: "Gifts for the people who raised you and the people you married into. Affectionate, but make it a punchline.",
-    keywords: ["mom", "dad", "mama", "papa", "family", "wife", "husband", "grandma", "grandpa", "mother", "father", "sister", "brother"],
-    color: "#cfc2e7",
+    slug: "mummy-face",
+    title: "Mummy Face",
+    tagline: "Wrapped up in Halloween.",
+    blurb: "Mummy-face designs — wrapped, winking and ready for trick or treat.",
+    keywords: ["mummy"],
+    seasonal: true,
+    color: "#d8cfc0",
   },
   {
-    slug: "brutally-honest",
-    title: "Brutally Honest",
-    tagline: "No filter. No regrets.",
-    blurb: "For introverts, straight-talkers and everyone tired of small talk. Wear the sentence you'd never say out loud.",
-    keywords: ["honest", "truth", "sarcasm", "sarcastic", "blunt", "introvert", "awkward", "antisocial"],
-    color: "#f0b9a9",
-  },
-  {
-    slug: "morning-truths",
-    title: "Morning Truths",
-    tagline: "Decaf is a lie. So is 'just one more snooze'.",
-    blurb: "Mugs and morning pieces for people who don't do mornings. Strong opinions, stronger coffee.",
-    keywords: ["coffee", "morning", "espresso", "latte", "caffeine", "decaf"],
-    color: "#a9c8c0",
-  },
-  {
-    slug: "pet-people",
-    title: "Pet People",
-    tagline: "My dog gets me. People, not so much.",
-    blurb: "For the ones who'd rather be home with their animal. Loud love for the quietest family members.",
-    keywords: ["dog", "cat", "pet", "puppy", "kitten", "paw", "paws"],
-    color: "#e9c46a",
-  },
-  {
-    slug: "spooky-season",
-    title: "Spooky Season",
-    tagline: "October energy, all year if you insist.",
-    blurb: "Limited seasonal picks for Halloween and everyone who peaked in October. When they're gone, they're gone.",
-    keywords: ["halloween", "spooky", "ghost", "witch", "pumpkin", "horror", "october", "vampire", "mummy"],
+    slug: "halloween",
+    title: "Halloween",
+    tagline: "The rest of the haunted house.",
+    blurb: "The remaining Halloween crew — witches, vampires, candy security and costume chaos. Pumpkin, mummy and ghost faces have their own collections; bags and mugs too.",
+    keywords: ["halloween", "spooky", "witch", "vampire", "candy", "costume", "horror", "october", "trick", "boo", "creepy", "scary", "terror", "monster", "eerie"],
+    excludeKeywords: ["pumpkin", "mummy", "ghost", "tote", "bag", "mug"],
     seasonal: true,
     color: "#9b5de5",
   },
   {
-    slug: "holiday-cheer",
-    title: "Holiday Cheer",
-    tagline: "Festive, with a side of honesty.",
-    blurb: "Seasonal designs for the holidays — the family dinner edition. Gift the sentence everyone's thinking.",
-    keywords: ["christmas", "xmas", "santa", "holiday", "merry", "noel", "december"],
-    seasonal: true,
-    color: "#2a9d8f",
+    slug: "bags",
+    title: "Bags",
+    tagline: "Carry the statement.",
+    blurb: "Tote bags that say it for you — groceries, gym and everyday errands with a punchline.",
+    keywords: ["tote", "bag", "backpack", "duffel"],
+    color: "#8a6f4d",
+  },
+  {
+    slug: "mugs",
+    title: "Mugs",
+    tagline: "Sip happens.",
+    blurb: "Mugs for the sentences you think before coffee. Dishwasher-safe honesty.",
+    keywords: ["mug", "tumbler"],
+    color: "#a9c8c0",
   },
 ] as const;
 
@@ -124,7 +109,9 @@ function keywordMatches(text: string, keyword: string): boolean {
 export function productsForCollection(products: PrintifyProduct[], collection: ThemeCollection): PrintifyProduct[] {
   return products.filter((product) => {
     const text = haystack(product);
-    return collection.keywords.some((keyword) => keywordMatches(text, keyword));
+    if (!collection.keywords.some((keyword) => keywordMatches(text, keyword))) return false;
+    if (collection.excludeKeywords?.some((keyword) => keywordMatches(text, keyword))) return false;
+    return true;
   });
 }
 
@@ -132,14 +119,10 @@ export function collectionBySlug(slug: string): ThemeCollection | undefined {
   return THEME_COLLECTIONS.find((collection) => collection.slug === slug);
 }
 
-/** Only collections that currently have products, everyday first, seasonal after. */
+/** Only collections that currently have products, in the order defined above. */
 export function activeCollections(products: PrintifyProduct[]): Array<{ collection: ThemeCollection; products: PrintifyProduct[] }> {
-  const active = THEME_COLLECTIONS.map((collection) => ({ collection, products: productsForCollection(products, collection) }))
+  return THEME_COLLECTIONS.map((collection) => ({ collection, products: productsForCollection(products, collection) }))
     .filter((entry) => entry.products.length > 0);
-  return [
-    ...active.filter((entry) => !entry.collection.seasonal),
-    ...active.filter((entry) => entry.collection.seasonal),
-  ];
 }
 
 /** Most recently updated products, for the "new arrivals" rail. */

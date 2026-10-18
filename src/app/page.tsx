@@ -7,7 +7,7 @@ import { activeCollections, newArrivals } from "@/lib/catalog/collections";
 import { getStorefrontCatalog } from "@/lib/catalog/storefront";
 import { SITE_NAME, absoluteUrl, safeJsonLd } from "@/lib/seo";
 import { StatementHero } from "@/components/statement-hero";
-import { FeaturedSpotlight } from "@/components/featured-spotlight";
+import { CollectionRail, ProductCard } from "@/components/collection-rail";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -18,25 +18,6 @@ export const metadata: Metadata = {
 
 function productImage(product: PrintifyProduct) {
   return product.images.find((image) => image.is_default) ?? product.images[0];
-}
-function productPrice(product: PrintifyProduct) {
-  const variants = product.variants.filter((variant) => variant.is_enabled && variant.is_available);
-  return variants.length ? Math.min(...variants.map((variant) => variant.price)) / 100 : null;
-}
-
-function ProductCard({ product }: { product: PrintifyProduct }) {
-  const image = productImage(product);
-  const price = productPrice(product);
-  return (
-    <Link href={`/products/${product.id}`} className="risk-product-card">
-      <div className="risk-product-image">
-        {image && <Image src={image.src} alt={product.title} fill sizes="(min-width: 1100px) 25vw, (min-width: 650px) 33vw, 50vw" className="object-contain" />}
-        <span aria-hidden="true">↗</span>
-      </div>
-      <h3>{product.title}</h3>
-      <p>{price === null ? "See available options" : `From $${price.toFixed(2)}`}</p>
-    </Link>
-  );
 }
 
 /** Baby/toddler products stay out of the hero spotlight. */
@@ -56,9 +37,6 @@ function phraseOfTheWeek(products: PrintifyProduct[]): PrintifyProduct | undefin
 export default async function Home() {
   const { products, categories } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
   const collections = activeCollections(products);
-  const featured = collections.find((entry) => entry.collection.featured);
-  const moodCollections = collections.filter((entry) => !entry.collection.seasonal && !entry.collection.featured);
-  const seasonalCollections = collections.filter((entry) => entry.collection.seasonal);
   const fresh = newArrivals(products, 8);
   const phrase = phraseOfTheWeek(products);
   const phraseImage = phrase && productImage(phrase);
@@ -90,71 +68,13 @@ export default async function Home() {
         <span>Original designs</span><span>Canada & United States</span><span>Free shipping $75+ CAD</span>
       </div>
 
-      {featured && (
-        <FeaturedSpotlight
-          slug={featured.collection.slug}
-          title={featured.collection.title}
-          blurb={featured.collection.blurb}
-          slides={featured.products.map((product) => ({
-            id: product.id,
-            title: product.title,
-            image: productImage(product)?.src,
-          }))}
-        />
+      {collections.length > 0 && (
+        <div id="collections">
+          {collections.map(({ collection, products: items }) => (
+            <CollectionRail key={collection.slug} collection={collection} products={items} />
+          ))}
+        </div>
       )}
-
-      {moodCollections.length > 0 && (
-        <section id="moods" className="mood-section" aria-labelledby="moods-title">
-          <div className="shop-section-heading">
-            <div>
-              <p className="eyebrow">Shop by mood</p>
-              <h2 id="moods-title">What&apos;s on your mind?</h2>
-            </div>
-            <span className="shop-currency">Pick the vibe. We&apos;ll handle the wording.</span>
-          </div>
-          <div className="mood-grid">
-            {moodCollections.map(({ collection, products: items }) => {
-              const cover = productImage(items[0]);
-              return (
-                <Link
-                  href={`/collections/${collection.slug}`}
-                  key={collection.slug}
-                  className="mood-card"
-                  style={{ ["--mood-color" as string]: collection.color }}
-                >
-                  <div className="mood-card-art">
-                    {cover && <Image src={cover.src} alt="" fill sizes="(min-width: 900px) 33vw, 50vw" className="object-cover" />}
-                  </div>
-                  <div className="mood-card-body">
-                    <h3>{collection.title}</h3>
-                    <p>{collection.tagline}</p>
-                    <span className="mood-count">{items.length} {items.length === 1 ? "design" : "designs"} <span aria-hidden="true">→</span></span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {seasonalCollections.map(({ collection, products: items }) => {
-        const cover = productImage(items[0]);
-        return (
-          <section key={collection.slug} className="seasonal-spotlight" aria-labelledby={`seasonal-${collection.slug}`}>
-            <div className="seasonal-copy">
-              <p className="eyebrow">Limited season</p>
-              <h2 id={`seasonal-${collection.slug}`}>{collection.title}</h2>
-              <p>{collection.blurb}</p>
-              <Link href={`/collections/${collection.slug}`} className="button button-dark">
-                Shop the drop <span aria-hidden="true">↗</span>
-              </Link>
-            </div>
-            <Link href={`/collections/${collection.slug}`} className="seasonal-art" aria-label={`Shop ${collection.title}`}>
-              {cover && <Image src={cover.src} alt={items[0].title} fill sizes="(min-width: 900px) 50vw, 100vw" className="object-contain" />}
-            </Link>
-          </section>
-        );
-      })}
 
       {fresh.length > 0 && (
         <section id="new" className="fresh-section" aria-labelledby="fresh-title">
