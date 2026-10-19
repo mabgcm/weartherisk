@@ -33,6 +33,12 @@ export function ProductReviews({ productId }: { productId: string }) {
   const { user, loading: authLoading } = useAuth();
   const [data, setData] = useState<ReviewResponse>({ reviews: [], count: 0, averageRating: 0 });
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [prevProductId, setPrevProductId] = useState(productId);
+  if (prevProductId !== productId) {
+    setPrevProductId(productId);
+    setPage(1);
+  }
   const [rating, setRating] = useState(5);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -66,6 +72,7 @@ export function ProductReviews({ productId }: { productId: string }) {
       setBody("");
       setNotice("Thank you — your review is now published.");
       setData(await fetchReviews(productId));
+      setPage(1);
     } catch (reason) {
       setNotice(reason instanceof Error ? reason.message : "Your review could not be saved.");
     } finally {
@@ -89,13 +96,43 @@ export function ProductReviews({ productId }: { productId: string }) {
           : <p className="mt-8 rounded-lg bg-white p-6 text-sm leading-6"><Link href={`/login?next=${encodeURIComponent(`/products/${productId}`)}`} className="font-bold underline">Login</Link> to review a product you purchased.</p>)}
         {notice && <p className="mt-4 text-sm font-bold" role="status">{notice}</p>}
       </div>
-      <div className="grid content-start gap-4">
-        {loading ? <p className="rounded-lg bg-white p-7 text-black/50">Loading reviews…</p> : data.reviews.length ? data.reviews.map((review) => <article key={review.id} className="rounded-lg bg-white p-7">
-          <div className="flex flex-wrap items-center justify-between gap-3"><Stars rating={review.rating} /><time className="text-xs text-black/45" dateTime={review.updatedAt ?? undefined}>{review.updatedAt ? new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "short", day: "numeric" }).format(new Date(review.updatedAt)) : ""}</time></div>
-          <h3 className="mt-4 text-xl font-black">{review.title}</h3><p className="mt-3 leading-7 text-black/65">{review.body}</p>
-          <footer className="mt-5 flex flex-wrap items-center gap-3 text-xs"><strong>{review.authorName}</strong>{review.verifiedPurchase && <span className="rounded-sm bg-emerald-100 px-3 py-1 font-bold text-emerald-800">✓ Verified purchase</span>}</footer>
-        </article>) : <div className="rounded-lg bg-white p-10 text-center"><span className="text-4xl text-[#ef654f]">★★★★★</span><h3 className="mt-4 text-2xl font-black">No reviews yet</h3><p className="mt-2 text-black/55">Purchased this product? Be the first to share your experience.</p></div>}
-      </div>
+      <ReviewList reviews={data.reviews} loading={loading} page={page} onPageChange={setPage} />
     </div>
   </section>;
+}
+
+const PAGE_SIZE = 5;
+
+function ReviewList({ reviews, loading, page, onPageChange }: {
+  reviews: Review[];
+  loading: boolean;
+  page: number;
+  onPageChange: (page: number) => void;
+}) {
+  const totalPages = Math.max(1, Math.ceil(reviews.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const visible = reviews.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  if (loading) return <div className="grid content-start gap-4"><p className="rounded-lg bg-white p-7 text-black/50">Loading reviews…</p></div>;
+  if (!reviews.length) return <div className="grid content-start gap-4"><div className="rounded-lg bg-white p-10 text-center"><span className="text-4xl text-[#ef654f]">★★★★★</span><h3 className="mt-4 text-2xl font-black">No reviews yet</h3><p className="mt-2 text-black/55">Purchased this product? Be the first to share your experience.</p></div></div>;
+
+  return <div className="grid content-start gap-4">
+    {visible.map((review) => <article key={review.id} className="rounded-lg bg-white p-7">
+      <div className="flex flex-wrap items-center justify-between gap-3"><Stars rating={review.rating} /><time className="text-xs text-black/45" dateTime={review.updatedAt ?? undefined}>{review.updatedAt ? new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "short", day: "numeric" }).format(new Date(review.updatedAt)) : ""}</time></div>
+      <h3 className="mt-4 text-xl font-black">{review.title}</h3><p className="mt-3 leading-7 text-black/65">{review.body}</p>
+      <footer className="mt-5 flex flex-wrap items-center gap-3 text-xs"><strong>{review.authorName}</strong>{review.verifiedPurchase && <span className="rounded-sm bg-emerald-100 px-3 py-1 font-bold text-emerald-800">✓ Verified purchase</span>}</footer>
+    </article>)}
+    {totalPages > 1 && <nav className="mt-2 flex items-center justify-center gap-2" aria-label="Review pages">
+      <button type="button" disabled={safePage === 1} onClick={() => onPageChange(safePage - 1)} className="cursor-pointer rounded-sm border border-black/20 bg-white px-4 py-2 text-sm font-bold disabled:cursor-default disabled:opacity-40" aria-label="Previous reviews page">‹ Prev</button>
+      {Array.from({ length: totalPages }, (_, index) => index + 1).map((value) => <button
+        key={value}
+        type="button"
+        onClick={() => onPageChange(value)}
+        aria-label={`Reviews page ${value}`}
+        aria-current={value === safePage ? "page" : undefined}
+        className={`cursor-pointer rounded-sm border px-4 py-2 text-sm font-bold ${value === safePage ? "border-emerald-900 bg-emerald-900 text-white" : "border-black/20 bg-white"}`}
+      >{value}</button>)}
+      <button type="button" disabled={safePage === totalPages} onClick={() => onPageChange(safePage + 1)} className="cursor-pointer rounded-sm border border-black/20 bg-white px-4 py-2 text-sm font-bold disabled:cursor-default disabled:opacity-40" aria-label="Next reviews page">Next ›</button>
+    </nav>}
+  </div>;
 }
