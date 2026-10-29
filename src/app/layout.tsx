@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
@@ -42,5 +43,5 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     { "@type": "WebSite", "@id": `${SITE_URL}/#website`, url: SITE_URL, name: SITE_NAME, inLanguage: "en-CA", publisher: { "@id": `${SITE_URL}/#organization` },
       potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" } },
   ] };
-  return <html lang="en-CA" className={sans.variable}><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(globalJsonLd) }} /><Providers><SiteHeader categories={categoryLinks} /><div id="main-content" tabIndex={-1}>{children}</div><SiteFooter categories={categoryLinks} /></Providers></body><GoogleAnalytics gaId="G-VKSQX810RR" /></html>;
+  return <html lang="en-CA" className={sans.variable}><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(globalJsonLd) }} /><Providers><SiteHeader categories={categoryLinks} /><div id="main-content" tabIndex={-1}>{children}</div><SiteFooter categories={categoryLinks} /></Providers><Analytics /></body><GoogleAnalytics gaId="G-VKSQX810RR" /></html>;
 }
