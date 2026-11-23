@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 interface ProductImage {
@@ -20,6 +20,11 @@ export function ProductGallery({ title, images }: ProductGalleryProps) {
       : 0;
 
   const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
+  const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    thumbRefs.current[selectedIndex]?.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+  }, [selectedIndex]);
 
   if (!images.length) return null;
   const selectedImage = images[selectedIndex] ?? images[defaultIndex];
@@ -37,13 +42,14 @@ export function ProductGallery({ title, images }: ProductGalleryProps) {
         />
       </div>
       {images.length > 1 && (
-        <div className="product-gallery-thumbnails mt-4 grid grid-cols-4 gap-3">
-          {images.slice(0, 4).map((image, index) => (
+        <div className="product-gallery-thumbnails mt-4 flex gap-3 overflow-x-auto pb-2">
+          {images.map((image, index) => (
             <button
               key={`${image.src}-${index}`}
               type="button"
+              ref={(element) => { thumbRefs.current[index] = element; }}
               onClick={() => setSelectedIndex(index)}
-              className={`relative aspect-square overflow-hidden rounded-lg bg-white border ${
+              className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-lg bg-white border sm:w-24 ${
                 index === selectedIndex
                   ? "border-emerald-700"
                   : "border-transparent hover:border-black/20"
