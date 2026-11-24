@@ -80,8 +80,8 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
           <button type="submit">Search</button>
         </form>
         <nav aria-label="Main navigation">
-          <Link href="/#shop" onClick={closeMenu}>Shop all <span>↗</span></Link>
-          <Link href="/#collections" onClick={closeMenu}>Collections <span>↗</span></Link>
+          <Link href="/#shop" onClick={closeMenu}>Shop all </Link>
+          <Link href="/#collections" onClick={closeMenu}>Collections </Link>
           {categories.map((category) => <Link href={`/categories/${category.slug}`} key={category.slug} onClick={closeMenu}>{category.title}<span>→</span></Link>)}
           <Link href="/about" onClick={closeMenu}>Our story <span>→</span></Link>
         </nav>

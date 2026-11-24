@@ -63,7 +63,7 @@ export default function AboutPage() {
       <div className="about-cta">
         <h2>Got a sentence in mind?</h2>
         <div>
-          <Link href="/#moods" className="button button-dark">Find your sentence <span aria-hidden="true">↗</span></Link>
+          <Link href="/#moods" className="button button-dark">Find your sentence </Link>
           <Link href="/#shop" className="button button-outline">Browse everything</Link>
         </div>
       </div>

@@ -86,7 +86,7 @@ export default async function Home() {
             <p className="eyebrow">Phrase of the week</p>
             <h2 id="phrase-title">&ldquo;{phrase.title}&rdquo;</h2>
             <p>One design, one sentence, zero apologies. A new loud thought every Monday.</p>
-            <Link href={`/products/${phrase.id}`} className="button button-light">Get this one <span aria-hidden="true">↗</span></Link>
+            <Link href={`/products/${phrase.id}`} className="button button-light">Get this one </Link>
           </div>
           {phraseImage && (
             <Link href={`/products/${phrase.id}`} className="phrase-art" aria-label={`Shop ${phrase.title}`}>
@@ -107,7 +107,7 @@ export default async function Home() {
         {populatedCategories.length > 0 && (
           <nav className="category-tabs" aria-label="Browse collections">
             {populatedCategories.map((category) => (
-              <Link key={category.slug} href={`/categories/${category.slug}`}>{category.title}<span aria-hidden="true">↗</span></Link>
+              <Link key={category.slug} href={`/categories/${category.slug}`}>{category.title}</Link>
             ))}
           </nav>
         )}
@@ -120,7 +120,7 @@ export default async function Home() {
             <span className="eyebrow">Coming next</span>
             <h3>A new collection is in the making.</h3>
             <p>Original designs take a little time. Come back soon to find your next piece.</p>
-            <Link href="/about" className="text-link">Get to know Wear The Risk <span aria-hidden="true">↗</span></Link>
+            <Link href="/about" className="text-link">Get to know Wear The Risk </Link>
           </div>
         )}
         {populatedCategories.length > 0 && (
@@ -138,7 +138,7 @@ export default async function Home() {
         <h2 id="story-title">Made for you.<br /><span>Only when you choose it.</span></h2>
         <div>
           <p>Every piece starts as an original Wear The Risk design — the sentence you think but never say, given the typography it deserves.</p>
-          <Link href="/about" className="button button-light">How we make it <span aria-hidden="true">↗</span></Link>
+          <Link href="/about" className="button button-light">How we make it </Link>
         </div>
       </section>
 
