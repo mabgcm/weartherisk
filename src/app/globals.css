@@ -81,7 +81,6 @@ h1,h2,h3 { text-wrap:balance; }
 .risk-product-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 12px; }
 .risk-product-image { position:relative;aspect-ratio:4/5;background:var(--cream); }
 .risk-product-image img { padding:12px; }
-.risk-product-image>span { position:absolute;bottom:10px;right:12px;font-size:20px; }
 .risk-product-card h3 { margin:12px 0 6px;font-size:13px;font-weight:650;line-height:1.5; }
 .risk-product-card p { margin:0;color:var(--muted);font-size:12px; }
 .risk-empty { padding:48px 20px;border:1px solid var(--line);text-align:center; }

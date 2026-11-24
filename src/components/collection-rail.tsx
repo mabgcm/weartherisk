@@ -22,7 +22,6 @@ export function ProductCard({ product }: { product: PrintifyProduct }) {
     <Link href={`/products/${product.id}`} className="risk-product-card">
       <div className="risk-product-image">
         {image && <Image src={image.src} alt={product.title} fill sizes="(min-width: 1100px) 25vw, (min-width: 650px) 33vw, 50vw" className="object-contain" />}
-        <span aria-hidden="true">↗</span>
       </div>
       <h3>{product.title}</h3>
       <p>{price === null ? "See available options" : `From $${price.toFixed(2)}`}</p>
