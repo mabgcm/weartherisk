@@ -209,22 +209,30 @@ async function printifyRequest<T>(path: string, init?: RequestInit): Promise<T> 
 export async function getPrintifyProducts(): Promise<PrintifyProduct[]> {
   const { shopId } = getPrintifyConfig();
   const firstPage = await printifyRequest<PrintifyProductPage>(
-    `/shops/${shopId}/products.json?limit=10`,
+    `/shops/${shopId}/products.json?limit=50`,
     { next: { revalidate: 300 } },
   );
 
   const remainingPages = await Promise.all(
     Array.from({ length: Math.max(0, firstPage.last_page - 1) }, (_, index) =>
       printifyRequest<PrintifyProductPage>(
-        `/shops/${shopId}/products.json?limit=10&page=${index + 2}`,
+        `/shops/${shopId}/products.json?limit=50&page=${index + 2}`,
         { next: { revalidate: 300 } },
       ),
     ),
   );
 
+  // Pages are fetched in parallel and Printify's ordering can drift between
+  // them, so the same product can arrive twice — dedupe by id.
+  const seen = new Set<string>();
   return [firstPage, ...remainingPages]
     .flatMap((page) => page.data)
-    .filter((product) => product.visible);
+    .filter((product) => product.visible)
+    .filter((product) => {
+      if (seen.has(product.id)) return false;
+      seen.add(product.id);
+      return true;
+    });
 }
 
 export async function getPrintifyProduct(productId: string): Promise<PrintifyProduct> {
