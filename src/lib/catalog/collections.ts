@@ -10,6 +10,10 @@ import type { PrintifyProduct } from "@/lib/printify/client";
  * To place a product in a collection, add one of its keywords as a tag in
  * Printify (e.g. tag "jungler" puts the product in Gamer). Title keywords
  * work too, but tags are the reliable route.
+ *
+ * Apparel rule: theme collections are clothing-only. Non-apparel products
+ * (mugs, tumblers, bags, car magnets) live only in their own collections
+ * below, so a Christmas mug shows under Mugs — not inside Christmas.
  */
 export interface ThemeCollection {
   slug: string;
@@ -24,6 +28,9 @@ export interface ThemeCollection {
   color: string;
 }
 
+/** Keywords that mark a product as non-apparel; theme collections exclude them. */
+const NON_APPAREL_KEYWORDS = ["mug", "tumbler", "tote", "bag", "backpack", "duffel", "magnet"];
+
 export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
   {
     slug: "christmas",
@@ -31,6 +38,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "Sleigh the season, say the thing.",
     blurb: "Holiday statements for people who think it before the eggnog — vintage Santas, honest slogans and zero silent nights.",
     keywords: ["christmas", "xmas", "santa"],
+    excludeKeywords: NON_APPAREL_KEYWORDS,
     seasonal: true,
     color: "#a41623",
   },
@@ -40,6 +48,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "Funded by dreams. Powered by caffeine.",
     blurb: "For founders, freelancers and startup survivors. Investor jokes, hustle culture and the pre-seed grind — printed.",
     keywords: ["startup", "entrepreneur", "investor", "investors", "founder", "funding", "hustle", "ceo", "seed"],
+    excludeKeywords: NON_APPAREL_KEYWORDS,
     color: "#e76f51",
   },
   {
@@ -48,6 +57,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "GG go next.",
     blurb: "For ranked grinders and tilt survivors. Sarcastic gamer statements — keep calm and blame the jungler, printed.",
     keywords: ["gamer", "gaming", "gg", "noob", "respawn", "moba", "esports", "tilt", "jungler", "ranked", "clutch"],
+    excludeKeywords: NON_APPAREL_KEYWORDS,
     color: "#7b2ff7",
   },
   {
@@ -67,11 +77,20 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     color: "#a9c8c0",
   },
   {
+    slug: "car-magnets",
+    title: "Car Magnets",
+    tagline: "Say it in traffic.",
+    blurb: "Car magnets with something to say — for tailgaters, gamers and everyone stuck behind you.",
+    keywords: ["magnet"],
+    color: "#5b8e7d",
+  },
+  {
     slug: "pumpkin-face",
     title: "Pumpkin Face",
     tagline: "The jack-o'-lantern edit.",
     blurb: "Pumpkin-face designs for Halloween — classic, goofy and glowing. Pick your face for the season.",
     keywords: ["pumpkin", "jack-o-lantern", "jack o lantern"],
+    excludeKeywords: NON_APPAREL_KEYWORDS,
     seasonal: true,
     color: "#f4a259",
   },
@@ -81,6 +100,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "Boo, but make it fashion.",
     blurb: "Ghost designs for the spooky season — friendly frights and haunted humor, printed.",
     keywords: ["ghost", "phantom", "specter", "spectre", "haunted"],
+    excludeKeywords: NON_APPAREL_KEYWORDS,
     seasonal: true,
     color: "#b8c0cc",
   },
@@ -90,6 +110,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "Wrapped up in Halloween.",
     blurb: "Mummy-face designs — wrapped, winking and ready for trick or treat.",
     keywords: ["mummy"],
+    excludeKeywords: NON_APPAREL_KEYWORDS,
     seasonal: true,
     color: "#d8cfc0",
   },
@@ -97,9 +118,9 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     slug: "halloween",
     title: "Halloween",
     tagline: "The rest of the haunted house.",
-    blurb: "The remaining Halloween crew — witches, vampires, candy security and costume chaos. Pumpkin, mummy and ghost faces have their own collections; bags and mugs too.",
+    blurb: "The remaining Halloween crew — witches, vampires, candy security and costume chaos. Pumpkin, mummy and ghost faces have their own collections; bags, mugs and magnets too.",
     keywords: ["halloween", "spooky", "witch", "vampire", "candy", "costume", "horror", "october", "trick", "boo", "creepy", "scary", "terror", "monster", "eerie"],
-    excludeKeywords: ["pumpkin", "mummy", "ghost", "tote", "bag", "mug"],
+    excludeKeywords: ["pumpkin", "mummy", "ghost", ...NON_APPAREL_KEYWORDS],
     seasonal: true,
     color: "#9b5de5",
   },
