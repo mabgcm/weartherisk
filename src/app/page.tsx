@@ -60,10 +60,25 @@ function christmasHeroSlides(products: PrintifyProduct[]) {
     .slice(0, 3);
 }
 
+/** WoW hero picks: one face from each gaming drop, in display order. */
+const WOW_HERO_PICKS = ["Helm of Domination", "Grand Marshal", "For the Horde Trucker", "Druid Class"];
+
+function wowHeroSlides(products: PrintifyProduct[]) {
+  const slides: { id: string; title: string; image: string }[] = [];
+  for (const pick of WOW_HERO_PICKS) {
+    const product = products.find((item) => item.title.includes(pick));
+    if (!product) continue;
+    const image = heroImageFor(product) ?? productImage(product);
+    if (image) slides.push({ id: product.id, title: product.title, image: image.src });
+    if (slides.length >= 3) break;
+  }
+  return slides;
+}
+
 export default async function Home() {
   const { products, categories } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
   const collections = activeCollections(products);
-  const heroSlides = christmasHeroSlides(products);
+  const heroSlides = [...christmasHeroSlides(products).slice(0, 1), ...wowHeroSlides(products)];
   const fresh = newArrivals(products, 8);
   const phrase = phraseOfTheWeek(products);
   const phraseImage = phrase && productImage(phrase);

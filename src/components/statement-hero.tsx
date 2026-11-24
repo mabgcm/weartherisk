@@ -17,8 +17,8 @@ const STATEMENTS = [
 ];
 
 /**
- * Homepage hero: rotating statement copy on the left, seasonal product
- * photography on the right (Christmas model shots). Falls back to an empty
+ * Homepage hero: rotating statement copy on the left, featured product
+ * photography on the right (one seasonal model shot plus gaming picks). Falls back to an empty
  * panel when no slides are supplied.
  */
 export function StatementHero({ slides }: { slides: HeroSlide[] }) {
