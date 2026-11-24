@@ -363,7 +363,7 @@ body { letter-spacing:.025em; }
 .button,.button-primary,.button-secondary { border-radius:4px;font-size:12px;font-weight:500;letter-spacing:.025em;padding:12px 24px;min-height:44px; }
 .statement-hero,.shop-section,.mood-section,.fresh-section,.collection-rail,.risk-notes { max-width:1440px; }
 .statement-hero h1 { font-weight:800;letter-spacing:-.04em; }
-.statement-hero-visual { min-height:320px; }
+.statement-hero-visual { min-height:420px; }
 .risk-product-card h3,.collection-product h3 { font-size:12px;font-weight:500; }
 .risk-product-image,.collection-product>div { background:#ffffff; }
 .risk-product-image img,.collection-product img { padding:0; }
@@ -381,3 +381,9 @@ body { letter-spacing:.025em; }
   .desktop-nav { font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;gap:24px; }
   .statement-hero-visual { min-height:540px; }
 }
+
+/* Hero product photography: cover fill with a caption bar; pagination bars sit above it. */
+.statement-hero-visual .hero-product-link { position:absolute;inset:0;aspect-ratio:auto; }
+.statement-hero-visual .hero-product-link img { padding:0; }
+.hero-product-caption { background:rgba(255,255,255,.92);font-size:12px; }
+.hero-dots { bottom:72px; }

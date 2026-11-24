@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { PrintifyProduct } from "@/lib/printify/client";
 import { productsForStoreCategory } from "@/lib/catalog/categories";
-import { activeCollections, newArrivals } from "@/lib/catalog/collections";
+import { activeCollections, collectionBySlug, newArrivals, productsForCollection } from "@/lib/catalog/collections";
 import { getStorefrontCatalog } from "@/lib/catalog/storefront";
 import { SITE_NAME, absoluteUrl, safeJsonLd } from "@/lib/seo";
 import { StatementHero } from "@/components/statement-hero";
@@ -29,9 +29,41 @@ function phraseOfTheWeek(products: PrintifyProduct[]): PrintifyProduct | undefin
   return products[week % products.length];
 }
 
+
+/** Camera labels for the modelled product shots, best first (bright studio model photos, the category's hero style). */
+const HERO_LABEL_PRIORITY = ["person-1", "person-front", "duo-2", "person-2", "person-3", "lifestyle", "lifestyle-2"];
+
+/** Best modelled shot for a product, or undefined when it only has flat product photos. */
+function heroImageFor(product: PrintifyProduct) {
+  let best: PrintifyProduct["images"][number] | undefined;
+  let bestScore = Infinity;
+  for (const image of product.images) {
+    const label = /camera_label=([\w-]+)/.exec(image.src)?.[1] ?? "";
+    const score = HERO_LABEL_PRIORITY.indexOf(label);
+    if (score >= 0 && score < bestScore) { best = image; bestScore = score; }
+  }
+  return best;
+}
+
+/** Christmas apparel with a modelled shot, tees first, for the hero rotation. */
+function christmasHeroSlides(products: PrintifyProduct[]) {
+  const christmas = collectionBySlug("christmas");
+  if (!christmas) return [];
+  const rank = (title: string) => (title.includes("T-Shirt") ? 0 : title.includes("Hoodie") ? 1 : 2);
+  return productsForCollection(products, christmas)
+    .filter((product) => !/mug|tumbler|tote|bag|magnet/i.test(product.title))
+    .flatMap((product) => {
+      const image = heroImageFor(product);
+      return image ? [{ id: product.id, title: product.title, image: image.src }] : [];
+    })
+    .sort((a, b) => rank(a.title) - rank(b.title))
+    .slice(0, 3);
+}
+
 export default async function Home() {
   const { products, categories } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
   const collections = activeCollections(products);
+  const heroSlides = christmasHeroSlides(products);
   const fresh = newArrivals(products, 8);
   const phrase = phraseOfTheWeek(products);
   const phraseImage = phrase && productImage(phrase);
@@ -51,7 +83,7 @@ export default async function Home() {
   return (
     <main className="store-home">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <StatementHero />
+      <StatementHero slides={heroSlides} />
 
       <div className="store-benefits" aria-label="Shopping information">
         <span>Original designs</span><span>Canada & United States</span><span>Free shipping $75+ CAD</span>

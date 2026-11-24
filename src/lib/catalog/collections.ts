@@ -26,6 +26,15 @@ export interface ThemeCollection {
 
 export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
   {
+    slug: "christmas",
+    title: "Christmas",
+    tagline: "Sleigh the season, say the thing.",
+    blurb: "Holiday statements for people who think it before the eggnog — vintage Santas, honest slogans and zero silent nights.",
+    keywords: ["christmas", "xmas", "santa"],
+    seasonal: true,
+    color: "#a41623",
+  },
+  {
     slug: "entrepreneur",
     title: "Entrepreneur",
     tagline: "Funded by dreams. Powered by caffeine.",
@@ -40,6 +49,22 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     blurb: "For ranked grinders and tilt survivors. Sarcastic gamer statements — keep calm and blame the jungler, printed.",
     keywords: ["gamer", "gaming", "gg", "noob", "respawn", "moba", "esports", "tilt", "jungler", "ranked", "clutch"],
     color: "#7b2ff7",
+  },
+  {
+    slug: "bags",
+    title: "Bags",
+    tagline: "Carry the statement.",
+    blurb: "Tote bags that say it for you — groceries, gym and everyday errands with a punchline.",
+    keywords: ["tote", "bag", "backpack", "duffel"],
+    color: "#8a6f4d",
+  },
+  {
+    slug: "mugs",
+    title: "Mugs",
+    tagline: "Sip happens.",
+    blurb: "Mugs for the sentences you think before coffee. Dishwasher-safe honesty.",
+    keywords: ["mug", "tumbler"],
+    color: "#a9c8c0",
   },
   {
     slug: "pumpkin-face",
@@ -77,22 +102,6 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     excludeKeywords: ["pumpkin", "mummy", "ghost", "tote", "bag", "mug"],
     seasonal: true,
     color: "#9b5de5",
-  },
-  {
-    slug: "bags",
-    title: "Bags",
-    tagline: "Carry the statement.",
-    blurb: "Tote bags that say it for you — groceries, gym and everyday errands with a punchline.",
-    keywords: ["tote", "bag", "backpack", "duffel"],
-    color: "#8a6f4d",
-  },
-  {
-    slug: "mugs",
-    title: "Mugs",
-    tagline: "Sip happens.",
-    blurb: "Mugs for the sentences you think before coffee. Dishwasher-safe honesty.",
-    keywords: ["mug", "tumbler"],
-    color: "#a9c8c0",
   },
 ] as const;
 
