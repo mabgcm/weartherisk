@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "Terms governing use of Wear The Risk, customer accounts, purchases, payments, shipping, returns and product content.",
   alternates: { canonical: "/terms" },
+  openGraph: { url: absoluteUrl("/terms"), title: "Terms of Service | Wear The Risk", description: "Terms governing use of Wear The Risk, customer accounts, purchases, payments, shipping, returns and product content." },
 };
 
 const sections = [

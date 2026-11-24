@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Our Story",
   description: "Wear The Risk prints the things you think but never say out loud — original statement apparel, mugs and gifts, designed in Canada.",
   alternates: { canonical: "/about" },
+  openGraph: { url: absoluteUrl("/about"), title: "Our Story | Wear The Risk", description: "Wear The Risk prints the things you think but never say out loud — original statement apparel, mugs and gifts, designed in Canada." },
 };
 
 const PRINCIPLES = [

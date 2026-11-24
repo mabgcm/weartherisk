@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Frequently Asked Questions",
   description: "Answers about Wear The Risk orders, shipping, tracking, returns, payments, product care and customer accounts.",
   alternates: { canonical: "/faq" },
+  openGraph: { url: absoluteUrl("/faq"), title: "Frequently Asked Questions | Wear The Risk", description: "Answers about Wear The Risk orders, shipping, tracking, returns, payments, product care and customer accounts." },
 };
 
 const faqs = [

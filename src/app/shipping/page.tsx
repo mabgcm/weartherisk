@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Shipping, Production and Returns",
   description: "Wear The Risk production times, delivery estimates, shipping rates, tracking, damaged-item claims, replacements and refunds.",
   alternates: { canonical: "/shipping" },
+  openGraph: { url: absoluteUrl("/shipping"), title: "Shipping, Production and Returns | Wear The Risk", description: "Wear The Risk production times, delivery estimates, shipping rates, tracking, damaged-item claims, replacements and refunds." },
 };
 
 const sections = [

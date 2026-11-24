@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "How Wear The Risk collects, uses, shares, protects and retains account, order, payment and website analytics information.",
   alternates: { canonical: "/privacy" },
+  openGraph: { url: absoluteUrl("/privacy"), title: "Privacy Policy | Wear The Risk", description: "How Wear The Risk collects, uses, shares, protects and retains account, order, payment and website analytics information." },
 };
 
 const sections = [
