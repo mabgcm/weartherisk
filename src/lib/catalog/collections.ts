@@ -85,6 +85,14 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     color: "#5b8e7d",
   },
   {
+    slug: "hats",
+    title: "Hats",
+    tagline: "Say it on your head.",
+    blurb: "Trucker hats and caps with something to say — embroidered slogans, ranked emblems and zero small talk.",
+    keywords: ["hat", "cap", "trucker"],
+    color: "#457b9d",
+  },
+  {
     slug: "pumpkin-face",
     title: "Pumpkin Face",
     tagline: "The jack-o'-lantern edit.",
