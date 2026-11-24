@@ -387,3 +387,16 @@ body { letter-spacing:.025em; }
 .statement-hero-visual .hero-product-link img { padding:0; }
 .hero-product-caption { background:rgba(255,255,255,.92);font-size:12px; }
 .hero-dots { bottom:72px; }
+
+/* UX fixes 2026-11-24: collections dropdown, filter chips, pagination nav */
+.nav-dropdown { position:relative; }
+.nav-dropdown-menu { display:none; position:absolute; top:100%; left:0; min-width:230px; background:var(--paper); border:1px solid var(--line); padding:8px 0; z-index:60; box-shadow:0 12px 32px rgba(0,0,0,.12); }
+.nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu { display:grid; }
+.nav-dropdown-menu a { padding:9px 18px !important; min-height:36px !important; font-size:13px; }
+.nav-dropdown-menu a:hover { background:rgba(0,0,0,.05); }
+.filter-chips { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 6px; }
+.filter-chips .chip { border:1px solid var(--line); padding:8px 14px; font-size:12.5px; font-weight:600; background:white; color:inherit; }
+.filter-chips .chip[aria-current="true"] { background:var(--ink); color:white; border-color:var(--ink); }
+.filter-group-label { font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; margin:14px 0 6px; }
+.pagination a.page-nav { width:auto; padding:0 16px; }
+.showing-count { font-size:13px; color:rgba(0,0,0,.55); }

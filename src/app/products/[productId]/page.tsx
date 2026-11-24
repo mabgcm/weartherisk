@@ -67,6 +67,11 @@ export default async function ProductPage({ params, searchParams }: Props) {
           <h1 className="mt-3 text-4xl font-medium tracking-tight sm:text-5xl">{product.title}</h1>
           <p className="mt-5 text-lg font-bold">{selected ? `$${(selected.price / 100).toFixed(2)} CAD` : startingPrice === null ? "Currently unavailable" : `From $${(startingPrice / 100).toFixed(2)} CAD`}</p>
           <AddToCart key={`${product.id}-${initialVariant?.id}`} productId={product.id} title={product.title} image={mainImage?.src ?? ""} variants={pickerVariants} optionGroups={optionGroups} initialVariantId={initialVariant?.id} />
+          {/trucker/i.test(product.title)
+            ? <p className="mt-4 text-sm leading-6 text-black/60">One size — adjustable snapback closure.</p>
+            : /\bcap\b/i.test(product.title)
+              ? <p className="mt-4 text-sm leading-6 text-black/60">Cap sizing: S/M fits head circumference 21¼–22¾ in · L/XL fits 22⅜–23⅞ in.</p>
+              : null}
           <p className="mt-4 text-sm leading-6 text-black/60">Ships to Canada and the United States. Free standard shipping on merchandise subtotals of $75 CAD or more; otherwise $7.99 CAD. <Link href="/shipping" className="underline">Shipping &amp; returns</Link>.</p>
           <details className="product-description"><summary>Product details & care</summary><p>{description}</p></details>
           <div className="mt-8 grid grid-cols-3 gap-3 border-t border-black/10 pt-6 text-center text-xs font-bold"><span>Original design</span><span>Secure checkout</span><span>Quality print</span></div>
