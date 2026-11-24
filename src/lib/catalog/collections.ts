@@ -64,7 +64,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     slug: "wow",
     title: "WoW",
     tagline: "For the Horde. For the Alliance.",
-    blurb: "Gamer / WoW — the classic PvP rank helmet series, embroidered. Rank 12 Marshal / General, Rank 13 Field Marshal / Warlord, Rank 14 Grand Marshal / High Warlord.",
+    blurb: "Gamer / WoW — the complete classic PvP rank series, embroidered. Every rank from Private / Scout up to Grand Marshal / High Warlord.",
     keywords: ["wow"],
     excludeKeywords: NON_APPAREL_KEYWORDS,
     color: "#f0b429",
