@@ -20,11 +20,6 @@ function productImage(product: PrintifyProduct) {
   return product.images.find((image) => image.is_default) ?? product.images[0];
 }
 
-/** Baby/toddler products stay out of the hero spotlight. */
-function isBabyProduct(product: PrintifyProduct) {
-  return /bodysuit|baby|infant|toddler|newborn/i.test(`${product.title} ${(product.tags ?? []).join(" ")}`);
-}
-
 /** Deterministic weekly pick so the "phrase of the week" rotates every Monday. */
 function phraseOfTheWeek(products: PrintifyProduct[]): PrintifyProduct | undefined {
   if (!products.length) return undefined;
@@ -41,12 +36,6 @@ export default async function Home() {
   const phrase = phraseOfTheWeek(products);
   const phraseImage = phrase && productImage(phrase);
   const populatedCategories = categories.filter((category) => productsForStoreCategory(products, category).length);
-  const heroSlides = products.filter((product) => !isBabyProduct(product)).slice(0, 3).map((product) => ({
-    id: product.id,
-    title: product.title,
-    image: productImage(product)?.src,
-  }));
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -62,7 +51,7 @@ export default async function Home() {
   return (
     <main className="store-home">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <StatementHero slides={heroSlides} />
+      <StatementHero />
 
       <div className="store-benefits" aria-label="Shopping information">
         <span>Original designs</span><span>Canada & United States</span><span>Free shipping $75+ CAD</span>

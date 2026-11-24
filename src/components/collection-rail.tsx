@@ -48,7 +48,7 @@ export function CollectionRail({ collection, products }: CollectionRailProps) {
     <section className="collection-rail" aria-labelledby={`rail-${collection.slug}`}>
       <div className="rail-heading">
         <div>
-          <p className="eyebrow" style={{ color: collection.color }}>{collection.tagline}</p>
+          <p className="eyebrow">{collection.tagline}</p>
           <h2 id={`rail-${collection.slug}`}>{collection.title}</h2>
         </div>
         <div className="rail-actions">

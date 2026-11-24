@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { DM_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
@@ -9,7 +9,7 @@ import { getStorefrontCatalog } from "@/lib/catalog/storefront";
 import { STORE_CATEGORIES } from "@/lib/catalog/categories";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, absoluteUrl, safeJsonLd } from "@/lib/seo";
 
-const sans = DM_Sans({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: `${SITE_NAME} | Original Statement Designs`, template: `%s | ${SITE_NAME}` },

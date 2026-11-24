@@ -31,7 +31,7 @@ export function ProductGallery({ title, images }: ProductGalleryProps) {
 
   return (
     <div className="product-gallery">
-      <div className="product-gallery-main relative aspect-[4/3] overflow-hidden rounded-lg bg-white">
+      <div className="product-gallery-main relative aspect-[4/3] overflow-hidden rounded-none bg-white">
         <Image
           src={selectedImage.src}
           alt={`${title} main view`}
@@ -49,7 +49,7 @@ export function ProductGallery({ title, images }: ProductGalleryProps) {
               type="button"
               ref={(element) => { thumbRefs.current[index] = element; }}
               onClick={() => setSelectedIndex(index)}
-              className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-lg bg-white border sm:w-24 ${
+              className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-none bg-white border sm:w-24 ${
                 index === selectedIndex
                   ? "border-emerald-700"
                   : "border-transparent hover:border-black/20"

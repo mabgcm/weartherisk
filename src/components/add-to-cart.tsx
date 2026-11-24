@@ -34,7 +34,7 @@ export function AddToCart({ productId, title, image, variants, initialVariantId,
   const { addItem } = useCart();
   const router = useRouter();
 
-  if (!selected) return <p className="rounded-lg bg-red-50 p-4 text-red-700">This product is currently unavailable.</p>;
+  if (!selected) return <p className="rounded bg-red-50 p-4 text-red-700">This product is currently unavailable.</p>;
   // Narrowed once: closures below capture `current`, which TypeScript knows is defined.
   const current = selected;
 

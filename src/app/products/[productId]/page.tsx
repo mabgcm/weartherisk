@@ -64,7 +64,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
         <ProductGallery key={`${product.id}-${initialVariant?.id}`} title={product.title} images={images} />
         <div className="lg:sticky lg:top-28 lg:self-start">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Original design</p>
-          <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">{product.title}</h1>
+          <h1 className="mt-3 text-4xl font-medium tracking-tight sm:text-5xl">{product.title}</h1>
           <p className="mt-5 text-lg font-bold">{selected ? `$${(selected.price / 100).toFixed(2)} CAD` : startingPrice === null ? "Currently unavailable" : `From $${(startingPrice / 100).toFixed(2)} CAD`}</p>
           <AddToCart key={`${product.id}-${initialVariant?.id}`} productId={product.id} title={product.title} image={mainImage?.src ?? ""} variants={pickerVariants} optionGroups={optionGroups} initialVariantId={initialVariant?.id} />
           <p className="mt-4 text-sm leading-6 text-black/60">Ships to Canada and the United States. Free standard shipping on merchandise subtotals of $75 CAD or more; otherwise $7.99 CAD. <Link href="/shipping" className="underline">Shipping &amp; returns</Link>.</p>
