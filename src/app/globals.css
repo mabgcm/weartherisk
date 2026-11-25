@@ -400,3 +400,10 @@ body { letter-spacing:.025em; }
 .filter-group-label { font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; margin:14px 0 6px; }
 .pagination a.page-nav { width:auto; padding:0 16px; }
 .showing-count { font-size:13px; color:rgba(0,0,0,.55); }
+
+/* Mobile header (2026-11-25): logo at the left edge instead of centered. */
+@media (max-width:899px) {
+  .header-inner { grid-template-columns:auto 1fr; }
+  .brand-logo { grid-column:1; justify-self:start; }
+  .utility-nav { grid-column:2; }
+}
