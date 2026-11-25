@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { PrintifyProduct } from "@/lib/printify/client";
 import { productsForStoreCategory } from "@/lib/catalog/categories";
-import { activeCollections, collectionBySlug, newArrivals, productsForCollection } from "@/lib/catalog/collections";
+import { GIFT_COLLECTION_SLUGS, HOMEPAGE_COLLECTION_SLUGS, activeCollections, collectionBySlug, newArrivals, productsForCollection } from "@/lib/catalog/collections";
 import { getStorefrontCatalog } from "@/lib/catalog/storefront";
 import { SITE_NAME, absoluteUrl, safeJsonLd } from "@/lib/seo";
 import { StatementHero } from "@/components/statement-hero";
@@ -77,7 +77,14 @@ function wowHeroSlides(products: PrintifyProduct[]) {
 
 export default async function Home() {
   const { products, categories } = await getStorefrontCatalog().catch(() => ({ products: [], categories: [] }));
-  const collections = activeCollections(products);
+  const active = activeCollections(products);
+  const bySlug = new Map(active.map((entry) => [entry.collection.slug, entry]));
+  const inOrder = (slugs: readonly string[]) => slugs.flatMap((slug) => {
+    const entry = bySlug.get(slug);
+    return entry ? [entry] : [];
+  });
+  const collections = inOrder(HOMEPAGE_COLLECTION_SLUGS);
+  const giftCollections = inOrder(GIFT_COLLECTION_SLUGS);
   const heroSlides = [...christmasHeroSlides(products).slice(0, 1), ...wowHeroSlides(products)];
   const fresh = newArrivals(products, 8);
   const phrase = phraseOfTheWeek(products);
@@ -107,6 +114,14 @@ export default async function Home() {
       {collections.length > 0 && (
         <div id="collections">
           {collections.map(({ collection, products: items }) => (
+            <CollectionRail key={collection.slug} collection={collection} products={items} />
+          ))}
+        </div>
+      )}
+
+      {giftCollections.length > 0 && (
+        <div id="gifts">
+          {giftCollections.map(({ collection, products: items }) => (
             <CollectionRail key={collection.slug} collection={collection} products={items} />
           ))}
         </div>

@@ -8,15 +8,24 @@ import { useAuth, useCart } from "@/components/providers";
 import { AnnouncementTicker } from "@/components/announcement-ticker";
 
 const COLLECTION_LINKS = [
+  { slug: "halloween", title: "Halloween" },
   { slug: "christmas", title: "Christmas" },
   { slug: "entrepreneur", title: "Entrepreneur" },
-  { slug: "gamer", title: "Gamer" },
   { slug: "wow", title: "WoW" },
-  { slug: "gifts-for-gamers", title: "Gifts for Gamers" },
+  { slug: "league-of-legends", title: "LoL" },
+];
+
+const PRODUCT_LINKS = [
   { slug: "hats", title: "Hats" },
   { slug: "mugs", title: "Mugs" },
   { slug: "bags", title: "Bags" },
   { slug: "car-magnets", title: "Car Magnets" },
+];
+
+const GIFT_LINKS = [
+  { slug: "christmas-gifts", title: "Christmas Gifts" },
+  { slug: "gifts-for-wow-gamers", title: "Gifts for WoW Gamers" },
+  { slug: "gifts-for-lol-gamers", title: "Gifts for LoL Gamers" },
 ];
 
 interface SiteHeaderProps {
@@ -63,7 +72,7 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
     <header className="site-header">
       <div className="header-inner">
         <Link href="/" className="brand-logo" aria-label="Wear The Risk home"><Image src={logo} alt="Wear The Risk" sizes="130px" preload /></Link>
-        <nav className="desktop-nav" aria-label="Shop navigation"><div className="nav-dropdown"><Link href="/#collections" className="nav-dropdown-toggle" aria-haspopup="true">Collections</Link><div className="nav-dropdown-menu">{COLLECTION_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><Link href="/collections/wow">WoW</Link><Link href="/collections/gifts-for-gamers">Gifts</Link><Link href="/about">Our story</Link></nav>
+        <nav className="desktop-nav" aria-label="Shop navigation"><div className="nav-dropdown"><Link href="/#collections" className="nav-dropdown-toggle" aria-haspopup="true">Collections</Link><div className="nav-dropdown-menu">{COLLECTION_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><div className="nav-dropdown"><Link href="/#collections" className="nav-dropdown-toggle" aria-haspopup="true">Products</Link><div className="nav-dropdown-menu">{PRODUCT_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><div className="nav-dropdown"><Link href="/#gifts" className="nav-dropdown-toggle" aria-haspopup="true">Gifts</Link><div className="nav-dropdown-menu">{GIFT_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><Link href="/about">Our story</Link></nav>
         <nav className="utility-nav" aria-label="Account navigation">
           <form className="header-search" role="search" action="/search" method="get">
             <label className="sr-only" htmlFor="header-search">Search products</label>
@@ -95,6 +104,8 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
           <Link href="/#shop" onClick={closeMenu}>Shop all </Link>
           <Link href="/#collections" onClick={closeMenu}>Collections </Link>
           {COLLECTION_LINKS.map((link) => <Link href={`/collections/${link.slug}`} key={link.slug} onClick={closeMenu}>{link.title}<span>→</span></Link>)}
+          {PRODUCT_LINKS.map((link) => <Link href={`/collections/${link.slug}`} key={link.slug} onClick={closeMenu}>{link.title}<span>→</span></Link>)}
+          {GIFT_LINKS.map((link) => <Link href={`/collections/${link.slug}`} key={link.slug} onClick={closeMenu}>{link.title}<span>→</span></Link>)}
           {categories.map((category) => <Link href={`/categories/${category.slug}`} key={category.slug} onClick={closeMenu}>{category.title}<span>→</span></Link>)}
           <Link href="/about" onClick={closeMenu}>Our story <span>→</span></Link>
         </nav>

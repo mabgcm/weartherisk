@@ -57,7 +57,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "GG go next.",
     blurb: "For ranked grinders and tilt survivors. Sarcastic gamer statements — keep calm and blame the jungler, printed.",
     keywords: ["gamer", "gaming", "gg", "noob", "respawn", "moba", "esports", "tilt", "jungler", "ranked", "clutch"],
-    excludeKeywords: NON_APPAREL_KEYWORDS,
+    excludeKeywords: [...NON_APPAREL_KEYWORDS, "lol", "league of legends"],
     color: "#7b2ff7",
   },
   {
@@ -70,12 +70,38 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     color: "#f0b429",
   },
   {
-    slug: "gifts-for-gamers",
-    title: "Gifts for Gamers",
-    tagline: "For the gamer who has everything but this.",
-    blurb: "Gift-ready picks for gamers — WoW rank, class and slogan caps, legendary weapons, mugs and more. Made to order, designed to be noticed.",
-    keywords: ["wow", "gamer", "gaming", "league of legends", "esports", "moba", "jungler"],
-    color: "#2a9d8f",
+    slug: "league-of-legends",
+    title: "LoL",
+    tagline: "Your rank, worn properly.",
+    blurb: "Gamer / LoL — the complete League of Legends rank series, Iron to Challenger, on Richardson 112 truckers. Embroidered or full-colour printed, with the original crest artwork.",
+    keywords: ["lol", "league of legends"],
+    excludeKeywords: NON_APPAREL_KEYWORDS,
+    color: "#0397ab",
+  },
+  {
+    slug: "christmas-gifts",
+    title: "Christmas Gifts",
+    tagline: "Gifts that say the thing.",
+    blurb: "Gift-ready Christmas picks — holiday statements on apparel, mugs, bags and more. Made to order, designed to be noticed.",
+    keywords: ["christmas", "xmas", "santa"],
+    seasonal: true,
+    color: "#a41623",
+  },
+  {
+    slug: "gifts-for-wow-gamers",
+    title: "Gifts for WoW Gamers",
+    tagline: "For the WoW player who has everything but this.",
+    blurb: "Gift-ready picks for World of Warcraft players — rank, class and slogan caps, legendary weapons, mugs and more. Made to order, designed to be noticed.",
+    keywords: ["wow"],
+    color: "#f0b429",
+  },
+  {
+    slug: "gifts-for-lol-gamers",
+    title: "Gifts for LoL Gamers",
+    tagline: "For the LoL player who has everything but this.",
+    blurb: "Gift-ready picks for League of Legends players — every rank crest from Iron to Challenger on hats, mugs, tech cases, stickers and more. Made to order, designed to be noticed.",
+    keywords: ["lol", "league of legends"],
+    color: "#0397ab",
   },
   {
     slug: "bags",
@@ -178,6 +204,40 @@ export function collectionBySlug(slug: string): ThemeCollection | undefined {
 export function activeCollections(products: PrintifyProduct[]): Array<{ collection: ThemeCollection; products: PrintifyProduct[] }> {
   return THEME_COLLECTIONS.map((collection) => ({ collection, products: productsForCollection(products, collection) }))
     .filter((entry) => entry.products.length > 0);
+}
+
+/** Product-type collections shown under the Products menu. */
+export const PRODUCT_COLLECTION_SLUGS = ["hats", "mugs", "bags", "car-magnets"] as const;
+
+/** Display themes, in navigation order, used to group product collections (e.g. "WoW Bags"). */
+export const PRODUCT_THEME_SLUGS = ["halloween", "christmas", "entrepreneur", "wow", "league-of-legends"] as const;
+
+/** Gift collections shown under the Gifts menu and the homepage gifts section. */
+export const GIFT_COLLECTION_SLUGS = ["christmas-gifts", "gifts-for-wow-gamers", "gifts-for-lol-gamers"] as const;
+
+/** Collections listed on the homepage collections section: display themes first, then product types. */
+export const HOMEPAGE_COLLECTION_SLUGS = [...PRODUCT_THEME_SLUGS, ...PRODUCT_COLLECTION_SLUGS] as const;
+
+const HALLOWEEN_GROUP_KEYWORDS = [
+  "halloween", "spooky", "witch", "vampire", "candy", "costume", "horror", "october", "trick", "boo", "creepy", "scary", "terror", "monster", "eerie",
+  "pumpkin", "jack-o-lantern", "jack o lantern", "ghost", "phantom", "specter", "spectre", "haunted", "mummy",
+];
+
+/**
+ * Display theme a product belongs to, for grouping product collections
+ * (e.g. the Bags page groups into WoW Bags, LoL Bags, Christmas Bags).
+ * Unlike productsForCollection this ignores the apparel-only exclusions:
+ * a Christmas mug is still a Christmas product here.
+ */
+export function themeSlugForProduct(product: PrintifyProduct): string | undefined {
+  const text = haystack(product);
+  const hits = (keywords: readonly string[]) => keywords.some((keyword) => keywordMatches(text, keyword));
+  if (hits(["lol", "league of legends"])) return "league-of-legends";
+  if (hits(["wow"])) return "wow";
+  if (hits(["christmas", "xmas", "santa"])) return "christmas";
+  if (hits(HALLOWEEN_GROUP_KEYWORDS)) return "halloween";
+  if (hits(["startup", "entrepreneur", "investor", "investors", "founder", "funding", "hustle", "ceo", "seed"])) return "entrepreneur";
+  return undefined;
 }
 
 /** Most recently updated products, for the "new arrivals" rail. */
