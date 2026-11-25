@@ -3,35 +3,24 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { PrintifyProduct } from "@/lib/printify/client";
+import type { CardProduct } from "@/lib/catalog/card";
 import type { ThemeCollection } from "@/lib/catalog/collections";
 
-function productImage(product: PrintifyProduct) {
-  return product.images.find((image) => image.is_default) ?? product.images[0];
-}
-
-function productPrice(product: PrintifyProduct) {
-  const variants = product.variants.filter((variant) => variant.is_enabled && variant.is_available);
-  return variants.length ? Math.min(...variants.map((variant) => variant.price)) / 100 : null;
-}
-
-export function ProductCard({ product }: { product: PrintifyProduct }) {
-  const image = productImage(product);
-  const price = productPrice(product);
+export function ProductCard({ product }: { product: CardProduct }) {
   return (
     <Link href={`/products/${product.id}`} className="risk-product-card">
       <div className="risk-product-image">
-        {image && <Image src={image.src} alt={product.title} fill sizes="(min-width: 1100px) 25vw, (min-width: 650px) 33vw, 50vw" className="object-contain" />}
+        {product.image && <Image src={product.image} alt={product.title} fill sizes="(min-width: 1100px) 25vw, (min-width: 650px) 33vw, 50vw" className="object-contain" />}
       </div>
       <h3>{product.title}</h3>
-      <p>{price === null ? "See available options" : `From $${price.toFixed(2)}`}</p>
+      <p>{product.price === null ? "See available options" : `From $${product.price.toFixed(2)}`}</p>
     </Link>
   );
 }
 
 interface CollectionRailProps {
   collection: ThemeCollection;
-  products: PrintifyProduct[];
+  products: CardProduct[];
 }
 
 /** One collection as a horizontal product strip: 4 visible, arrow buttons to scroll sideways. */

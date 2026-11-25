@@ -5,11 +5,12 @@ import type { PrintifyProduct } from "@/lib/printify/client";
 import { productsForStoreCategory } from "@/lib/catalog/categories";
 import { GIFT_COLLECTION_SLUGS, HOMEPAGE_COLLECTION_SLUGS, activeCollections, collectionBySlug, newArrivals, productsForCollection } from "@/lib/catalog/collections";
 import { getStorefrontCatalog } from "@/lib/catalog/storefront";
+import { toCardProduct } from "@/lib/catalog/card";
 import { SITE_NAME, absoluteUrl, safeJsonLd } from "@/lib/seo";
 import { StatementHero } from "@/components/statement-hero";
 import { CollectionRail, ProductCard } from "@/components/collection-rail";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 export const metadata: Metadata = {
   title: { absolute: "Wear The Risk | Say It Like You Mean It – Original Statement Gifts" },
   description: "Original statement apparel, mugs, art prints and gifts. The things you think but never say out loud. Wear The Risk.",
@@ -114,7 +115,7 @@ export default async function Home() {
       {collections.length > 0 && (
         <div id="collections">
           {collections.map(({ collection, products: items }) => (
-            <CollectionRail key={collection.slug} collection={collection} products={items} />
+            <CollectionRail key={collection.slug} collection={collection} products={items.slice(0, 16).map(toCardProduct)} />
           ))}
         </div>
       )}
@@ -122,7 +123,7 @@ export default async function Home() {
       {giftCollections.length > 0 && (
         <div id="gifts">
           {giftCollections.map(({ collection, products: items }) => (
-            <CollectionRail key={collection.slug} collection={collection} products={items} />
+            <CollectionRail key={collection.slug} collection={collection} products={items.slice(0, 16).map(toCardProduct)} />
           ))}
         </div>
       )}
@@ -137,7 +138,7 @@ export default async function Home() {
             <Link href="/search?sort=new" className="text-link">View all <span aria-hidden="true">→</span></Link>
           </div>
           <div className="fresh-rail">
-            {fresh.map((product) => <ProductCard key={product.id} product={product} />)}
+            {fresh.map((product) => <ProductCard key={product.id} product={toCardProduct(product)} />)}
           </div>
         </section>
       )}
@@ -175,7 +176,7 @@ export default async function Home() {
         )}
         {products.length ? (
           <div id="product-grid" className="risk-product-grid">
-            {products.slice(0, 8).map((product) => <ProductCard key={product.id} product={product} />)}
+            {products.slice(0, 8).map((product) => <ProductCard key={product.id} product={toCardProduct(product)} />)}
           </div>
         ) : (
           <div className="risk-empty">
