@@ -13,6 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const collections = activeCollections(products);
   return [
     { url: SITE_URL, changeFrequency: "daily" as const, priority: 1 },
+    { url: `${SITE_URL}/shop`, changeFrequency: "daily" as const, priority: 0.9 },
     ...collections.map(({ collection }) => ({ url: `${SITE_URL}/collections/${collection.slug}`, changeFrequency: "weekly" as const, priority: 0.85 })),
     ...populatedCategories.map((category) => ({ url: `${SITE_URL}/categories/${category.slug}`, changeFrequency: "weekly" as const, priority: 0.8 })),
     ...products.map((product) => ({ url: `${SITE_URL}/products/${product.id}`, changeFrequency: "weekly" as const, priority: 0.7, images: productImages(product).slice(0, 4).map((image) => image.src), ...(product.updated_at && !Number.isNaN(Date.parse(product.updated_at)) ? { lastModified: new Date(product.updated_at) } : {}) })),
