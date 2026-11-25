@@ -16,10 +16,16 @@ const COLLECTION_LINKS = [
 ];
 
 const PRODUCT_LINKS = [
-  { slug: "hats", title: "Hats" },
-  { slug: "mugs", title: "Mugs" },
-  { slug: "bags", title: "Bags" },
-  { slug: "car-magnets", title: "Car Magnets" },
+  { title: "Apparel", href: "/shop?type=Apparel" },
+  { title: "Caps", href: "/shop?type=Caps" },
+  { title: "Trucker hats", href: "/shop?type=Trucker%20hats" },
+  { title: "Mugs", href: "/shop?type=Mugs" },
+  { title: "Tumblers", href: "/shop?type=Tumblers" },
+  { title: "Bags", href: "/shop?type=Bags" },
+  { title: "Phone cases", href: "/shop?type=Phone%20cases" },
+  { title: "Stickers & decals", href: "/shop?type=Stickers%20%26%20decals" },
+  { title: "Car magnets", href: "/shop?type=Car%20magnets" },
+  { title: "Accessories", href: "/shop?type=Accessories" },
 ];
 
 const GIFT_LINKS = [
@@ -72,7 +78,7 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
     <header className="site-header">
       <div className="header-inner">
         <Link href="/" className="brand-logo" aria-label="Wear The Risk home"><Image src={logo} alt="Wear The Risk" sizes="130px" preload /></Link>
-        <nav className="desktop-nav" aria-label="Shop navigation"><div className="nav-dropdown"><Link href="/#collections" className="nav-dropdown-toggle" aria-haspopup="true">Collections</Link><div className="nav-dropdown-menu">{COLLECTION_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><div className="nav-dropdown"><Link href="/shop" className="nav-dropdown-toggle" aria-haspopup="true">Products</Link><div className="nav-dropdown-menu"><Link href="/shop">All Products</Link>{PRODUCT_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><div className="nav-dropdown"><Link href="/#gifts" className="nav-dropdown-toggle" aria-haspopup="true">Gifts</Link><div className="nav-dropdown-menu">{GIFT_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><Link href="/about">Our story</Link></nav>
+        <nav className="desktop-nav" aria-label="Shop navigation"><div className="nav-dropdown"><Link href="/#collections" className="nav-dropdown-toggle" aria-haspopup="true">Collections</Link><div className="nav-dropdown-menu">{COLLECTION_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><div className="nav-dropdown"><Link href="/shop" className="nav-dropdown-toggle" aria-haspopup="true">Products</Link><div className="nav-dropdown-menu"><Link href="/shop">All Products</Link>{PRODUCT_LINKS.map((link) => <Link key={link.title} href={link.href}>{link.title}</Link>)}</div></div><div className="nav-dropdown"><Link href="/#gifts" className="nav-dropdown-toggle" aria-haspopup="true">Gifts</Link><div className="nav-dropdown-menu">{GIFT_LINKS.map((link) => <Link key={link.slug} href={`/collections/${link.slug}`}>{link.title}</Link>)}</div></div><Link href="/about">Our story</Link></nav>
         <nav className="utility-nav" aria-label="Account navigation">
           <form className="header-search" role="search" action="/search" method="get">
             <label className="sr-only" htmlFor="header-search">Search products</label>
@@ -104,7 +110,7 @@ export function SiteHeader({ categories }: SiteHeaderProps) {
           <Link href="/shop" onClick={closeMenu}>Shop all </Link>
           <Link href="/#collections" onClick={closeMenu}>Collections </Link>
           {COLLECTION_LINKS.map((link) => <Link href={`/collections/${link.slug}`} key={link.slug} onClick={closeMenu}>{link.title}<span>→</span></Link>)}
-          {PRODUCT_LINKS.map((link) => <Link href={`/collections/${link.slug}`} key={link.slug} onClick={closeMenu}>{link.title}<span>→</span></Link>)}
+          {PRODUCT_LINKS.map((link) => <Link href={link.href} key={link.title} onClick={closeMenu}>{link.title}<span>→</span></Link>)}
           {GIFT_LINKS.map((link) => <Link href={`/collections/${link.slug}`} key={link.slug} onClick={closeMenu}>{link.title}<span>→</span></Link>)}
           {categories.map((category) => <Link href={`/categories/${category.slug}`} key={category.slug} onClick={closeMenu}>{category.title}<span>→</span></Link>)}
           <Link href="/about" onClick={closeMenu}>Our story <span>→</span></Link>

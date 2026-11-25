@@ -3,10 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import type { PrintifyProduct } from "@/lib/printify/client";
 import { SortSelect } from "@/components/sort-select";
+import { PRODUCT_THEME_SLUGS, collectionBySlug, themeSlugForProduct } from "@/lib/catalog/collections";
 import { getStorefrontCatalog } from "@/lib/catalog/storefront";
 import { SITE_NAME, absoluteUrl, metaDescription, safeJsonLd } from "@/lib/seo";
 
-interface Props { searchParams: Promise<{ sort?: string; page?: string; type?: string }> }
+interface Props { searchParams: Promise<{ sort?: string; page?: string; type?: string; theme?: string }> }
 
 function imageFor(product?: PrintifyProduct) { return product?.images.find((image) => image.is_default) ?? product?.images[0]; }
 function priceFor(product: PrintifyProduct) { const prices = product.variants.filter((variant) => variant.is_enabled && variant.is_available).map((variant) => variant.price); return prices.length ? Math.min(...prices) : null; }
@@ -55,15 +56,20 @@ export default async function ShopPage({ searchParams }: Props) {
   const presentTypes = new Set(allProducts.map(typeOf));
   const typeOptions = TYPE_ORDER.filter((type) => presentTypes.has(type));
   const activeType = query.type && typeOptions.includes(query.type) ? query.type : undefined;
-  const products = allProducts.filter((product) => !activeType || typeOf(product) === activeType);
+  const inType = allProducts.filter((product) => !activeType || typeOf(product) === activeType);
+  const themeOptions = PRODUCT_THEME_SLUGS.filter((themeSlug) => inType.some((product) => themeSlugForProduct(product) === themeSlug));
+  const activeTheme = query.theme && (themeOptions as readonly string[]).includes(query.theme) ? query.theme : undefined;
+  const products = inType.filter((product) => !activeTheme || themeSlugForProduct(product) === activeTheme);
 
-  const pageHref = (overrides: { page?: number; sort?: string; type?: string }) => {
+  const pageHref = (overrides: { page?: number; sort?: string; type?: string; theme?: string }) => {
     const params = new URLSearchParams();
     const sort = overrides.sort !== undefined ? overrides.sort : query.sort;
     const type = overrides.type !== undefined ? overrides.type : activeType;
+    const theme = overrides.theme !== undefined ? overrides.theme : activeTheme;
     const targetPage = overrides.page !== undefined ? overrides.page : 1;
     if (sort) params.set("sort", sort);
     if (type) params.set("type", type);
+    if (theme) params.set("theme", theme);
     if (targetPage > 1) params.set("page", String(targetPage));
     const qs = params.toString();
     return `/shop${qs ? `?${qs}` : ""}#products`;
@@ -131,6 +137,17 @@ export default async function ShopPage({ searchParams }: Props) {
                 <Link className="chip" aria-current={!activeType} href={pageHref({ type: "" })}>All types</Link>
                 {typeOptions.map((option) => (
                   <Link key={option} className="chip" aria-current={activeType === option} href={pageHref({ type: option })}>{option}</Link>
+                ))}
+              </div>
+            </>
+          )}
+          {themeOptions.length > 0 && (
+            <>
+              <p className="filter-group-label" id="theme-filter-label">Collection</p>
+              <div className="filter-chips" role="group" aria-labelledby="theme-filter-label">
+                <Link className="chip" aria-current={!activeTheme} href={pageHref({ theme: "" })}>All collections</Link>
+                {themeOptions.map((themeSlug) => (
+                  <Link key={themeSlug} className="chip" aria-current={activeTheme === themeSlug} href={pageHref({ theme: themeSlug })}>{collectionBySlug(themeSlug)?.title}</Link>
                 ))}
               </div>
             </>
