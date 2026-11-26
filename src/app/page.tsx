@@ -10,7 +10,7 @@ import { SITE_NAME, absoluteUrl, safeJsonLd } from "@/lib/seo";
 import { StatementHero } from "@/components/statement-hero";
 import { CollectionRail, ProductCard } from "@/components/collection-rail";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 export const metadata: Metadata = {
   title: { absolute: "Wear The Risk | Say It Like You Mean It – Original Statement Gifts" },
   description: "Original statement apparel, mugs, art prints and gifts. The things you think but never say out loud. Wear The Risk.",
