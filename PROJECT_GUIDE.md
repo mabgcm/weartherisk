@@ -294,3 +294,5 @@ Products-menu follow-up (2026-11-25): the header Products dropdown now lists eve
 Mobile logo follow-up (2026-11-25): on screens under 900px the header logo now sits at the left edge (`.header-inner` becomes `auto 1fr`, logo in column 1) instead of the centered desktop placement; the utility nav stays right. Desktop header unchanged.
 
 Performance pass (2026-11-25): the homepage was `force-dynamic` and serialized whole Printify products into every rail (9.8 MB HTML, ~5 s TTFB). It is now ISR (`revalidate = 300`, matching the Printify data-cache TTL) and its rails/cards receive slim `CardProduct` DTOs (`src/lib/catalog/card.ts`: id, title, default image, from-price) with each rail capped at 16 items — "View all" still leads to the full collection page. `getPrintifyProducts` now pages at `limit=100` (the API maximum) instead of 50, so a cold catalog fetch is a handful of requests. Product cards elsewhere already render server-side and were left alone.
+
+Deployment note (2026-11-25): the first ISR build appeared slow to roll out on Vercel; this line retriggers a fresh deployment.
