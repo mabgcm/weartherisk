@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images-api.printify.com",
       },
+      {
+        protocol: "https",
+        hostname: "8ldzqw5nhl4tvlis.public.blob.vercel-storage.com",
+      },
     ],
   },
   turbopack: {

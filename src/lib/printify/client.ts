@@ -1,5 +1,7 @@
 import "server-only";
 
+import { STUDIO_ANGLES, STUDIO_BLOB_BASE, STUDIO_SET_VARIANTS } from "./studio-sets";
+
 const PRINTIFY_API_URL = "https://api.printify.com/v1";
 
 export interface PrintifyImage {
@@ -222,8 +224,28 @@ function cameraLabel(image: PrintifyImage): string {
  * within each variant, order studio front/back ahead of the person shots and
  * mark the studio front shot as the default image.
  */
+/**
+ * AI studio sets are hosted on Vercel Blob (Printify does not accept
+ * external gallery images). For a product with a set, prepend the five
+ * studio shots — tagged with the variant they depict — so cards and the
+ * gallery lead with the studio hero while Printify mockups stay behind them.
+ */
+function studioImagesFor(product: PrintifyProduct): PrintifyImage[] {
+  const variantId = STUDIO_SET_VARIANTS[product.id];
+  if (variantId === undefined) return [];
+  return STUDIO_ANGLES.map((angle, index) => ({
+    src: `${STUDIO_BLOB_BASE}/${product.id}-${angle}.webp`,
+    position: `studio-${angle}`,
+    is_default: index === 0,
+    variant_ids: [variantId],
+  }));
+}
+
 function normalizeHatImages(product: PrintifyProduct): PrintifyProduct {
-  if (!HAT_TITLE_PATTERN.test(product.title)) return product;
+  if (!HAT_TITLE_PATTERN.test(product.title)) {
+    const studio = studioImagesFor(product);
+    return studio.length ? { ...product, images: [...studio, ...product.images] } : product;
+  }
   const rank = (image: PrintifyImage) => {
     const idx = CAMERA_PRIORITY.indexOf(cameraLabel(image));
     return idx === -1 ? CAMERA_PRIORITY.length : idx;
@@ -239,7 +261,8 @@ function normalizeHatImages(product: PrintifyProduct): PrintifyProduct {
       .sort((a, b) => rank(a) - rank(b))
       .map((image) => ({ ...image, is_default: cameraLabel(image) === "front" })),
   );
-  return { ...product, images };
+  const studio = studioImagesFor(product);
+  return { ...product, images: [...studio, ...images] };
 }
 
 export async function getPrintifyProducts(): Promise<PrintifyProduct[]> {
