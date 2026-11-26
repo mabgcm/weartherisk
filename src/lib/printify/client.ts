@@ -206,6 +206,42 @@ async function printifyRequest<T>(path: string, init?: RequestInit): Promise<T> 
   return (body ? JSON.parse(body) : undefined) as T;
 }
 
+const HAT_TITLE_PATTERN = /\b(hat|cap|trucker)\b/i;
+const CAMERA_PRIORITY = ["front", "back", "person-1-front", "person-1-back", "person-2-front", "person-2-back"];
+
+function cameraLabel(image: PrintifyImage): string {
+  const match = image.src.match(/camera_label=([^&]+)/);
+  if (match) return decodeURIComponent(match[1]);
+  return image.position;
+}
+
+/**
+ * Some hat blueprints (e.g. the Yupoong trucker) mark a modelled "person"
+ * mockup as the default image in Printify, and the API does not let us change
+ * that. The storefront rule for hats is studio-first, so normalize here:
+ * within each variant, order studio front/back ahead of the person shots and
+ * mark the studio front shot as the default image.
+ */
+function normalizeHatImages(product: PrintifyProduct): PrintifyProduct {
+  if (!HAT_TITLE_PATTERN.test(product.title)) return product;
+  const rank = (image: PrintifyImage) => {
+    const idx = CAMERA_PRIORITY.indexOf(cameraLabel(image));
+    return idx === -1 ? CAMERA_PRIORITY.length : idx;
+  };
+  const groups = new Map<string, PrintifyImage[]>();
+  for (const image of product.images) {
+    const key = (image.variant_ids ?? []).join(",");
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(image);
+  }
+  const images = [...groups.values()].flatMap((group) =>
+    [...group]
+      .sort((a, b) => rank(a) - rank(b))
+      .map((image) => ({ ...image, is_default: cameraLabel(image) === "front" })),
+  );
+  return { ...product, images };
+}
+
 export async function getPrintifyProducts(): Promise<PrintifyProduct[]> {
   const { shopId } = getPrintifyConfig();
   const firstPage = await printifyRequest<PrintifyProductPage>(
@@ -232,14 +268,16 @@ export async function getPrintifyProducts(): Promise<PrintifyProduct[]> {
       if (seen.has(product.id)) return false;
       seen.add(product.id);
       return true;
-    });
+    })
+    .map(normalizeHatImages);
 }
 
 export async function getPrintifyProduct(productId: string): Promise<PrintifyProduct> {
   const { shopId } = getPrintifyConfig();
-  return printifyRequest<PrintifyProduct>(`/shops/${shopId}/products/${productId}.json`, {
+  const product = await printifyRequest<PrintifyProduct>(`/shops/${shopId}/products/${productId}.json`, {
     next: { revalidate: 300 },
   });
+  return normalizeHatImages(product);
 }
 
 export async function getPrintifyOrders(page = 1): Promise<PrintifyOrderPage> {
