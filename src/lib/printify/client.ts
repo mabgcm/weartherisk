@@ -209,14 +209,14 @@ async function printifyRequest<T>(path: string, init?: RequestInit): Promise<T> 
 export async function getPrintifyProducts(): Promise<PrintifyProduct[]> {
   const { shopId } = getPrintifyConfig();
   const firstPage = await printifyRequest<PrintifyProductPage>(
-    `/shops/${shopId}/products.json?limit=100`,
+    `/shops/${shopId}/products.json?limit=50`,
     { next: { revalidate: 300 } },
   );
 
   const remainingPages = await Promise.all(
     Array.from({ length: Math.max(0, firstPage.last_page - 1) }, (_, index) =>
       printifyRequest<PrintifyProductPage>(
-        `/shops/${shopId}/products.json?limit=100&page=${index + 2}`,
+        `/shops/${shopId}/products.json?limit=50&page=${index + 2}`,
         { next: { revalidate: 300 } },
       ),
     ),
