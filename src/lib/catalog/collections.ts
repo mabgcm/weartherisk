@@ -38,7 +38,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "Sleigh the season, say the thing.",
     blurb: "Holiday statements for people who think it before the eggnog — vintage Santas, honest slogans and zero silent nights.",
     keywords: ["christmas", "xmas", "santa"],
-    excludeKeywords: NON_APPAREL_KEYWORDS,
+    excludeKeywords: [...NON_APPAREL_KEYWORDS, "halloween", "pumpkin", "mummy"],
     seasonal: true,
     color: "#a41623",
   },
@@ -141,7 +141,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "The jack-o'-lantern edit.",
     blurb: "Pumpkin-face designs for Halloween — classic, goofy and glowing. Pick your face for the season.",
     keywords: ["pumpkin", "jack-o-lantern", "jack o lantern"],
-    excludeKeywords: NON_APPAREL_KEYWORDS,
+    excludeKeywords: [...NON_APPAREL_KEYWORDS, "christmas", "xmas", "santa"],
     seasonal: true,
     color: "#f4a259",
   },
@@ -151,7 +151,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "Boo, but make it fashion.",
     blurb: "Ghost designs for the spooky season — friendly frights and haunted humor, printed.",
     keywords: ["ghost", "phantom", "specter", "spectre", "haunted"],
-    excludeKeywords: NON_APPAREL_KEYWORDS,
+    excludeKeywords: [...NON_APPAREL_KEYWORDS, "christmas", "xmas", "santa", "investor", "investors", "startup", "entrepreneur"],
     seasonal: true,
     color: "#b8c0cc",
   },
@@ -161,7 +161,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "Wrapped up in Halloween.",
     blurb: "Mummy-face designs — wrapped, winking and ready for trick or treat.",
     keywords: ["mummy"],
-    excludeKeywords: NON_APPAREL_KEYWORDS,
+    excludeKeywords: [...NON_APPAREL_KEYWORDS, "christmas", "xmas", "santa"],
     seasonal: true,
     color: "#d8cfc0",
   },
@@ -171,7 +171,7 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     tagline: "The rest of the haunted house.",
     blurb: "The remaining Halloween crew — witches, vampires, candy security and costume chaos. Pumpkin, mummy and ghost faces have their own collections; bags, mugs and magnets too.",
     keywords: ["halloween", "spooky", "witch", "vampire", "candy", "costume", "horror", "october", "trick", "boo", "creepy", "scary", "terror", "monster", "eerie"],
-    excludeKeywords: ["pumpkin", "mummy", "ghost", ...NON_APPAREL_KEYWORDS],
+    excludeKeywords: ["pumpkin", "mummy", "ghost", ...NON_APPAREL_KEYWORDS, "christmas", "xmas", "santa"],
     seasonal: true,
     color: "#9b5de5",
   },
@@ -235,8 +235,8 @@ export function themeSlugForProduct(product: PrintifyProduct): string | undefine
   if (hits(["lol", "league of legends"])) return "league-of-legends";
   if (hits(["wow"])) return "wow";
   if (hits(["christmas", "xmas", "santa"])) return "christmas";
-  if (hits(HALLOWEEN_GROUP_KEYWORDS)) return "halloween";
   if (hits(["startup", "entrepreneur", "investor", "investors", "founder", "funding", "hustle", "ceo", "seed"])) return "entrepreneur";
+  if (hits(HALLOWEEN_GROUP_KEYWORDS)) return "halloween";
   return undefined;
 }
 
