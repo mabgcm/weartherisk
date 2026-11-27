@@ -28,4 +28,8 @@ export const PLACEIT_MAIN_IMAGES: Record<string, string> = {
   // senior model on a plain white background (Placeit template 28420, design
   // at 75%). Approved by Matt 2026-11-27.
   "6b09cda63249c47ffd02c500": "6b09cda63249c47ffd02c500-main.webp",
+  // "10 Rules for Dating My Daughter" tee — black shirt, white print,
+  // tattooed middle-aged dad on a plain white background (Placeit template
+  // a16978, design at 90%). Approved by Matt 2026-11-27.
+  "6b09d618d883035a53094844": "6b09d618d883035a53094844-main.webp",
 };
