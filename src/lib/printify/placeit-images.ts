@@ -20,6 +20,8 @@ export const PLACEIT_BLOB_BASE = "https://8ldzqw5nhl4tvlis.public.blob.vercel-st
 
 export const PLACEIT_MAIN_IMAGES: Record<string, string> = {
   // "You Can't Scare Me I Have a Crazy Daughter" tee — black shirt, white
-  // print, dad model (Placeit template a15931). Approved by Matt 2026-11-27.
-  "6b098d354b818ea3e20f5f9e": "6b098d354b818ea3e20f5f9e-main2.webp",
+  // print, dad model on a plain white background (Placeit template a15928;
+  // the street-background a15931 version was replaced on Matt's order —
+  // backgrounds must be empty/plain). Approved by Matt 2026-11-27.
+  "6b098d354b818ea3e20f5f9e": "6b098d354b818ea3e20f5f9e-main3.webp",
 };
