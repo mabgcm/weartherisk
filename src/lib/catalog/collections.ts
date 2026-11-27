@@ -52,6 +52,15 @@ export const THEME_COLLECTIONS: readonly ThemeCollection[] = [
     color: "#e76f51",
   },
   {
+    slug: "dad-stuff",
+    title: "Dad Stuff",
+    tagline: "Dad jokes, worn loud.",
+    blurb: "Funny dad humor on tees, long sleeves and sweatshirts — beautiful daughters, zero cures and getting lucky at his age. The gift he will actually wear.",
+    keywords: ["dad stuff"],
+    excludeKeywords: NON_APPAREL_KEYWORDS,
+    color: "#3d5a80",
+  },
+  {
     slug: "gamer",
     title: "Gamer",
     tagline: "GG go next.",
@@ -210,7 +219,7 @@ export function activeCollections(products: PrintifyProduct[]): Array<{ collecti
 export const PRODUCT_COLLECTION_SLUGS = ["hats", "mugs", "bags", "car-magnets"] as const;
 
 /** Display themes, in navigation order, used to group product collections (e.g. "WoW Bags"). */
-export const PRODUCT_THEME_SLUGS = ["halloween", "christmas", "entrepreneur", "wow", "league-of-legends"] as const;
+export const PRODUCT_THEME_SLUGS = ["halloween", "christmas", "entrepreneur", "dad-stuff", "wow", "league-of-legends"] as const;
 
 /** Gift collections shown under the Gifts menu and the homepage gifts section. */
 export const GIFT_COLLECTION_SLUGS = ["christmas-gifts", "gifts-for-wow-gamers", "gifts-for-lol-gamers"] as const;

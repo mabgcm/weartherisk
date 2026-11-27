@@ -11,6 +11,7 @@ const COLLECTION_LINKS = [
   { slug: "halloween", title: "Halloween" },
   { slug: "christmas", title: "Christmas" },
   { slug: "entrepreneur", title: "Entrepreneur" },
+  { slug: "dad-stuff", title: "Dad Stuff" },
   { slug: "wow", title: "WoW" },
   { slug: "league-of-legends", title: "LoL" },
 ];
