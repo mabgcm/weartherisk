@@ -248,14 +248,18 @@ function studioImagesFor(product: PrintifyProduct): PrintifyImage[] {
  * gallery lead with the Placeit model shot (storefront rule, 2026-11-27).
  */
 function placeitImagesFor(product: PrintifyProduct): PrintifyImage[] {
-  const entry = PLACEIT_MAIN_IMAGES[product.id];
-  if (!entry) return [];
+  const file = PLACEIT_MAIN_IMAGES[product.id];
+  if (!file) return [];
+  // Tag the shot with every enabled variant so it leads the gallery no
+  // matter which variant the product page opens with (storefront rule:
+  // the main image is the Placeit mockup).
+  const variantIds = product.variants.filter((variant) => variant.is_enabled).map((variant) => variant.id);
   return [
     {
-      src: `${PLACEIT_BLOB_BASE}/${entry.file}`,
+      src: `${PLACEIT_BLOB_BASE}/${file}`,
       position: "placeit-main",
       is_default: true,
-      variant_ids: entry.variantIds,
+      variant_ids: variantIds,
     },
   ];
 }
