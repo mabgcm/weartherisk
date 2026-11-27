@@ -24,4 +24,8 @@ export const PLACEIT_MAIN_IMAGES: Record<string, string> = {
   // the street-background a15931 version was replaced on Matt's order —
   // backgrounds must be empty/plain). Approved by Matt 2026-11-27.
   "6b098d354b818ea3e20f5f9e": "6b098d354b818ea3e20f5f9e-main3.webp",
+  // "To My Dear Son-in-Law" tee — black shirt, full-color print, white-beard
+  // senior model on a plain white background (Placeit template 28420, design
+  // at 75%). Approved by Matt 2026-11-27.
+  "6b09cda63249c47ffd02c500": "6b09cda63249c47ffd02c500-main.webp",
 };
