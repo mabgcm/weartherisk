@@ -1,6 +1,7 @@
 import "server-only";
 
 import { STUDIO_ANGLES, STUDIO_BLOB_BASE, STUDIO_SET_VARIANTS } from "./studio-sets";
+import { PLACEIT_BLOB_BASE, PLACEIT_MAIN_IMAGES } from "./placeit-images";
 
 const PRINTIFY_API_URL = "https://api.printify.com/v1";
 
@@ -241,10 +242,28 @@ function studioImagesFor(product: PrintifyProduct): PrintifyImage[] {
   }));
 }
 
+/**
+ * Placeit main images (apparel): for a product with a Placeit mockup,
+ * prepend it — tagged with the variants it depicts — so cards and the
+ * gallery lead with the Placeit model shot (storefront rule, 2026-11-27).
+ */
+function placeitImagesFor(product: PrintifyProduct): PrintifyImage[] {
+  const variantIds = PLACEIT_MAIN_IMAGES[product.id];
+  if (!variantIds) return [];
+  return [
+    {
+      src: `${PLACEIT_BLOB_BASE}/${product.id}-main.webp`,
+      position: "placeit-main",
+      is_default: true,
+      variant_ids: variantIds,
+    },
+  ];
+}
+
 function normalizeHatImages(product: PrintifyProduct): PrintifyProduct {
   if (!HAT_TITLE_PATTERN.test(product.title)) {
-    const studio = studioImagesFor(product);
-    return studio.length ? { ...product, images: [...studio, ...product.images] } : product;
+    const lead = [...placeitImagesFor(product), ...studioImagesFor(product)];
+    return lead.length ? { ...product, images: [...lead, ...product.images] } : product;
   }
   const rank = (image: PrintifyImage) => {
     const idx = CAMERA_PRIORITY.indexOf(cameraLabel(image));
@@ -262,7 +281,7 @@ function normalizeHatImages(product: PrintifyProduct): PrintifyProduct {
       .map((image) => ({ ...image, is_default: cameraLabel(image) === "front" })),
   );
   const studio = studioImagesFor(product);
-  return { ...product, images: [...studio, ...images] };
+  return { ...product, images: [...placeitImagesFor(product), ...studio, ...images] };
 }
 
 export async function getPrintifyProducts(): Promise<PrintifyProduct[]> {
